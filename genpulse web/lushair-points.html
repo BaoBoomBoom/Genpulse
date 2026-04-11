@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0c" />
+  <title>GP · Genpulse</title>
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0c;
+      --surface: #141418;
+      --surface2: #1c1c22;
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #f5f5f7;
+      --muted: #86868b;
+      --lushair: #c9a8b8;
+      --earn: #5fd89a;
+      --burn: #ff8a7a;
+      --blue: #2997ff;
+      --radius: 18px;
+      --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app-shell {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      border-inline: 1px solid var(--line);
+      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 168, 184, 0.12), transparent 55%), var(--bg);
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px 10px;
+      padding-top: max(14px, env(safe-area-inset-top));
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .back:hover {
+      opacity: 0.85;
+    }
+
+    .top-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .top-placeholder {
+      width: 56px;
+    }
+
+    .balance-card {
+      margin: 8px 18px 20px;
+      padding: 22px 20px 20px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(201, 168, 184, 0.18), rgba(20, 20, 24, 0.95));
+      border: 1px solid rgba(201, 168, 184, 0.25);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    .balance-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+
+    .balance-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .balance-value {
+      font-size: 40px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .balance-unit {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.55);
+      margin-left: 6px;
+    }
+
+    .balance-sub {
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.45;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 0 18px 18px;
+    }
+
+    .stat-pill {
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .stat-pill span {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-pill strong {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-pill--earn strong {
+      color: var(--earn);
+    }
+
+    .stat-pill--burn strong {
+      color: var(--burn);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      padding: 0 18px 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-btn {
+      flex: 0 0 auto;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .filter-btn:hover {
+      color: var(--text);
+    }
+
+    .filter-btn.is-active {
+      background: rgba(201, 168, 184, 0.2);
+      border-color: rgba(201, 168, 184, 0.45);
+      color: var(--text);
+    }
+
+    .section-label {
+      padding: 0 18px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tx-list {
+      flex: 1;
+      padding: 0 18px 28px;
+      padding-bottom: max(28px, env(safe-area-inset-bottom));
+    }
+
+    .tx-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tx-item:last-child {
+      border-bottom: none;
+    }
+
+    .tx-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      background: var(--surface2);
+      flex-shrink: 0;
+    }
+
+    .tx-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tx-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .tx-meta {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .tx-amount {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .tx-amount--earn {
+      color: var(--earn);
+    }
+
+    .tx-amount--burn {
+      color: var(--burn);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .demo-banner {
+      margin: 0 18px 16px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(41, 151, 255, 0.12);
+      border: 1px solid rgba(41, 151, 255, 0.25);
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.75);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-bar">
+      <a class="back" href="web">‹ Genpulse</a>
+      <span class="top-title">GP</span>
+      <span class="top-placeholder" aria-hidden="true"></span>
+    </header>
+
+    <div class="demo-banner">
+      Preview UI — balances and rows are static samples. Wire to your wallet API later.
+    </div>
+
+    <div class="balance-card">
+      <div class="balance-label">Available balance</div>
+      <div class="balance-row">
+        <div>
+          <span class="balance-value">1,248</span>
+          <span class="balance-unit">GP</span>
+        </div>
+      </div>
+      <p class="balance-sub">
+        Earned from scans &amp; routines · Spent on AI chat &amp; shop. Streak bonus active (+20% on routines).
+      </p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-pill stat-pill--earn">
+        <span>This week · earned</span>
+        <strong>+142</strong>
+      </div>
+      <div class="stat-pill stat-pill--burn">
+        <span>This week · spent</span>
+        <strong>−38</strong>
+      </div>
+    </div>
+
+    <div class="filter-row" role="tablist" aria-label="Filter activity">
+      <button type="button" class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+      <button type="button" class="filter-btn" data-filter="earn" role="tab" aria-selected="false">Earned</button>
+      <button type="button" class="filter-btn" data-filter="burn" role="tab" aria-selected="false">Spent</button>
+    </div>
+
+    <div class="section-label">Activity</div>
+    <div class="tx-list" id="tx-list"></div>
+  </div>
+
+  <script>
+    const transactions = [
+      { type: 'earn', icon: '📷', title: 'Device scalp scan', meta: 'Today · session #12', amount: '+15' },
+      { type: 'burn', icon: '💬', title: 'AI hair coach chat', meta: 'Today · 6 messages', amount: '−12' },
+      { type: 'earn', icon: '🤳', title: 'Selfie check-in', meta: 'Yesterday · daily cap', amount: '+8' },
+      { type: 'earn', icon: '📓', title: 'Hair routine logged', meta: 'Yesterday · streak day 9', amount: '+6' },
+      { type: 'earn', icon: '🔗', title: 'Friend referral · first scan', meta: 'Mon · bonus', amount: '+100' },
+      { type: 'burn', icon: '🛒', title: 'Marketplace · shampoo', meta: 'Sun · GP + card', amount: '−45' },
+      { type: 'earn', icon: '📤', title: 'Verified social share', meta: 'Sun · weekly slot 1/2', amount: '+25' },
+      { type: 'burn', icon: '💬', title: 'AI hair coach chat', meta: 'Sat · guided session', amount: '−15' },
+      { type: 'earn', icon: '🔬', title: 'Data contribution (opt-in)', meta: '1st of month', amount: '+20' },
+    ];
+
+    const listEl = document.getElementById('tx-list');
+    const buttons = document.querySelectorAll('.filter-btn');
+
+    function render(filter) {
+      const rows = transactions.filter((t) => filter === 'all' || t.type === filter);
+      listEl.innerHTML = '';
+      if (!rows.length) {
+        listEl.innerHTML = '<p class="empty-state">No activity in this view.</p>';
+        return;
+      }
+      rows.forEach((t) => {
+        const item = document.createElement('div');
+        item.className = 'tx-item';
+        item.innerHTML = `
+          <div class="tx-icon" aria-hidden="true">${t.icon}</div>
+          <div class="tx-body">
+            <div class="tx-title">${t.title}</div>
+            <div class="tx-meta">${t.meta}</div>
+          </div>
+          <div class="tx-amount tx-amount--${t.type}">${t.amount}</div>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => {
+          b.classList.toggle('is-active', b === btn);
+          b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+        });
+        render(btn.dataset.filter);
+      });
+    });
+
+    render('all');
+  </script>
+</body>
+</html>
