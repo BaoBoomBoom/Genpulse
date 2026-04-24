@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <title>Genpulse</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="shortcut icon" href="assets/favicon.ico" />
   <style>
     :root {
       --bg-dark: #08080a;
@@ -135,6 +137,171 @@
       background: radial-gradient(circle, rgba(107, 142, 159, 0.45) 0%, rgba(107, 142, 159, 0.12) 50%, transparent 70%);
     }
 
+    /* Opening intro — logo + color wash, then fade to site */
+    .site-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 2500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-dark);
+      opacity: 1;
+      visibility: visible;
+      transition:
+        opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0.55s step-end;
+    }
+
+    .site-intro.site-intro--out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0.55s step-start;
+    }
+
+    .site-intro__wash {
+      position: absolute;
+      inset: -25%;
+      background: conic-gradient(
+        from 200deg at 50% 45%,
+        rgba(201, 168, 184, 0.55),
+        rgba(214, 90, 90, 0.5),
+        rgba(91, 127, 170, 0.55),
+        rgba(155, 126, 181, 0.5),
+        rgba(107, 142, 159, 0.45),
+        rgba(201, 168, 184, 0.55)
+      );
+      filter: blur(90px) saturate(0);
+      opacity: 0;
+      transform: scale(0.88);
+      animation: siteIntroWash 1.15s ease-out 0.08s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes siteIntroWash {
+      0% {
+        opacity: 0;
+        filter: blur(100px) saturate(0);
+        transform: scale(0.88);
+      }
+      45% {
+        opacity: 0.65;
+        filter: blur(72px) saturate(0.55);
+        transform: scale(0.96);
+      }
+      100% {
+        opacity: 0.9;
+        filter: blur(56px) saturate(1);
+        transform: scale(1);
+      }
+    }
+
+    .site-intro__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 32px;
+    }
+
+    .site-intro__brand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(14px) scale(0.94);
+      filter: blur(8px);
+      animation: siteIntroBrand 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+    }
+
+    @keyframes siteIntroBrand {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .site-intro__logo {
+      display: block;
+      height: 48px;
+      width: auto;
+      filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.35));
+    }
+
+    .site-intro__name {
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      line-height: var(--leading-snug);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+      white-space: nowrap;
+    }
+
+    .site-intro__bar {
+      width: min(220px, 70vw);
+      height: 2px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .site-intro__bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 30%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.55),
+        transparent
+      );
+      animation: siteIntroBar 1.1s ease-in-out 0.2s infinite;
+    }
+
+    @keyframes siteIntroBar {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(350%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .site-intro__wash,
+      .site-intro__brand,
+      .site-intro__bar::after {
+        animation: none !important;
+      }
+
+      .site-intro__wash {
+        opacity: 0.35;
+        filter: blur(56px) saturate(1);
+        transform: scale(1);
+      }
+
+      .site-intro__brand {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+
+      .site-intro {
+        transition-duration: 0.15s;
+      }
+    }
+
     /* Navigation */
     .nav {
       position: fixed;
@@ -148,13 +315,33 @@
     }
 
     .nav-logo {
-      font-size: var(--text-base);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1;
+    }
+
+    .brand-logo {
+      display: block;
+      width: 132px;
+      height: auto;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.15));
+    }
+
+    .nav-logo .brand-logo {
+      width: auto;
+      height: 38px;
+    }
+
+    .brand-name {
+      font-size: var(--text-sm);
       font-weight: var(--font-bold);
       line-height: var(--leading-snug);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: #fff;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
     }
 
     .tab-switcher {
@@ -1730,11 +1917,9 @@
     }
 
     .footer-logo-text {
-      font-size: var(--text-base);
-      font-weight: var(--font-bold);
-      line-height: var(--leading-snug);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      line-height: 0;
     }
 
     .footer-sub {
@@ -1773,8 +1958,14 @@
         gap: 12px;
       }
       .nav-logo {
-        font-size: var(--text-sm);
-        letter-spacing: 0.18em;
+        gap: 6px;
+      }
+      .nav-logo .brand-logo {
+        height: 30px;
+      }
+      .brand-name {
+        font-size: var(--text-xs);
+        letter-spacing: 0.16em;
       }
       .tab-switcher button {
         padding: 8px 16px;
@@ -1876,7 +2067,24 @@
     }
   </style>
 </head>
-<body>
+<body aria-busy="true">
+  <div
+    id="site-intro"
+    class="site-intro"
+    role="status"
+    aria-live="polite"
+    aria-label="Genpulse loading"
+  >
+    <div class="site-intro__wash" aria-hidden="true"></div>
+    <div class="site-intro__inner">
+      <div class="site-intro__brand">
+        <img class="site-intro__logo" src="assets/logo.png" alt="" width="48" height="48" decoding="async" />
+        <span class="site-intro__name">GENPULSE</span>
+      </div>
+      <div class="site-intro__bar" aria-hidden="true"></div>
+    </div>
+  </div>
+
   <div class="genpulse-root">
     <!-- grain -->
     <div class="grain-overlay"></div>
@@ -1894,7 +2102,10 @@
 
     <!-- nav -->
     <nav class="nav">
-      <span class="nav-logo">GENPULSE</span>
+      <span class="nav-logo">
+        <img class="brand-logo" src="assets/logo.png" alt="Genpulse" />
+        <span class="brand-name">GENPULSE</span>
+      </span>
 
       <div class="tab-switcher" id="tab-switcher">
         <button data-tab="consumer" class="active">Consumer</button>
@@ -2189,7 +2400,9 @@ From hair to skin, from eyes to intimate health — medical-grade diagnostics av
     <footer class="footer">
       <div class="footer-inner">
         <div>
-          <div class="footer-logo-text">GENPULSE</div>
+          <div class="footer-logo-text">
+            <img class="brand-logo" src="assets/logo.png" alt="Genpulse" />
+          </div>
           <p class="footer-sub">AI infrastructure for accessible healthcare</p>
         </div>
         <div class="footer-links">
@@ -3673,6 +3886,48 @@ From hair to skin, from eyes to intimate health — medical-grade diagnostics av
         authOpenModal();
       });
     }
+
+    // ---------- Site intro (logo + color wash) ----------
+    function siteIntroDismiss() {
+      const introEl = document.getElementById('site-intro');
+      if (!introEl) return;
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reducedMotion) {
+        introEl.remove();
+        document.body.removeAttribute('aria-busy');
+        return;
+      }
+
+      const minVisibleMs = 1100;
+      const start = performance.now();
+      const logoImg = introEl.querySelector('.site-intro__logo');
+      const decode =
+        logoImg && typeof logoImg.decode === 'function'
+          ? logoImg.decode().catch(() => {})
+          : Promise.resolve();
+      const loaded = new Promise((resolve) => {
+        if (document.readyState === 'complete') resolve();
+        else window.addEventListener('load', () => resolve(), { once: true });
+      });
+
+      const teardown = () => {
+        introEl.classList.add('site-intro--out');
+        const done = () => {
+          introEl.remove();
+          document.body.removeAttribute('aria-busy');
+        };
+        introEl.addEventListener('transitionend', done, { once: true });
+        window.setTimeout(done, 800);
+      };
+
+      Promise.all([decode, loaded]).then(() => {
+        const elapsed = performance.now() - start;
+        window.setTimeout(teardown, Math.max(0, minVisibleMs - elapsed));
+      });
+    }
+
+    siteIntroDismiss();
 
     // ---------- Init ----------
     function init() {
