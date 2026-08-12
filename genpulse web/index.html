@@ -831,6 +831,8 @@
     .dev-table { min-width: 560px; }
     footer { flex-direction: column; gap: 24px; align-items: flex-start; padding: 32px 24px; }
   }
+.beta-bar{display:none;}
+@media (max-width:768px){.beta-bar{display:block;position:fixed;bottom:0;left:0;right:0;z-index:2000;background:var(--black);color:var(--white);text-align:center;padding:15px 16px;font-size:14px;font-weight:500;text-decoration:none;font-family:var(--font-body);}body{padding-bottom:52px;}}
 </style>
 </head>
 <body class="is-loading">
@@ -850,11 +852,11 @@
     <a href="#how">How it works</a>
     <a href="#enterprise">Enterprise</a>
     <a href="#developers">Developers</a>
-    <a href="#how">About</a>
+    
   </div>
   <div class="nav-right">
     <span class="nav-year">2026</span>
-    <button class="nav-cta" onclick="window.open('https://www.genpulse.io/','_blank')">Get started →</button>
+    <a class="nav-cta" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta →</a>
   </div>
 </nav>
 
@@ -868,7 +870,7 @@
     <h1 class="hero-title fade-in">Health insight.<br><em>Anywhere.</em></h1>
     <p class="hero-desc fade-in">Genpulse builds AI infrastructure for health research and consumer products — turning signals into data insights, at home and at scale.</p>
     <div class="hero-btns fade-in">
-      <button class="btn-primary" onclick="window.open('https://www.genpulse.io/','_blank')">Try the demo</button>
+      <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta</a><span style="font-size:11px;color:var(--gray-400);align-self:center;margin-left:4px;">iOS · via TestFlight</span>
       <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it works</button>
     </div>
     <div class="hero-domains fade-in">
@@ -1353,7 +1355,7 @@
       <h2 class="section-title">Build with Genpulse</h2>
       <p class="dev-hero-desc">Access our APIs, SDKs, and medical AI datasets to build the next generation of healthcare applications.</p>
     </div>
-    <button class="btn-secondary" onclick="window.open('https://discord.gg/2bdAssK3J','_blank')">Join the waitlist</button>
+    <button class="btn-secondary" onclick="window.open('https://discord.gg/2bdAssK3J','_blank')">Join our Discord</button>
   </div>
 
   <div class="dev-links reveal">
@@ -1699,5 +1701,6 @@
     document.getElementById('chat-messages').scrollTop = 9999;
   }
 </script>
+<a class="beta-bar" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta — iOS · TestFlight</a>
 </body>
 </html>
