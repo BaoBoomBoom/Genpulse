@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Genpulse — Your health insight, future science research</title>
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
+<meta name="description" content="Genpulse turns at-home scans of your hair, skin, and more into research-grade health insights. AI health analysis for consumers, clinics, and developers.">
+<link rel="canonical" href="https://www.genpulse.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.genpulse.io/">
+<meta property="og:title" content="Genpulse — Health insight. Anywhere.">
+<meta property="og:description" content="At-home scans, research-grade AI health insights. Hair and skin today — dental, eye, and women's health next.">
+<meta property="og:image" content="https://www.genpulse.io/devices-banner.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Genpulse — Health insight. Anywhere.">
+<meta name="twitter:description" content="At-home scans, research-grade AI health insights. Hair and skin today — dental, eye, and women's health next.">
+<meta name="twitter:image" content="https://www.genpulse.io/devices-banner.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -139,13 +150,14 @@
   }
   .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
   .btn-primary {
+    white-space: nowrap;
     padding: 14px 28px; background: var(--black); color: var(--white);
     border: none; border-radius: var(--radius-sm); font-size: 14px;
     font-family: var(--font-body); cursor: pointer; font-weight: 500;
     transition: opacity 0.2s; letter-spacing: -0.01em;
   }
   .btn-primary:hover { opacity: 0.8; }
-  .btn-outline {
+  .btn-outline { white-space: nowrap;
     padding: 14px 28px; background: transparent; color: var(--black);
     border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px;
     font-family: var(--font-body); cursor: pointer; font-weight: 400;
@@ -182,7 +194,7 @@
     border: 0.5px solid var(--border-light);
   }
   .device-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; letter-spacing: -0.01em; }
-  .device-desc { font-size: 11px; color: var(--gray-400); font-weight: 400; }
+  .device-desc { font-size: 12px; color: var(--gray-600); font-weight: 400; }
 
   /* WAVE DIVIDER */
   .wave-section {
@@ -346,7 +358,7 @@
   }
   .glamskin-viewport-wrap { padding: 0; }
   .glamskin-spec-note {
-    padding: 14px 18px; font-size: 11px; color: var(--gray-500); font-weight: 300;
+    padding: 14px 18px; font-size: 12px; color: var(--gray-600); font-weight: 300;
     line-height: 1.65; border-top: 0.5px solid var(--border-light);
     background: var(--gray-50); margin: 0;
   }
@@ -510,7 +522,7 @@
     background: var(--border-light); border: 0.5px solid var(--border-light);
     border-radius: var(--radius); overflow: hidden; margin-bottom: 48px;
   }
-  .ent-solution {
+  .ent-solution { cursor: default; 
     background: var(--white); padding: 28px 28px;
     text-decoration: none; color: inherit;
     display: flex; gap: 18px; align-items: flex-start;
@@ -533,7 +545,7 @@
     background: var(--white); border: 0.5px solid var(--border-light);
     border-radius: var(--radius); padding: 28px 24px; text-align: center;
   }
-  .ent-wl-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+  .ent-wl-icon { margin-bottom: 14px; display: flex; justify-content: center; }
   .ent-wl-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
   .ent-wl-desc { font-size: 13px; color: var(--gray-600); line-height: 1.55; font-weight: 300; }
 
@@ -549,7 +561,7 @@
   .dev-links {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 56px;
   }
-  .dev-link-card {
+  .dev-link-card { cursor: default; 
     background: var(--gray-50); border: 0.5px solid var(--border-light);
     border-radius: var(--radius); padding: 24px 20px;
     text-decoration: none; color: inherit;
@@ -557,7 +569,7 @@
     display: block;
   }
   .dev-link-card:hover { background: var(--white); border-color: var(--border); }
-  .dev-link-icon { font-size: 22px; margin-bottom: 14px; display: block; }
+  .dev-link-icon { margin-bottom: 14px; display: block; }
   .dev-link-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
   .dev-link-desc { font-size: 12px; color: var(--gray-600); line-height: 1.5; font-weight: 300; margin-bottom: 12px; }
   .dev-link-url { font-size: 11px; color: var(--gray-400); word-break: break-all; }
@@ -600,9 +612,9 @@
     vertical-align: middle;
   }
   .dev-soon {
-    font-size: 11px; color: var(--gray-400); white-space: nowrap;
+    font-size: 12px; color: var(--gray-600); white-space: nowrap;
   }
-  .btn-secondary {
+  .btn-secondary { white-space: nowrap;
     padding: 11px 22px; background: var(--white); color: var(--black);
     border: 0.5px solid var(--border); border-radius: var(--radius-sm);
     font-size: 13px; font-family: var(--font-body); cursor: pointer;
@@ -610,46 +622,6 @@
     letter-spacing: -0.01em; white-space: nowrap;
   }
   .btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
-
-  /* CHAT WIDGET */
-  .chat-widget {
-    margin-top: 52px; padding: 40px 36px; background: #0a0a0f;
-    border-radius: var(--radius); border: 0.5px solid rgba(255,255,255,0.08);
-    position: relative; overflow: hidden;
-  }
-  .chat-widget::before {
-    content: ''; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%);
-    width: 480px; height: 320px; border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(80,60,160,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .chat-widget-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
-  .chat-categories { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
-  .chat-cat-btn {
-    padding: 9px 18px; border: 0.5px solid rgba(255,255,255,0.15); border-radius: 100px;
-    font-size: 13px; color: rgba(255,255,255,0.65); cursor: pointer;
-    background: rgba(255,255,255,0.05); font-family: var(--font-body); transition: all 0.2s;
-  }
-  .chat-cat-btn.active {
-    background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.95);
-  }
-  .chat-box {
-    background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
-    border-radius: 16px; overflow: hidden;
-  }
-  .chat-disclaimer {
-    text-align: center; font-size: 11px; color: rgba(255,255,255,0.25);
-    margin-top: 16px; line-height: 1.5;
-  }
-  #chat-messages::-webkit-scrollbar { width: 4px; }
-  #chat-messages::-webkit-scrollbar-track { background: transparent; }
-  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-  #gp-chat-input::placeholder { color: rgba(255,255,255,0.25); }
-  #gp-chat-input:focus { border-color: rgba(255,255,255,0.25) !important; }
-  .typing-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.5); animation: typingBounce 1.2s infinite; }
-  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
 
   /* FOOTER */
   footer {
@@ -807,6 +779,55 @@
   .metric-bar { height: 100%; border-radius: 2px; background: var(--black); transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
   .metric-val { font-size: 13px; font-weight: 500; min-width: 36px; text-align: right; }
 
+  /* CHAT WIDGET */
+  .chat-widget {
+    margin-top: 52px; padding: 40px 36px; background: #0a0a0f;
+    border-radius: var(--radius); border: 0.5px solid rgba(255,255,255,0.08);
+    position: relative; overflow: hidden;
+  }
+  .chat-widget::before {
+    content: ''; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%);
+    width: 480px; height: 320px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(80,60,160,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .chat-widget-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+  .chat-categories { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+  .chat-cat-btn {
+    padding: 9px 18px; border: 0.5px solid rgba(255,255,255,0.15); border-radius: 100px;
+    font-size: 13px; color: rgba(255,255,255,0.65); cursor: pointer;
+    background: rgba(255,255,255,0.05); font-family: var(--font-body); transition: all 0.2s;
+  }
+  .chat-cat-btn.active {
+    background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.95);
+  }
+  .chat-box {
+    background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 16px; overflow: hidden;
+  }
+  .chat-disclaimer {
+    text-align: center; font-size: 11px; color: rgba(255,255,255,0.25);
+    margin-top: 16px; line-height: 1.5;
+  }
+  #chat-messages::-webkit-scrollbar { width: 4px; }
+  #chat-messages::-webkit-scrollbar-track { background: transparent; }
+  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+
+  /* ENTERPRISE DARK BAND */
+  #enterprise { background: #0a0a0f; }
+  #enterprise .section-eyebrow { color: rgba(255,255,255,0.4); }
+  #enterprise .section-title, #enterprise .ent-block-head h3, #enterprise .ent-stat-val { color: #ffffff; }
+  #enterprise .ent-hero-desc, #enterprise .ent-block-head p { color: rgba(255,255,255,0.55); }
+  #enterprise .btn-primary { background: #ffffff; color: #0a0a0a; }
+  #enterprise .ent-stats, #enterprise .ent-solutions { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.09); }
+  #enterprise .ent-stat, #enterprise .ent-solution { background: #12121a; }
+  #enterprise .ent-stat-label, #enterprise .ent-solution-desc, #enterprise .ent-wl-desc { color: rgba(255,255,255,0.5); }
+  #enterprise .ent-solution-title, #enterprise .ent-wl-title { color: #ffffff; }
+  #enterprise .ent-solution-icon { background: rgba(255,255,255,0.08); color: #ffffff; }
+  #enterprise .ent-wl-card { background: #12121a; border-color: rgba(255,255,255,0.09); }
+  #enterprise .ent-wl-icon { color: #ffffff; }
+
   /* MOBILE */
   @media (max-width: 768px) {
     nav { padding: 0 20px; }
@@ -830,6 +851,7 @@
     .dev-table-wrap { overflow-x: auto; }
     .dev-table { min-width: 560px; }
     footer { flex-direction: column; gap: 24px; align-items: flex-start; padding: 32px 24px; }
+    .footer-links { flex-wrap: wrap; row-gap: 10px; }
   }
 .beta-bar{display:none;}
 @media (max-width:768px){.beta-bar{display:block;position:fixed;bottom:0;left:0;right:0;z-index:2000;background:var(--black);color:var(--white);text-align:center;padding:15px 16px;font-size:14px;font-weight:500;text-decoration:none;font-family:var(--font-body);}body{padding-bottom:52px;}}
@@ -838,13 +860,13 @@
 <body class="is-loading">
 
 <div id="page-loader" aria-live="polite" aria-label="Loading">
-  <img src="/logo.png" alt="" class="loader-logo" width="56" height="56" />
+  <img src="logo.png" alt="" class="loader-logo" width="56" height="56" />
 </div>
 
 <!-- NAV -->
 <nav id="navbar">
   <a href="#" class="nav-logo">
-    <img src="/logo.png" alt="" class="nav-logo-img" width="30" height="30" />
+    <img src="logo.png" alt="" class="nav-logo-img" width="30" height="30" />
     <span>Genpulse</span>
   </a>
   <div class="nav-links">
@@ -868,11 +890,12 @@
       Your health insight, future science research
     </div>
     <h1 class="hero-title fade-in">Health insight.<br><em>Anywhere.</em></h1>
-    <p class="hero-desc fade-in">Genpulse builds AI infrastructure for health research and consumer products — turning signals into data insights, at home and at scale.</p>
+    <p class="hero-desc fade-in">Scan your hair and skin at home with purpose-built devices — Genpulse AI turns every scan into clear, research-grade insights you can track over time.</p>
     <div class="hero-btns fade-in">
-      <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta</a><span style="font-size:11px;color:var(--gray-400);align-self:center;margin-left:4px;">iOS · via TestFlight</span>
+      <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta</a><span style="font-size:12px;color:var(--gray-600);align-self:center;margin-left:4px;">iOS · via TestFlight</span>
       <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it works</button>
     </div>
+    <p class="fade-in" style="margin-top:14px;font-size:13px;color:var(--gray-600);">Not on iOS? <a href="mailto:support@genpulse.io?subject=Beta%20waitlist%20—%20notify%20me&body=Please%20notify%20me%20when%20the%20beta%20is%20available%20on%20my%20platform." style="color:var(--black);text-decoration:underline;">Get notified when your platform is ready →</a></p>
     <div class="hero-domains fade-in">
       <span class="domain-tag">Hair</span>
       <span class="domain-tag">Skin</span>
@@ -883,33 +906,20 @@
   </div>
 
   <div class="hero-devices">
+    <img src="devices-banner.png" alt="The Genpulse device family" width="1907" height="818" style="grid-column:1/-1;width:100%;height:auto;display:block;border-radius:var(--radius);border:0.5px solid var(--border);" loading="eager" />
     <a class="device-card device-card--live fade-in" href="https://lushair.ai" target="_blank" rel="noopener">
-      <div class="device-icon">🔬</div>
+      <div class="device-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4.5"></circle><path d="M12 12.5V19M8.5 21h7M12 19v2"></path></svg></div>
       <div class="device-name">Lushair</div>
       <div class="device-desc">Hair &amp; scalp AI</div>
     </a>
     <a class="device-card device-card--live fade-in" href="https://glamskin.ai" target="_blank" rel="noopener">
-      <div class="device-icon">✨</div>
+      <div class="device-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5a4.5 4.5 0 0 0 4.5 4.5"></path></svg></div>
       <div class="device-name">Glamskin</div>
       <div class="device-desc">Skin health AI</div>
     </a>
-    <div class="device-card device-card--soon fade-in">
-      <div class="device-icon">🦷</div>
-      <div class="device-name">Dental AI</div>
-      <div class="device-desc">AI dental analysis</div>
-      <div class="device-soon">Coming soon</div>
-    </div>
-    <div class="device-card device-card--soon fade-in">
-      <div class="device-icon">👁️</div>
-      <div class="device-name">Eye AI</div>
-      <div class="device-desc">Eye health analysis</div>
-      <div class="device-soon">Coming soon</div>
-    </div>
-    <div class="device-card device-card--soon fade-in">
-      <div class="device-icon">🌸</div>
-      <div class="device-name">Gyn AI</div>
-      <div class="device-desc">Women's wellness</div>
-      <div class="device-soon">Coming soon</div>
+    <div class="device-card device-card--soon fade-in" style="grid-column:1/-1;">
+      <div class="device-name">Expanding in 2026</div>
+      <div class="device-desc">Dental · Eye · Women's health</div>
     </div>
   </div>
 </section>
@@ -942,21 +952,21 @@
   <div class="steps-grid reveal">
     <div class="step">
       <div class="step-num">01</div>
-      <div class="step-icon-wrap">📡</div>
+      <div class="step-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1.8"></circle><path d="M8.2 15.8a5.4 5.4 0 0 1 0-7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.4 18.6a9.4 9.4 0 0 1 0-13.2M18.6 5.4a9.4 9.4 0 0 1 0 13.2"></path></svg></div>
       <div class="step-label">Capture</div>
       <div class="step-title">Smart hardware devices</div>
       <div class="step-desc">Purpose-built sensors capture hair, skin, dental, and eye data at research-grade resolution — at home or in clinic.</div>
     </div>
     <div class="step">
       <div class="step-num">02</div>
-      <div class="step-icon-wrap">🧠</div>
+      <div class="step-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"></rect><path d="M9.5 3.5V7M14.5 3.5V7M9.5 17v3.5M14.5 17v3.5M3.5 9.5H7M3.5 14.5H7M17 9.5h3.5M17 14.5h3.5"></path></svg></div>
       <div class="step-label">Analyze</div>
       <div class="step-title">AI health analysis engine</div>
       <div class="step-desc">Genpulse models analyze imaging data in milliseconds, detecting conditions with research-grade accuracy across all domains.</div>
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <div class="step-icon-wrap">📊</div>
+      <div class="step-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M7 20v-5.5M12 20V9.5M17 20v-8"></path></svg></div>
       <div class="step-label">Deliver</div>
       <div class="step-title">Actionable insights</div>
       <div class="step-desc">Results surface through consumer apps, practitioner dashboards, or your own product via our SDK and API.</div>
@@ -966,45 +976,40 @@
   <div class="chat-widget reveal">
     <div class="chat-widget-inner">
       <div class="chat-categories" id="chat-categories">
-        <button onclick="selectCategory(this,'Scalp')" class="chat-cat-btn" data-cat="Scalp">🔬 Lushair</button>
-        <button onclick="selectCategory(this,'Skin')" class="chat-cat-btn" data-cat="Skin">✨ Glamskin</button>
-        <button onclick="selectCategory(this,'Dental')" class="chat-cat-btn" data-cat="Dental">🦷 Dental <span style="opacity:0.5;font-size:10px;">soon</span></button>
-        <button onclick="selectCategory(this,'Eye')" class="chat-cat-btn" data-cat="Eye">👁️ Eye <span style="opacity:0.5;font-size:10px;">soon</span></button>
-        <button onclick="selectCategory(this,'Gyn')" class="chat-cat-btn" data-cat="Gyn">🌸 Gyn <span style="opacity:0.5;font-size:10px;">soon</span></button>
-        <button onclick="selectCategory(this,'Finding')" class="chat-cat-btn" data-cat="Finding">🔍 Finding</button>
+        <button class="chat-cat-btn" data-cat="Scalp">🔬 Lushair</button>
+        <button class="chat-cat-btn" data-cat="Skin">✨ Glamskin</button>
+        <button class="chat-cat-btn" data-cat="Dental">🦷 Dental <span style="opacity:0.5;font-size:10px;">soon</span></button>
+        <button class="chat-cat-btn" data-cat="Eye">👁️ Eye <span style="opacity:0.5;font-size:10px;">soon</span></button>
+        <button class="chat-cat-btn" data-cat="Gyn">🌸 Gyn <span style="opacity:0.5;font-size:10px;">soon</span></button>
+        <button class="chat-cat-btn" data-cat="Finding">🔍 Finding</button>
       </div>
       <div class="chat-box">
         <div style="padding:14px 18px;border-bottom:0.5px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);">
           <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
+            <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
             <div>
               <div style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);">GENPULSE AI Assistant</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:#27c93f;display:inline-block;"></span> Online · Health AI</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.05em;text-transform:uppercase;">Product preview</div>
             </div>
           </div>
           <div style="font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.04em;">Powered by Genpulse</div>
         </div>
         <div id="chat-messages" style="padding:20px 18px;min-height:200px;max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;">
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
+            <div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
             <div style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);border-radius:4px 12px 12px 12px;padding:12px 15px;max-width:88%;">
               <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">Hello! I'm the Genpulse AI assistant. I can help you explore health analysis across dental, skin, scalp, eye, and gyn wellness domains. How can I help today?</p>
             </div>
           </div>
           <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
+            <div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
             <div style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);border-radius:4px 12px 12px 12px;padding:12px 15px;max-width:88%;">
-              <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">Select a health category above or type your concern below — I'll provide personalized insights powered by Genpulse's research AI models.</p>
+              <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">Here's how the assistant works inside the app.</p>
             </div>
           </div>
         </div>
-        <div id="quick-suggests" style="padding:0 18px 14px;display:none;flex-wrap:wrap;gap:6px;"></div>
-        <div style="padding:14px 16px;border-top:0.5px solid rgba(255,255,255,0.07);display:flex;gap:8px;align-items:flex-end;background:rgba(0,0,0,0.2);">
-          <textarea id="gp-chat-input" rows="1" placeholder="Describe your health concern..."
-            style="flex:1;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;font-size:13px;font-family:var(--font-body);color:rgba(255,255,255,0.85);outline:none;resize:none;line-height:1.5;max-height:100px;overflow-y:auto;"
-            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"
-            oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';"></textarea>
-          <button onclick="sendChatMsg()" id="gp-send-btn" style="width:36px;height:36px;flex-shrink:0;background:rgba(255,255,255,0.9);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;">↑</button>
+        <div style="padding:14px 16px;border-top:0.5px solid rgba(255,255,255,0.07);display:flex;justify-content:center;background:rgba(0,0,0,0.2);">
+          <a href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener" style="display:inline-block;background:rgba(255,255,255,0.92);color:#0a0a0a;text-decoration:none;font-size:13px;font-weight:500;padding:10px 24px;border-radius:8px;white-space:nowrap;">Try it in the beta →</a>
         </div>
       </div>
       <p class="chat-disclaimer">Genpulse AI provides general health information only — not professional health advice. Always consult a qualified healthcare professional for personal health decisions.</p>
@@ -1020,7 +1025,7 @@
 
   <div class="product-lineup reveal">
     <figure class="product-lineup-figure">
-      <img src="/devices/lineup.png" alt="Genpulse AI health hardware lineup" width="1024" height="576" loading="lazy" />
+      <img src="devices/lineup.png" alt="Genpulse AI health hardware lineup" width="1024" height="576" loading="lazy" />
       <div class="product-lineup-hotspots" role="group" aria-label="Explore Genpulse devices">
         <button type="button" class="lineup-hotspot" data-lineup="hair" style="flex:1.12" aria-label="Lushair"></button>
         <button type="button" class="lineup-hotspot" data-lineup="skin" style="flex:1" aria-label="Glamskin"></button>
@@ -1031,7 +1036,7 @@
     </figure>
     <div class="product-lineup-detail is-default" id="lineup-detail" aria-live="polite">
       <p class="product-lineup-name">Explore our devices</p>
-      <p class="product-lineup-desc">Hover over each instrument to see its name and purpose.</p>
+      <p class="product-lineup-desc">Tap or hover any instrument to see its name and purpose.</p>
       <p class="product-lineup-hint">Lushair · Glamskin · Eye AI · Dental AI · Gyn AI</p>
     </div>
   </div>
@@ -1065,44 +1070,10 @@
         <span class="feat-tag">Treatment tracking</span>
       </div>
     </div>
-    <div class="product-card product-card--soon">
-      <div class="product-card-header">
-        <span class="product-badge badge-dental">Dental</span>
-        <span class="product-soon-badge">Coming soon</span>
-      </div>
-      <div class="product-title">Dental AI</div>
-      <div class="product-desc">AI dental analysis with research-grade precision. Tracks oral health signals, plaque buildup, and gum health changes — at home, in real time.</div>
-      <div class="product-features">
-        <span class="feat-tag">Camera sensor</span>
-        <span class="feat-tag">Real-time AI</span>
-        <span class="feat-tag">Data export</span>
-      </div>
-    </div>
-    <div class="product-card product-card--soon">
-      <div class="product-card-header">
-        <span class="product-badge badge-eye">Eye</span>
-        <span class="product-soon-badge">Coming soon</span>
-      </div>
-      <div class="product-title">Eye AI</div>
-      <div class="product-desc">Optical health analysis imaging for early signal mapping of eye health issues — from everyday dryness to early-stage pressure anomalies.</div>
-      <div class="product-features">
-        <span class="feat-tag">Optical sensor</span>
-        <span class="feat-tag">Early signal mapping</span>
-        <span class="feat-tag">Cloud insights</span>
-      </div>
-    </div>
-    <div class="product-card product-card--soon">
-      <div class="product-card-header">
-        <span class="product-badge badge-intimate">Gyn</span>
-        <span class="product-soon-badge">Coming soon</span>
-      </div>
-      <div class="product-title">Gyn AI</div>
-      <div class="product-desc">Privacy-first women's wellness imaging with AI data insights for hydration, sensitivity, and longitudinal health tracking.</div>
-      <div class="product-features">
-        <span class="feat-tag">Encrypted data</span>
-        <span class="feat-tag">Wellness insights</span>
-        <span class="feat-tag">Longitudinal tracking</span>
-      </div>
+    <div class="product-card product-card--soon" style="grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px;">
+      <span class="product-title" style="margin:0;">Expanding next</span>
+      <span class="product-desc" style="margin:0;flex:1;min-width:240px;">Dental, eye, and women's health analysis — same devices-plus-AI platform, six health domains by 2026.</span>
+      <span class="product-soon-badge">Coming soon</span>
     </div>
   </div>
 </section>
@@ -1114,7 +1085,7 @@
     <div class="scalp-layout">
       <div class="reveal">
         <h2 class="section-title">Clear Scalp,<br>Clear Data.</h2>
-        <p class="section-desc">AI-powered hair and scalp analysis with Genpulse Vision v2.0 — cold-spectrum annotation colors, 25% fill transparency, and stroke styles matched to the clinical pipeline.</p>
+        <p class="section-desc">AI hair and scalp analysis that shows you what the lens sees — density, follicle health, and irritation mapped zone by zone, on your actual scan.</p>
         <a class="featured-cta" href="https://lushair.ai" target="_blank" rel="noopener">Visit lushair.ai →</a>
         <div class="scalp-features">
           <div class="scalp-feat">
@@ -1122,8 +1093,8 @@
             <div class="scalp-feat-desc">Every zone analyzed independently for density, oiliness, follicle count, and sensitivity — giving practitioners a complete scalp profile.</div>
           </div>
           <div class="scalp-feat">
-            <div class="scalp-feat-title">Spec-accurate overlays</div>
-            <div class="scalp-feat-desc">Polygon boxes for hair types, circle strokes for follicles, and fill+1px stroke regions for pathology — aligned with hair_spectrum_analysis.py.</div>
+            <div class="scalp-feat-title">Findings you can see</div>
+            <div class="scalp-feat-desc">Every finding is drawn directly on the scan — hair types, follicles, and irritated regions clearly marked, so you see the evidence, not just a score.</div>
           </div>
           <div class="scalp-feat">
             <div class="scalp-feat-title">Longitudinal tracking</div>
@@ -1153,7 +1124,7 @@
         </div>
         <div class="ann-legend">
           <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Hair types · polygon</div>
+            <div class="ann-legend-group-title">Hair types</div>
             <div class="ann-legend-items">
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--poly-thick" style="--ann-color:#22c522"></span>Terminal hair</div>
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--poly-thin" style="--ann-color:#60a5fa"></span>Intermediate hair</div>
@@ -1161,13 +1132,13 @@
             </div>
           </div>
           <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Structure · stroke only</div>
+            <div class="ann-legend-group-title">Structure</div>
             <div class="ann-legend-items">
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--circle" style="--ann-color:#f59e0b"></span>Follicle</div>
             </div>
           </div>
           <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Pathology · fill 25% + 1px stroke</div>
+            <div class="ann-legend-group-title">Pathology</div>
             <div class="ann-legend-items">
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#fb923c"></span>Eczema</div>
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#f43f5e"></span>Scalp redness</div>
@@ -1208,12 +1179,12 @@
                 <div class="ann-skin-oil" title="Oil blockage"></div>
               </div>
             </div>
-            <p class="glamskin-spec-note">Skin mirror palette · fill α=25% + 1px stroke · per skin_analysis.py v2.0</p>
+            <p class="glamskin-spec-note">Live annotation view — every finding drawn in place on the scan</p>
           </div>
         </div>
         <div class="ann-legend">
           <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Pathology · stroke only</div>
+            <div class="ann-legend-group-title">Pathology</div>
             <div class="ann-legend-items">
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--stroke" style="--ann-color:#ef4444"></span>Acne</div>
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--stroke" style="--ann-color:#1e293b"></span>Blackhead</div>
@@ -1222,7 +1193,7 @@
             </div>
           </div>
           <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Regions · fill 25% + 1px stroke</div>
+            <div class="ann-legend-group-title">Regions</div>
             <div class="ann-legend-items">
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#c084fc"></span>Pigment</div>
               <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#fda4af"></span>Sensitive skin</div>
@@ -1234,12 +1205,12 @@
       </div>
       <div class="reveal" style="transition-delay:.12s;">
         <h2 class="section-title">Radiant Skin,<br>Real Data.</h2>
-        <p class="section-desc">Multi-spectrum skin analysis with warm/cool skin-mirror colors — pathology in high-saturation strokes, pores and wrinkles as outline-only, regions at 25% fill per Genpulse Annotation Color Spec v2.</p>
+        <p class="section-desc">Multi-spectrum skin analysis that maps acne, pigment, pores, and sensitivity directly onto your skin — so you see exactly where, not just what.</p>
         <a class="featured-cta" href="https://glamskin.ai" target="_blank" rel="noopener">Visit glamskin.ai →</a>
         <div class="glamskin-features" style="margin-top:28px;">
           <div class="glamskin-feat">
             <div class="glamskin-feat-title">Skin mirror palette</div>
-            <div class="glamskin-feat-desc">Acne and blackheads use stroke-only overlays; pigment, sensitivity, and oil use semi-transparent fill so underlying texture stays visible.</div>
+            <div class="glamskin-feat-desc">Findings are drawn as light outlines and soft tints over the scan — nothing is hidden, so you can judge every result against your own skin.</div>
           </div>
           <div class="glamskin-feat">
             <div class="glamskin-feat-title">3-second skin read</div>
@@ -1291,38 +1262,34 @@
   </div>
 
   <div class="ent-solutions reveal">
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/dermatology" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">🔬</span>
+    <div class="ent-solution">
+      <span class="ent-solution-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4.5"></circle><path d="M12 12.5V19M8.5 21h7M12 19v2"></path></svg></span>
       <div>
         <div class="ent-solution-title">Dermatology</div>
         <div class="ent-solution-desc">Clinical skin diagnostics &amp; care</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/dermatology</div>
       </div>
-    </a>
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/dental" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">🦷</span>
+    </div>
+    <div class="ent-solution">
+      <span class="ent-solution-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2 0-3.5 1.8-3.5 4.1 0 3.8 2 5.6 2.5 8.2l.6 3.4c.1.7 1.1.7 1.3 0L9.5 15h5l1.1 4.2c.2.7 1.2.7 1.3 0l.6-3.4c.5-2.6 2.5-4.4 2.5-8.2 0-2.3-1.5-4.1-3.5-4.1-1.6 0-2.9 1-4.5 1s-2.9-1-4.5-1z"></path></svg></span>
       <div>
         <div class="ent-solution-title">Dental</div>
         <div class="ent-solution-desc">Oral health &amp; imaging workflows</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/dental</div>
       </div>
-    </a>
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/ophthalmology" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">👁</span>
+    </div>
+    <div class="ent-solution">
+      <span class="ent-solution-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
       <div>
         <div class="ent-solution-title">Ophthalmology</div>
         <div class="ent-solution-desc">Eye screening &amp; retinal AI</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/ophthalmology</div>
       </div>
-    </a>
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/womens-health" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">🌸</span>
+    </div>
+    <div class="ent-solution">
+      <span class="ent-solution-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.5"></circle><path d="M12 4v3.5M12 16.5V20M4 12h3.5M16.5 12H20M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M17.7 6.3l-2.5 2.5M8.8 15.2l-2.5 2.5"></path></svg></span>
       <div>
         <div class="ent-solution-title">Women's Health</div>
         <div class="ent-solution-desc">Confidential specialty workflows</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/womens-health</div>
       </div>
-    </a>
+    </div>
   </div>
 
   <div class="ent-block-head reveal" style="margin-top:16px;">
@@ -1330,17 +1297,17 @@
   </div>
   <div class="ent-whitelabel reveal">
     <div class="ent-wl-card">
-      <span class="ent-wl-icon">🏥</span>
+      <span class="ent-wl-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.5"></rect><path d="M12 9v6M9 12h6"></path></svg></span>
       <div class="ent-wl-title">Your Brand</div>
       <div class="ent-wl-desc">Full customization for clinics and hospitals</div>
     </div>
     <div class="ent-wl-card">
-      <span class="ent-wl-icon">🔐</span>
+      <span class="ent-wl-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"></path></svg></span>
       <div class="ent-wl-title">HIPAA Compliant</div>
       <div class="ent-wl-desc">Enterprise-grade security &amp; privacy</div>
     </div>
     <div class="ent-wl-card">
-      <span class="ent-wl-icon">⚡</span>
+      <span class="ent-wl-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L11 21l8-10.5h-6L13 3z"></path></svg></span>
       <div class="ent-wl-title">Powered by Genpulse</div>
       <div class="ent-wl-desc">Medical AI infrastructure at scale</div>
     </div>
@@ -1359,34 +1326,30 @@
   </div>
 
   <div class="dev-links reveal">
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/docs" target="_blank" rel="noopener">
-      <span class="dev-link-icon">📄</span>
+    <div class="dev-link-card">
+      <span class="dev-link-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5H13L17.5 8v12.5h-11V3.5z"></path><path d="M13 3.5V8h4.5M9.5 12.5h5M9.5 16h5"></path></svg></span>
       <div class="dev-link-title">API Docs</div>
       <div class="dev-link-desc">RESTful APIs for all products</div>
-      <div class="dev-link-url">developers.gen-pulse.com/docs</div>
-    </a>
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/sdk" target="_blank" rel="noopener">
-      <span class="dev-link-icon">📦</span>
+    </div>
+    <div class="dev-link-card">
+      <span class="dev-link-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"></path><path d="M4 7.5l8 4.5 8-4.5M12 12v9"></path></svg></span>
       <div class="dev-link-title">SDK Downloads</div>
       <div class="dev-link-desc">Python, Node.js, Swift, Kotlin</div>
-      <div class="dev-link-url">developers.gen-pulse.com/sdk</div>
-    </a>
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/cases" target="_blank" rel="noopener">
-      <span class="dev-link-icon">📊</span>
+    </div>
+    <div class="dev-link-card">
+      <span class="dev-link-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16h16"></path><path d="M8.5 16v-4.5M12.5 16V8.5M16.5 16v-2.5"></path></svg></span>
       <div class="dev-link-title">Case Studies</div>
       <div class="dev-link-desc">Real-world implementations</div>
-      <div class="dev-link-url">developers.gen-pulse.com/cases</div>
-    </a>
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/partners" target="_blank" rel="noopener">
-      <span class="dev-link-icon">🤝</span>
+    </div>
+    <div class="dev-link-card">
+      <span class="dev-link-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 14.5l5-5"></path><path d="M11 7l1.5-1.5a3.9 3.9 0 0 1 5.5 5.5L16.5 12.5M7.5 11.5 6 13a3.9 3.9 0 0 0 5.5 5.5l1.5-1.5"></path></svg></span>
       <div class="dev-link-title">Partner Program</div>
       <div class="dev-link-desc">Revenue share &amp; support</div>
-      <div class="dev-link-url">developers.gen-pulse.com/partners</div>
-    </a>
+    </div>
   </div>
 
   <div class="dev-datasets-head reveal">
-    <h3>🗂 Medical AI Datasets</h3>
+    <h3 style="display:flex;align-items:center;gap:10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"></path><path d="M3 13.5l9 5 9-5"></path></svg> Medical AI Datasets</h3>
     <span class="dev-datasets-badge">Open Access</span>
   </div>
   <div class="dev-table-wrap reveal">
@@ -1402,35 +1365,35 @@
       </thead>
       <tbody>
         <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/hair-scalp-10k</span><span class="dev-verified">✓ Verified</span></td>
+          <td><span class="dev-dataset-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="vertical-align:-1px;margin-right:6px;"><path d="M4 20h16M7 20v-5.5M12 20V9.5M17 20v-8"></path></svg>genpulse/hair-scalp-10k</span><span class="dev-verified">✓ Verified</span></td>
           <td>Image</td>
           <td>2.3GB</td>
           <td>↓ 12.4k</td>
           <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
         </tr>
         <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/skin-lesion-classification</span><span class="dev-verified">✓ Verified</span></td>
+          <td><span class="dev-dataset-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="vertical-align:-1px;margin-right:6px;"><path d="M4 20h16M7 20v-5.5M12 20V9.5M17 20v-8"></path></svg>genpulse/skin-lesion-classification</span><span class="dev-verified">✓ Verified</span></td>
           <td>Image</td>
           <td>4.1GB</td>
           <td>↓ 8.7k</td>
           <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
         </tr>
         <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/dental-xray-annotated</span><span class="dev-verified">✓ Verified</span></td>
+          <td><span class="dev-dataset-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="vertical-align:-1px;margin-right:6px;"><path d="M4 20h16M7 20v-5.5M12 20V9.5M17 20v-8"></path></svg>genpulse/dental-xray-annotated</span><span class="dev-verified">✓ Verified</span></td>
           <td>Image</td>
           <td>1.8GB</td>
           <td>↓ 5.2k</td>
           <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
         </tr>
         <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/retinal-fundus-v2</span><span class="dev-verified">✓ Verified</span></td>
+          <td><span class="dev-dataset-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="vertical-align:-1px;margin-right:6px;"><path d="M4 20h16M7 20v-5.5M12 20V9.5M17 20v-8"></path></svg>genpulse/retinal-fundus-v2</span><span class="dev-verified">✓ Verified</span></td>
           <td>Image</td>
           <td>6.2GB</td>
           <td>↓ 15.1k</td>
           <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
         </tr>
         <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/womens-health-markers</span><span class="dev-verified">✓ Verified</span></td>
+          <td><span class="dev-dataset-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="vertical-align:-1px;margin-right:6px;"><path d="M4 20h16M7 20v-5.5M12 20V9.5M17 20v-8"></path></svg>genpulse/womens-health-markers</span><span class="dev-verified">✓ Verified</span></td>
           <td>Tabular</td>
           <td>890MB</td>
           <td>↓ 3.8k</td>
@@ -1441,11 +1404,22 @@
   </div>
 </section>
 
+<!-- CLOSING CTA -->
+<section id="join" style="text-align:center;padding:110px 32px;border-top:0.5px solid var(--border-light);">
+  <h2 class="section-title reveal" style="margin-bottom:16px;">Your health, in focus.</h2>
+  <p class="section-desc reveal" style="margin:0 auto 32px;max-width:520px;">Start with a free scan — Lushair and Glamskin are live in the Genpulse beta today.</p>
+  <div class="reveal" style="display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;">
+    <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta</a>
+    <span style="font-size:12px;color:var(--gray-600);">iOS · via TestFlight</span>
+  </div>
+  <p class="reveal" style="margin-top:18px;font-size:13px;color:var(--gray-600);">Not on iOS? <a href="mailto:support@genpulse.io?subject=Beta%20waitlist%20—%20notify%20me&body=Please%20notify%20me%20when%20the%20beta%20is%20available%20on%20my%20platform." style="color:var(--black);text-decoration:underline;">Get notified →</a></p>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div>
     <div class="footer-logo">
-      <img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--sm" width="24" height="24" />
+      <img src="logo.png" alt="" class="nav-logo-img nav-logo-img--sm" width="24" height="24" />
       <span style="font-size:14px;font-weight:500;">Genpulse</span>
     </div>
     <div class="footer-copy">© 2026 Genpulse · Your health insight, future science research</div>
@@ -1550,7 +1524,7 @@
     detail.classList.add('is-default');
     detail.innerHTML =
       '<p class="product-lineup-name">Explore our devices</p>' +
-      '<p class="product-lineup-desc">Hover over each instrument to see its name and purpose.</p>' +
+      '<p class="product-lineup-desc">Tap or hover any instrument to see its name and purpose.</p>' +
       '<p class="product-lineup-hint">Lushair · Glamskin · Eye AI · Dental AI · Gyn AI</p>';
     document.querySelectorAll('.lineup-hotspot').forEach(function(el) {
       el.classList.remove('is-active');
@@ -1569,138 +1543,6 @@
     });
   }
 
-  // ── CHAT SYSTEM ──
-  let chatHistory = [];
-  let currentCategory = '';
-  let isStreaming = false;
-
-  const QUICK_SUGGESTS = {
-    'Dental': ['My gums are bleeding', 'Tooth sensitivity', 'Whitening advice', 'Bad breath'],
-    'Skin': ['Dry patches on face', 'Acne breakouts', 'Skin redness', 'Anti-aging tips'],
-    'Scalp': ['Hair thinning', 'Itchy scalp', 'Dandruff concerns', 'Hair loss rate'],
-    'Eye': ['Dry eyes', 'Eye strain from screens', 'Blurry vision', 'Eye redness'],
-    'Gyn': ['Skin sensitivity', 'Dryness concerns', 'Redness or irritation', 'General wellness'],
-    'Finding': ['Best product for me', 'How does Genpulse work?', 'Compare all products', 'Book a consultation'],
-  };
-
-  function switchChatTab(tab) {
-    ['consult','analyze','connect'].forEach(t => {
-      const btn = document.getElementById('tab-'+t);
-      if (!btn) return;
-      btn.style.background = t === tab ? 'rgba(255,255,255,0.12)' : 'transparent';
-      btn.style.borderColor = t === tab ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)';
-      btn.style.color = t === tab ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.45)';
-    });
-  }
-
-  function selectCategory(btn, cat) {
-    document.querySelectorAll('.chat-cat-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentCategory = cat;
-    const qs = document.getElementById('quick-suggests');
-    if (COMING_SOON_CATS.includes(cat)) {
-      qs.style.display = 'none';
-      document.getElementById('gp-chat-input').placeholder = cat + ' AI is coming soon — try Lushair or Glamskin';
-      return;
-    }
-    qs.style.display = 'flex';
-    qs.innerHTML = (QUICK_SUGGESTS[cat] || []).map(q =>
-      `<button onclick="sendQuick('${q.replace(/'/g,"\\'")}')}" style="padding:6px 13px;border:0.5px solid rgba(255,255,255,0.12);border-radius:100px;font-size:11px;color:rgba(255,255,255,0.55);cursor:pointer;background:rgba(255,255,255,0.04);font-family:var(--font-body);transition:all 0.2s;"
-        onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.85)';"
-        onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.55)';"
-      >${q}</button>`
-    ).join('');
-    document.getElementById('gp-chat-input').placeholder = `Ask about ${cat.toLowerCase()} health...`;
-  }
-
-  function sendQuick(text) {
-    document.getElementById('gp-chat-input').value = text;
-    sendChatMsg();
-  }
-
-  function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  }
-
-  function addMessage(role, content, streaming) {
-    const msgs = document.getElementById('chat-messages');
-    const isUser = role === 'user';
-    const id = 'msg-' + Date.now() + Math.random().toString(36).slice(2);
-    const el = document.createElement('div');
-    el.style.cssText = 'display:flex;gap:10px;align-items:flex-start;' + (isUser ? 'flex-direction:row-reverse;' : '');
-    if (isUser) {
-      el.innerHTML = `<div style="background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px 4px 12px 12px;padding:10px 14px;max-width:80%;margin-left:auto;"><p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;font-weight:300;">${escHtml(content)}</p></div>`;
-    } else {
-      el.innerHTML = `<div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
-        <div id="${id}" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);border-radius:4px 12px 12px 12px;padding:12px 15px;max-width:88%;"><p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">${streaming ? '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>' : escHtml(content)}</p></div>`;
-    }
-    msgs.appendChild(el);
-    msgs.scrollTop = msgs.scrollHeight;
-    return id;
-  }
-
-  function getMockReply(userMsg) {
-    const lower = userMsg.toLowerCase();
-    const cat = currentCategory || 'General';
-    const productMap = {
-      Dental: 'Dental AI',
-      Skin: 'Glamskin',
-      Scalp: 'Lushair',
-      Eye: 'Eye AI',
-      Gyn: 'Gyn AI',
-      Finding: 'Genpulse',
-    };
-    const product = productMap[cat] || 'Genpulse';
-
-    if (COMING_SOON_CATS.includes(cat)) {
-      return `${product} is coming soon on Genpulse. Our live products today are Lushair (lushair.ai) for hair & scalp, and Glamskin (glamskin.ai) for multi-spectrum skin analysis.\n\nJoin the waitlist at genpulse.io or contact enterprise sales for early access.`;
-    }
-    if (cat === 'Finding' || lower.includes('product') || lower.includes('compare')) {
-      return `Genpulse's live products are Lushair (lushair.ai) for hair & scalp, and Glamskin (glamskin.ai) for skin analysis. Coming soon: Dental AI, Eye AI, and Gyn AI.\n\nEach line includes hardware, research-grade AI models, and SDK/API access for enterprise partners. Visit lushair.ai or glamskin.ai to explore today.`;
-    }
-    if (cat === 'Scalp' || lower.includes('hair') || lower.includes('scalp') || lower.includes('thinning') || lower.includes('dandruff')) {
-      return `Based on your concern, Lushair at lushair.ai can analyze hair density, follicle health, and scalp oiliness using high-magnification imaging across 9 zones.\n\nCommon recommendations include balancing shampoo for moderate oiliness and avoiding high-heat styling on sensitivity zones. This is general information only — please consult a dermatologist or trichologist for health insight.`;
-    }
-    if (cat === 'Skin' || lower.includes('skin') || lower.includes('acne') || lower.includes('dry') || lower.includes('redness')) {
-      return `Glamskin at glamskin.ai analyzes hydration, pore clarity, UV damage, and sensitivity using multi-spectrum imaging trained on research datasets.\n\nFor mild dryness, increase daily hydration and use SPF 30+. Persistent or worsening symptoms warrant a dermatology visit. I'm here to guide — not to provide definitive health insights.`;
-    }
-    if (lower.includes('tooth') || lower.includes('gum') || lower.includes('dental') || lower.includes('whiten')) {
-      return `Dental AI is coming soon. For live Genpulse products today, try Lushair (lushair.ai) or Glamskin (glamskin.ai).\n\nWhen available, Dental AI will assess plaque buildup, gum health, and enamel signals in real time.`;
-    }
-    if (lower.includes('eye') || lower.includes('vision') || lower.includes('dry eye') || lower.includes('strain')) {
-      return `Eye AI is coming soon. For live products, visit lushair.ai or glamskin.ai.\n\nWhen launched, Eye AI will monitor visual acuity, dryness, redness, and early strain indicators.`;
-    }
-    if (lower.includes('gyn') || lower.includes('intimate')) {
-      return `Gyn AI is coming soon. Explore Lushair (lushair.ai) and Glamskin (glamskin.ai) for available Genpulse health analysis today.`;
-    }
-
-    return `Thank you for your question. ${product} — visit lushair.ai or glamskin.ai for our live platforms, or genpulse.io for the full Genpulse experience.\n\nThis assistant provides general information only — always consult a qualified healthcare professional for personal health decisions.`;
-  }
-
-  async function sendChatMsg() {
-    if (isStreaming) return;
-    const input = document.getElementById('gp-chat-input');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    input.style.height = 'auto';
-    isStreaming = true;
-
-    const userMsg = currentCategory ? '[' + currentCategory + '] ' + text : text;
-    addMessage('user', text, false);
-    chatHistory.push({ role: 'user', content: userMsg });
-
-    const typingId = addMessage('assistant', '', true);
-
-    await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
-    const reply = getMockReply(userMsg);
-    const el = document.getElementById(typingId);
-    if (el) el.querySelector('p').innerHTML = escHtml(reply);
-    chatHistory.push({ role: 'assistant', content: reply });
-
-    isStreaming = false;
-    document.getElementById('chat-messages').scrollTop = 9999;
-  }
 </script>
 <a class="beta-bar" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta — iOS · TestFlight</a>
 </body>
