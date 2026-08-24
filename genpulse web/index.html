@@ -64,27 +64,31 @@
     background: var(--black); transform: scaleX(0); transform-origin: left;
   }
   .anchor-nav {
-    position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
-    z-index: 1001; display: flex; flex-direction: column; gap: 4px;
+    position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+    z-index: 900; display: flex; flex-direction: column; gap: 2px;
   }
   .anchor-nav a {
-    display: flex; align-items: center; justify-content: flex-end; gap: 10px;
-    text-decoration: none; padding: 6px 0; min-height: 24px;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 24px; text-decoration: none;
   }
   .anchor-dot {
     width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.18);
-    flex-shrink: 0; transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s, transform 0.3s;
   }
   .anchor-lbl {
+    position: absolute; right: 28px; top: 50%;
+    transform: translateY(-50%) translateX(6px);
     font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--gray-400); opacity: 0; transform: translateX(6px);
-    transition: opacity 0.25s, transform 0.25s, color 0.3s; white-space: nowrap;
+    color: var(--gray-600); background: rgba(255,255,255,0.92);
+    border: 0.5px solid var(--border-light); border-radius: 4px; padding: 3px 8px;
+    opacity: 0; transition: opacity 0.25s, transform 0.25s;
+    white-space: nowrap; pointer-events: none;
   }
-  .anchor-nav a:hover .anchor-lbl, .anchor-nav a.active .anchor-lbl { opacity: 1; transform: translateX(0); }
+  .anchor-nav a:hover .anchor-lbl, .anchor-nav a.active .anchor-lbl { opacity: 1; transform: translateY(-50%) translateX(0); }
   .anchor-nav a.active .anchor-dot { background: var(--black); transform: scale(1.5); }
   .anchor-nav.on-dark .anchor-dot { background: rgba(255,255,255,0.3); }
   .anchor-nav.on-dark a.active .anchor-dot { background: #ffffff; }
-  .anchor-nav.on-dark .anchor-lbl { color: rgba(255,255,255,0.6); }
+  .anchor-nav.on-dark .anchor-lbl { color: rgba(255,255,255,0.75); background: rgba(20,20,26,0.92); border-color: rgba(255,255,255,0.12); }
 
   /* GRID TEXTURE */
   .grid-bg {
@@ -141,10 +145,10 @@
     padding: 140px 52px 72px; position: relative; overflow: hidden;
   }
   .hero-grid {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 500px);
-    gap: 64px; align-items: center; max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+    gap: 56px; align-items: center; max-width: 1280px; margin: 0 auto;
   }
-  .hero-content { max-width: 640px; position: relative; z-index: 2; }
+  .hero-content { max-width: 640px; min-width: 0; position: relative; z-index: 2; }
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 12px; color: var(--gray-600); letter-spacing: 0.06em;
@@ -155,7 +159,7 @@
   .hero-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--black); }
 
   h1.hero-title {
-    font-family: var(--font-display); font-size: clamp(40px, 6.5vw, 96px);
+    font-family: var(--font-display); font-size: clamp(40px, 5.5vw, 88px);
     line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 24px; font-weight: 400;
   }
   h1.hero-title em { font-style: italic; color: var(--gray-600); }
@@ -192,6 +196,7 @@
   .hero-scan {
     background: #0e0e12; border: 0.5px solid rgba(255,255,255,0.1);
     border-radius: var(--radius); overflow: hidden;
+    max-width: 100%; min-width: 0; margin: 0;
   }
   .hero-scan-header {
     background: #16161b; padding: 12px 16px;
@@ -739,10 +744,12 @@
   }
 
   /* MOBILE */
-  @media (max-width: 1024px) {
+  @media (max-width: 1199px) {
     .anchor-nav { display: none; }
     #scroll-progress { display: block; }
     .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+  @media (max-width: 1024px) {
     .step-deliver-grid { grid-template-columns: 1fr; }
     .sticky-layout { display: block; }
     .sticky-visual { position: sticky; top: 76px; z-index: 5; margin-bottom: 32px; }
