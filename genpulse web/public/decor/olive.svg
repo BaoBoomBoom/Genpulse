@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 280" fill="none">
+  <g stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M80 268 V36"/>
+    <!-- leaves left -->
+    <path d="M80 60 C52 48, 36 52, 28 68 C48 72, 68 70, 80 60Z" fill="#fff" fill-opacity="0.85" stroke="none"/>
+    <path d="M80 96 C50 90, 34 98, 28 116 C50 116, 70 108, 80 96Z" fill="#fff" fill-opacity="0.75" stroke="none"/>
+    <path d="M80 136 C54 128, 36 138, 30 156 C52 154, 70 146, 80 136Z" fill="#fff" fill-opacity="0.8" stroke="none"/>
+    <path d="M80 176 C56 170, 40 180, 34 198 C54 194, 70 186, 80 176Z" fill="#fff" fill-opacity="0.7" stroke="none"/>
+    <path d="M80 216 C58 212, 44 222, 40 238 C58 232, 72 224, 80 216Z" fill="#fff" fill-opacity="0.65" stroke="none"/>
+    <!-- leaves right -->
+    <path d="M80 48 C108 36, 124 42, 132 58 C112 62, 92 58, 80 48Z" fill="#fff" fill-opacity="0.8" stroke="none"/>
+    <path d="M80 84 C110 76, 126 86, 132 104 C110 104, 90 96, 80 84Z" fill="#fff" fill-opacity="0.85" stroke="none"/>
+    <path d="M80 124 C108 116, 126 126, 132 144 C110 142, 92 134, 80 124Z" fill="#fff" fill-opacity="0.75" stroke="none"/>
+    <path d="M80 164 C106 158, 122 168, 128 186 C108 182, 92 174, 80 164Z" fill="#fff" fill-opacity="0.8" stroke="none"/>
+    <path d="M80 204 C104 200, 118 210, 122 226 C106 220, 90 212, 80 204Z" fill="#fff" fill-opacity="0.7" stroke="none"/>
+    <!-- olives -->
+    <ellipse cx="46" cy="108" rx="7" ry="9" fill="#fff" fill-opacity="0.55" transform="rotate(-18 46 108)"/>
+    <ellipse cx="114" cy="148" rx="7" ry="9" fill="#fff" fill-opacity="0.5" transform="rotate(16 114 148)"/>
+    <ellipse cx="50" cy="188" rx="6.5" ry="8.5" fill="#fff" fill-opacity="0.45" transform="rotate(-12 50 188)"/>
+  </g>
+</svg>

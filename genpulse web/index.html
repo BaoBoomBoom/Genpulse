@@ -332,12 +332,157 @@
     background: radial-gradient(ellipse at 50% 30%, rgba(139,124,246,0.08), transparent 50%);
   }
 
-  /* ——— Story / Shennong ——— */
+  /* ——— Classical decor (Greek sculpture) ——— */
   #story {
     border-top: 1px solid var(--line);
     padding: clamp(72px, 12vh, 120px) clamp(20px, 5vw, 80px);
+    overflow: hidden;
+  }
+  .classic-stage {
+    position: relative;
+  }
+  .classic-float {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .classic-float.reveal.in,
+  .classic-float.in {
+    opacity: 0.22;
+    transform: none;
+  }
+  .classic-float img,
+  .classic-float svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 0 18px rgba(255,255,255,0.1));
+  }
+  .classic-float--olive {
+    width: min(88px, 11vw);
+    left: max(16px, 4vw);
+    top: 10%;
+    animation: classicDrift 9s ease-in-out infinite;
+  }
+  .classic-float--olive.reveal.in,
+  .classic-float--olive.in { opacity: 0.32; }
+  .classic-float--serpent {
+    width: min(64px, 9vw);
+    right: max(20px, 5vw);
+    top: 18%;
+    animation: classicDrift 10s ease-in-out infinite reverse;
+  }
+  .classic-float--serpent.reveal.in,
+  .classic-float--serpent.in { opacity: 0.38; }
+  .classic-float--herbs {
+    width: min(100px, 12vw);
+    left: max(20px, 5vw);
+    bottom: 18%;
+    animation: classicDrift 11s ease-in-out infinite;
+    animation-delay: -4s;
+  }
+  .classic-float--herbs.reveal.in,
+  .classic-float--herbs.in { opacity: 0.28; }
+  .classic-float--rod {
+    width: 40px;
+    right: max(28px, 6vw);
+    bottom: 14%;
+    animation: classicDrift 12s ease-in-out infinite reverse;
+  }
+  .classic-float--rod.reveal.in,
+  .classic-float--rod.in { opacity: 0.32; }
+
+  .meander {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 22px;
+    width: min(220px, 70%);
+    overflow: hidden;
+  }
+  .meander.reveal.in {
+    opacity: 0.45;
+    transform: none;
+  }
+  .meander svg {
+    width: 100%;
+    height: 18px;
+  }
+  .meander path {
+    stroke: rgba(255,255,255,0.55);
+    fill: none;
+    stroke-width: 1.2;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .meander.reveal.in path {
+    animation: meanderDraw 2.8s ease forwards, meanderPulse 4s ease-in-out 2.8s infinite;
+  }
+
+  .asclepius-mark {
+    width: 56px;
+    height: 140px;
+    margin: 0 auto 20px;
+    opacity: 0.55;
+  }
+  .asclepius-mark .staff {
+    stroke: rgba(255,255,255,0.7);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .asclepius-mark .serpent {
+    stroke: rgba(255,255,255,0.85);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    transition: stroke-dashoffset 1.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.in .asclepius-mark .serpent {
+    stroke-dashoffset: 0;
+    animation: serpentGlow 3.5s ease-in-out 1.6s infinite;
+  }
+  .asclepius-mark .cap {
+    fill: rgba(255,255,255,0.85);
+  }
+
+  .statement { position: relative; overflow: hidden; }
+  .statement > div { position: relative; z-index: 1; }
+
+  .story-end-ornament {
+    width: min(160px, 42vw);
+    margin: 0 auto 28px;
+    opacity: 0.4;
+    animation: classicDrift 8s ease-in-out infinite;
+  }
+
+  @keyframes classicDrift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes meanderDraw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes meanderPulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  @keyframes serpentGlow {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(255,255,255,0.35)); }
+  }
+
+  @media (max-width: 900px) {
+    .classic-float--olive,
+    .classic-float--serpent,
+    .classic-float--herbs,
+    .classic-float--rod { display: none; }
   }
   .story {
+    position: relative;
+    z-index: 1;
     max-width: 680px;
     margin: 0 auto;
   }
@@ -455,10 +600,10 @@
   }
   .statement h2 {
     font-family: var(--font-display);
-    font-size: clamp(36px, 7.5vw, 88px);
+    font-size: clamp(34px, 6.5vw, 76px);
     letter-spacing: -0.035em;
-    line-height: 0.96;
-    max-width: 14ch;
+    line-height: 1.02;
+    max-width: 16ch;
   }
   .statement--soft h2 { color: rgba(255,255,255,0.88); }
   .statement-follow {
@@ -926,6 +1071,11 @@
       transition-duration: 0.01ms !important;
     }
     .reveal { transform: none; opacity: 1; }
+    .classic-float,
+    .classic-float.reveal { opacity: 0.28; }
+    .meander.reveal { opacity: 0.45; }
+    .meander path,
+    .asclepius-mark .serpent { stroke-dashoffset: 0; animation: none !important; }
     .boot { display: none; }
     .nav, .hero-copy, .hero-body-img, .callout-chip { opacity: 1 !important; transform: none !important; }
   }
@@ -993,24 +1143,42 @@
 <!-- Statement -->
 <section id="statement" class="statement">
   <div>
-    <h2 class="reveal">AI should not live<br>only on your screen.<br><em style="font-style:italic;color:rgba(255,255,255,0.55)">It should live with you.</em></h2>
+    <h2 class="reveal">The next AI interface<br>isn’t a chatbot.<br><em style="font-style:italic;color:rgba(255,255,255,0.55)">It’s your body.</em></h2>
   </div>
 </section>
 
 <!-- Story -->
-<section id="story">
+<section id="story" class="classic-stage">
+  <div class="classic-float classic-float--olive reveal" aria-hidden="true">
+    <img src="/decor/olive.svg" alt="" />
+  </div>
+  <div class="classic-float classic-float--serpent reveal" aria-hidden="true">
+    <img src="/decor/serpent.svg" alt="" />
+  </div>
+  <div class="classic-float classic-float--herbs reveal" aria-hidden="true">
+    <img src="/decor/herbs.svg" alt="" />
+  </div>
+  <div class="classic-float classic-float--rod reveal" aria-hidden="true">
+    <img src="/decor/rod.svg" alt="" />
+  </div>
+
   <article class="story">
     <header class="story-head">
       <p class="story-kicker reveal">Story</p>
-      <div class="story-divider reveal"></div>
-      <h2 class="reveal">The New Shennong</h2>
-      <p class="deck reveal reveal-delay-1">Physical AI and the original biohacking story.</p>
+      <div class="meander reveal" aria-hidden="true">
+        <svg viewBox="0 0 240 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 18 H12 V6 H24 V18 H36 V6 H48 V18 H60 V6 H72 V18 H84 V6 H96 V18 H108 V6 H120 V18 H132 V6 H144 V18 H156 V6 H168 V18 H180 V6 H192 V18 H204 V6 H216 V18 H228 V6 H240"/>
+        </svg>
+      </div>
+      <h2 class="reveal">The New Asclepius</h2>
+      <p class="deck reveal reveal-delay-1">A story of Physical AI and biohacking.</p>
     </header>
 
     <div class="story-block reveal">
       <p>
-        Long before clinical trials and wearables, Shennong tasted hundreds of plants himself —
-        healing, poisonous, bitter. His body was the first instrument. Every reaction was a data point.
+        Long before clinical trials and wearables, Asclepius learned medicine by watching the natural world —
+        animals seeking herbs, snakes shedding skin and emerging renewed. He used observation —
+        and his own body — as the first instrument. Every reaction was a data point.
       </p>
       <p>That is the original biohacking story. We just gave it an upgrade.</p>
     </div>
@@ -1018,6 +1186,8 @@
     <div class="story-block reveal">
       <h3>The body is still<br>the best sensor.</h3>
       <p>
+        Asclepius’s genius wasn’t knowing everything. It was paying attention —
+        to what worked, what didn’t, one observation at a time.
         Modern care waits for symptoms, then a clinic snapshot every six months.
         The gap between visits is where chronic conditions quietly grow.
       </p>
@@ -1027,8 +1197,8 @@
     <div class="story-block reveal">
       <h3>Sense. Understand. Act.</h3>
       <p>
-        Genpulse lets AI continuously observe the body — the way Shennong did,
-        at a scale no human could achieve alone.
+        Genpulse lets AI continuously observe the body — the way Asclepius did,
+        at a scale and precision no human could achieve alone.
       </p>
       <div class="story-points">
         <article class="story-point">
@@ -1052,16 +1222,35 @@
     <div class="story-block reveal">
       <h3>From hair to the whole body.</h3>
       <p>
-        Lushair is the first agent. The stack expands to skin, women’s health, and beyond —
-        not a beauty gadget, but infrastructure for continuous biology.
+        Asclepius didn’t stop at one remedy. Lushair is our first agent —
+        the stack expands to skin, women’s health, and beyond.
+        Not a beauty gadget: infrastructure for continuous biology.
+      </p>
+    </div>
+
+    <div class="story-block reveal">
+      <svg class="asclepius-mark" viewBox="0 0 80 220" aria-hidden="true">
+        <line class="staff" x1="40" y1="8" x2="40" y2="210"/>
+        <circle class="cap" cx="40" cy="10" r="3"/>
+        <path class="serpent" d="M40 40 C58 52, 58 78, 40 90 C22 102, 22 128, 40 140 C58 152, 58 178, 40 190"/>
+        <circle class="cap" cx="48" cy="48" r="2.2"/>
+      </svg>
+      <h3>The rod and the serpent.</h3>
+      <p>
+        Asclepius carried a staff with a serpent coiled around it —
+        shedding, renewing, a cycle of observation and adaptation.
+        We carry a different staff: a sensor that coils around your biology,
+        shedding old data and emerging with new insight every scan.
       </p>
       <p>
-        Shennong had his mouth. You have Lushair. Both turn the body into a source of truth —
-        yours just lives in a model that gets smarter every day.
+        Asclepius had his eyes and his serpent. You have Lushair.
+        Both turn the body into a source of truth —
+        yours lives in a model that gets smarter every day.
       </p>
     </div>
 
     <div class="story-end reveal">
+      <img class="story-end-ornament" src="/decor/laurel.svg" alt="" aria-hidden="true" />
       <p>The body was always<br>the first instrument.<br>Now it has a memory.</p>
       <p class="soft">Continuous, personal, on your terms.</p>
     </div>
