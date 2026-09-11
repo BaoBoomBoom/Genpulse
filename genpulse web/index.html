@@ -1,1707 +1,1285 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Genpulse — Your health insight, future science research</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Genpulse — The physical AI layer for personalized healthcare</title>
+<meta name="description" content="Genpulse is building the physical AI layer for personalized healthcare. Sense. Understand. Act." />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --white: #ffffff;
-    --black: #0a0a0a;
-    --gray-50: #f8f8f7;
-    --gray-100: #f0f0ee;
-    --gray-200: #e2e2df;
-    --gray-400: #9a9a96;
-    --gray-600: #5e5e5a;
-    --gray-800: #2c2c2a;
-    --accent: #0a0a0a;
-    --grid-color: rgba(0,0,0,0.06);
-    --border: rgba(0,0,0,0.1);
-    --border-light: rgba(0,0,0,0.06);
-    --radius: 12px;
-    --radius-sm: 8px;
-    --radius-pill: 100px;
-    --font-display: 'DM Serif Display', serif;
+    --bg: #000000;
+    --fg: #ffffff;
+    --muted: rgba(255,255,255,0.55);
+    --faint: rgba(255,255,255,0.22);
+    --line: rgba(255,255,255,0.1);
+    --purple: #8b7cf6;
+    --purple-soft: rgba(139,124,246,0.35);
+    --purple-glow: rgba(139,124,246,0.18);
+    --font-display: 'Instrument Serif', serif;
     --font-body: 'DM Sans', sans-serif;
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-h: 72px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
     font-family: var(--font-body);
-    background: var(--white);
-    color: var(--black);
-    line-height: 1.6;
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  body.is-loading { overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+  img { display: block; max-width: 100%; }
 
-  /* PAGE LOADER */
-  #page-loader {
-    position: fixed; inset: 0; z-index: 10000;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--white);
-    transition: opacity 0.55s ease, visibility 0.55s ease;
-  }
-  #page-loader.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-  .loader-logo {
-    width: 56px; height: 56px; object-fit: contain;
-    animation: loaderReveal 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  @keyframes loaderReveal {
-    0% { opacity: 0; transform: scale(0.72) rotate(-120deg); }
-    45% { opacity: 1; transform: scale(1) rotate(0deg); }
-    75% { transform: scale(1) rotate(180deg); }
-    100% { opacity: 1; transform: scale(1) rotate(360deg); }
-  }
-
-  /* GRID TEXTURE */
-  .grid-bg {
-    background-image:
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 52px 52px;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  /* ——— Nav ——— */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 100;
+    height: var(--nav-h);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 52px; height: 64px;
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid var(--border-light);
-    transition: var(--transition);
+    padding: 0 clamp(20px, 4vw, 48px);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0));
+    backdrop-filter: blur(0px);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s, background 0.3s, backdrop-filter 0.3s;
   }
-  nav.scrolled { border-bottom-color: var(--border); }
-
-  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--black); }
-  .nav-logo-img {
-    width: 30px; height: 30px; object-fit: contain; display: block; flex-shrink: 0;
+  body.is-ready .nav {
+    opacity: 1;
+    transform: none;
   }
-  .nav-logo-img--sm { width: 24px; height: 24px; }
-  .nav-logo-img--md { width: 26px; height: 26px; }
-  .nav-logo-img--chat { width: 18px; height: 18px; }
-  .nav-logo-img--light { filter: invert(1) brightness(1.15); }
-  .nav-logo span { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
-
-  .nav-links { display: flex; gap: 32px; align-items: center; }
-  .nav-links a {
-    font-size: 14px; color: var(--gray-600); text-decoration: none;
-    transition: color 0.2s; letter-spacing: -0.01em;
+  .nav.scrolled {
+    background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
   }
-  .nav-links a:hover { color: var(--black); }
-
-  .nav-right { display: flex; align-items: center; gap: 14px; }
-  .nav-year {
-    font-size: 12px; color: var(--gray-400); border: 0.5px solid var(--border);
-    padding: 3px 8px; border-radius: 4px; font-variant-numeric: tabular-nums;
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.14em;
   }
+  .nav-logo img { width: 22px; height: 22px; filter: invert(1); }
+  .nav-links {
+    display: flex; gap: clamp(18px, 2.5vw, 36px);
+    font-size: 12px; font-weight: 400; letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .nav-links a:hover { color: var(--fg); }
   .nav-cta {
-    padding: 9px 20px; background: var(--black); color: var(--white);
-    border: none; border-radius: var(--radius-sm); font-size: 13px;
-    font-family: var(--font-body); cursor: pointer; font-weight: 500;
-    transition: opacity 0.2s; letter-spacing: -0.01em;
-  }
-  .nav-cta:hover { opacity: 0.8; }
-
-  /* HERO */
-  #hero {
-    min-height: 100vh; display: flex; align-items: center;
-    padding: 120px 52px 80px; position: relative; overflow: hidden;
-  }
-  .hero-content { max-width: 680px; position: relative; z-index: 2; }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12px; color: var(--gray-600); letter-spacing: 0.06em;
-    text-transform: uppercase; margin-bottom: 28px;
-    padding: 6px 14px; border: 0.5px solid var(--border); border-radius: var(--radius-pill);
-    background: var(--white);
-  }
-  .hero-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--black); }
-
-  h1.hero-title {
-    font-family: var(--font-display); font-size: clamp(52px, 7vw, 88px);
-    line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 24px; font-weight: 400;
-  }
-  h1.hero-title em { font-style: italic; color: var(--gray-600); }
-
-  .hero-desc {
-    font-size: 17px; color: var(--gray-600); line-height: 1.7;
-    margin-bottom: 40px; max-width: 480px; font-weight: 300;
-  }
-  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
-  .btn-primary {
-    padding: 14px 28px; background: var(--black); color: var(--white);
-    border: none; border-radius: var(--radius-sm); font-size: 14px;
-    font-family: var(--font-body); cursor: pointer; font-weight: 500;
-    transition: opacity 0.2s; letter-spacing: -0.01em;
-  }
-  .btn-primary:hover { opacity: 0.8; }
-  .btn-outline {
-    padding: 14px 28px; background: transparent; color: var(--black);
-    border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px;
-    font-family: var(--font-body); cursor: pointer; font-weight: 400;
-    transition: background 0.2s; letter-spacing: -0.01em;
-  }
-  .btn-outline:hover { background: var(--gray-50); }
-
-  .hero-domains { display: flex; gap: 8px; flex-wrap: wrap; }
-  .domain-tag {
-    padding: 7px 16px; border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-pill); font-size: 13px; color: var(--gray-600);
-    background: var(--gray-50); font-weight: 400;
-  }
-
-  /* floating device cards */
-  .hero-devices {
-    position: absolute; right: 52px; top: 50%; transform: translateY(-50%);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    width: 340px; z-index: 2;
-  }
-  .hero-devices .device-card:nth-child(5) {
-    grid-column: 1 / -1; max-width: calc(50% - 6px); justify-self: center;
-  }
-  .device-card {
-    background: var(--white); border: 0.5px solid var(--border);
-    border-radius: var(--radius); padding: 22px 18px;
-    transition: transform 0.3s, border-color 0.3s; cursor: default;
-  }
-  .device-card:hover { transform: translateY(-4px); border-color: var(--gray-400); }
-  .device-icon {
-    font-size: 26px; margin-bottom: 12px;
-    display: flex; align-items: center; justify-content: center;
-    width: 44px; height: 44px; background: var(--gray-100); border-radius: 10px;
-    border: 0.5px solid var(--border-light);
-  }
-  .device-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; letter-spacing: -0.01em; }
-  .device-desc { font-size: 11px; color: var(--gray-400); font-weight: 400; }
-
-  /* WAVE DIVIDER */
-  .wave-section {
-    background: var(--white);
-    border-top: 0.5px solid var(--border-light);
-    overflow: hidden;
-  }
-
-  /* STATS BAR */
-  .stats-bar {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    border-top: 0.5px solid var(--border-light);
-    border-bottom: 0.5px solid var(--border-light);
-  }
-  .stat-item {
-    padding: 32px 40px; border-right: 0.5px solid var(--border-light);
-    transition: background 0.2s;
-  }
-  .stat-item:last-child { border-right: none; }
-  .stat-item:hover { background: var(--gray-50); }
-  .stat-val {
-    font-family: var(--font-display); font-size: 36px; font-weight: 400;
-    letter-spacing: -0.03em; margin-bottom: 4px; line-height: 1;
-  }
-  .stat-label { font-size: 13px; color: var(--gray-400); font-weight: 400; }
-
-  /* SECTIONS */
-  section { padding: 100px 52px; }
-  .section-eyebrow {
-    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--gray-400); margin-bottom: 14px; font-weight: 500;
-  }
-  h2.section-title {
-    font-family: var(--font-display); font-size: clamp(36px, 4vw, 56px);
-    font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
-  }
-  .section-desc {
-    font-size: 16px; color: var(--gray-600); line-height: 1.7;
-    max-width: 520px; font-weight: 300; margin-bottom: 52px;
-  }
-
-  /* PRODUCT SECTION */
-  #products { background: var(--gray-50); }
-  .products-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: var(--border-light); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius); overflow: hidden;
-  }
-  .product-card {
-    background: var(--white); padding: 40px 36px;
-    transition: background 0.2s; cursor: pointer;
-    position: relative; overflow: hidden;
-  }
-  .product-card:hover { background: var(--gray-50); }
-  .product-card--soon { cursor: default; opacity: 0.92; }
-  .product-card--soon:hover { background: var(--white); }
-  .product-card--soon::before { display: none; }
-  .product-card--soon:hover .product-arrow { color: var(--gray-400); transform: none; }
-  .product-card--live { cursor: pointer; }
-  .product-soon-badge {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-pill);
-    background: var(--gray-100); color: var(--gray-600);
-  }
-  .product-card-link {
-    font-size: 13px; font-weight: 500; color: var(--black);
-    text-decoration: none; letter-spacing: -0.01em;
-    display: inline-flex; align-items: center; gap: 4px;
-    margin-top: 4px;
-  }
-  .product-card-link:hover { text-decoration: underline; }
-  .product-lineup-cta {
-    display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 500;
-    color: var(--black); text-decoration: none; letter-spacing: -0.01em;
-  }
-  .product-lineup-cta:hover { text-decoration: underline; }
-  .product-lineup-soon {
-    display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 5px 12px; border-radius: 100px;
-    background: var(--gray-100); color: var(--gray-600);
-  }
-  .device-card--soon { opacity: 0.55; }
-  .device-soon {
-    font-size: 9px; font-weight: 600; letter-spacing: 0.05em;
-    text-transform: uppercase; color: var(--gray-400); margin-top: 4px;
-  }
-  .device-card--live { cursor: pointer; text-decoration: none; color: inherit; }
-  .device-card--live:hover .device-name { text-decoration: underline; }
-  .product-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: var(--black); transform: scaleX(0); transform-origin: left;
-    transition: transform 0.3s;
-  }
-  .product-card--live:hover::before { transform: scaleX(1); }
-  .product-card-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .product-badge {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-pill);
-  }
-  .badge-dental { background: #E6F1FB; color: #0C447C; }
-  .badge-hair { background: #EAF3DE; color: #27500A; }
-  .badge-skin { background: #FAEEDA; color: #633806; }
-  .badge-eye { background: #EEEDFE; color: #3C3489; }
-  .badge-intimate { background: #FBEAF0; color: #72243E; }
-
-  .product-arrow { font-size: 18px; color: var(--gray-400); transition: color 0.2s, transform 0.2s; }
-  .product-card:hover .product-arrow { color: var(--black); transform: translate(2px, -2px); }
-  .product-title { font-size: 22px; font-weight: 500; margin-bottom: 10px; letter-spacing: -0.02em; }
-  .product-desc { font-size: 14px; color: var(--gray-600); line-height: 1.65; margin-bottom: 24px; font-weight: 300; }
-  .product-features { display: flex; gap: 6px; flex-wrap: wrap; }
-  .feat-tag {
-    font-size: 11px; color: var(--gray-600); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-pill); padding: 4px 10px; background: var(--gray-50);
-  }
-
-  /* HOW IT WORKS */
-  #how { position: relative; }
-  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border-light); border: 0.5px solid var(--border-light); border-radius: var(--radius); overflow: hidden; }
-  .step {
-    background: var(--white); padding: 40px 32px;
-    position: relative; transition: background 0.2s;
-  }
-  .step:hover { background: var(--gray-50); }
-  .step-num {
-    font-family: var(--font-display); font-size: 64px; font-weight: 400;
-    color: var(--gray-100); position: absolute; top: 20px; right: 24px;
-    line-height: 1; letter-spacing: -0.04em; user-select: none;
-  }
-  .step-icon-wrap {
-    width: 48px; height: 48px; border-radius: 10px;
-    background: var(--gray-100); border: 0.5px solid var(--border-light);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; margin-bottom: 20px;
-  }
-  .step-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 12px; font-weight: 500; }
-  .step-title { font-size: 18px; font-weight: 500; margin-bottom: 10px; letter-spacing: -0.01em; }
-  .step-desc { font-size: 13px; color: var(--gray-600); line-height: 1.65; font-weight: 300; }
-
-  /* LUSHAIR / GLAMSKIN FEATURED */
-  #lushair { background: var(--black); color: var(--white); }
-  #lushair .section-eyebrow { color: rgba(255,255,255,0.4); }
-  #lushair h2.section-title { color: var(--white); }
-  #lushair .section-desc { color: rgba(255,255,255,0.5); line-height: 1.75; margin-bottom: 20px; }
-  #glamskin { background: #faf8f5; color: var(--black); }
-  #glamskin .section-eyebrow { color: var(--gray-400); }
-  #glamskin .section-desc { color: var(--gray-600); line-height: 1.75; margin-bottom: 20px; }
-  .glamskin-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-  .glamskin-screen {
-    background: var(--white); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius); overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-  }
-  .glamskin-screen-header {
-    background: var(--gray-50); padding: 12px 16px;
-    border-bottom: 0.5px solid var(--border-light);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .glamskin-viewport-wrap { padding: 0; }
-  .glamskin-spec-note {
-    padding: 14px 18px; font-size: 11px; color: var(--gray-500); font-weight: 300;
-    line-height: 1.65; border-top: 0.5px solid var(--border-light);
-    background: var(--gray-50); margin: 0;
-  }
-  .glamskin-features { display: flex; flex-direction: column; gap: 24px; }
-  .glamskin-feat {
-    padding: 24px; border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-sm); background: var(--white);
-    transition: border-color 0.2s;
-  }
-  .glamskin-feat:hover { border-color: var(--border); }
-  .glamskin-feat-title { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
-  .glamskin-feat-desc { font-size: 12px; color: var(--gray-600); line-height: 1.7; font-weight: 300; }
-  .featured-cta {
-    display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 0; margin-bottom: 28px; font-size: 14px; font-weight: 500;
-    color: inherit; text-decoration: none; letter-spacing: -0.01em;
-  }
-  #glamskin .featured-cta { color: var(--black); }
-  .featured-cta:hover { text-decoration: underline; }
-  #lushair .featured-cta { color: rgba(255,255,255,0.85); display: inline-block; margin-bottom: 28px; }
-  .scalp-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-  .scalp-screen {
-    background: #111; border: 0.5px solid rgba(255,255,255,0.1); border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .scalp-screen-header {
-    background: #1a1a1a; padding: 12px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.08);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .screen-dot { width: 8px; height: 8px; border-radius: 50%; }
-  /* Annotation spec v2 — shared */
-  .ann-legend {
-    display: flex; flex-direction: column; gap: 22px; margin-top: 18px;
-  }
-  .ann-legend-group {
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .ann-legend-group-title {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; color: rgba(255,255,255,0.35);
-    margin: 0 0 2px;
-  }
-  #glamskin .ann-legend-group-title { color: var(--gray-400); }
-  .ann-legend-items { display: flex; flex-wrap: wrap; gap: 8px 14px; }
-  .ann-legend-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 11px; font-weight: 400; line-height: 1.45;
-  }
-  #lushair .ann-legend-item { color: rgba(255,255,255,0.55); }
-  #glamskin .ann-legend-item { color: var(--gray-600); }
-  .ann-swatch {
-    width: 22px; height: 14px; flex-shrink: 0; border-radius: 3px;
-    position: relative; background: #1a1a1a;
-  }
-  .ann-swatch--poly-thick { border: 2px solid var(--ann-color); background: transparent; }
-  .ann-swatch--poly-thin { border: 1px solid var(--ann-color); background: transparent; }
-  .ann-swatch--poly-dash { border: 1px dashed var(--ann-color); background: transparent; }
-  .ann-swatch--circle { border: 2px solid var(--ann-color); border-radius: 50%; width: 16px; height: 16px; background: transparent; }
-  .ann-swatch--stroke { border: 2px solid var(--ann-color); background: transparent; border-radius: 2px; }
-  .ann-swatch--stroke-thin { border: 1px solid var(--ann-color); background: transparent; border-radius: 2px; }
-  .ann-swatch--fill {
-    background: color-mix(in srgb, var(--ann-color) 25%, transparent);
-    border: 1px solid var(--ann-color);
-  }
-  .ann-viewport {
-    position: relative; min-height: 200px; padding: 20px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .ann-viewport--skin {
-    background: radial-gradient(ellipse at 50% 45%, #f5ebe0 0%, #e8d5c4 55%, #d4b896 100%);
-    min-height: 200px;
-  }
-  .ann-demo-layer { position: relative; width: 100%; max-width: 280px; aspect-ratio: 4/3; }
-  .ann-skin-acne {
-    position: absolute; left: 62%; top: 28%; width: 36px; height: 36px;
-    border: 2px solid #ef4444; border-radius: 50%; background: transparent;
-  }
-  .ann-skin-pore {
-    position: absolute; left: 22%; top: 35%; width: 14px; height: 14px;
-    border: 1px solid #38bdf8; border-radius: 50%; background: transparent;
-  }
-  .ann-skin-blackhead {
-    position: absolute; left: 38%; top: 48%; width: 20px; height: 20px;
-    border: 2px solid #1e293b; border-radius: 50%; background: transparent;
-  }
-  .ann-skin-sensitive {
-    position: absolute; right: 8%; top: 42%; width: 38%; height: 32%;
-    background: rgba(253, 164, 175, 0.25); border: 1px solid #fda4af; border-radius: 8px;
-  }
-  .ann-skin-pigment {
-    position: absolute; left: 8%; top: 52%; width: 28%; height: 24%;
-    background: rgba(192, 132, 252, 0.25); border: 1px solid #c084fc; border-radius: 6px;
-  }
-  .ann-skin-oil {
-    position: absolute; left: 48%; bottom: 14%; width: 34%; height: 22%;
-    background: rgba(252, 211, 77, 0.25); border: 1px solid #fcd34d; border-radius: 6px;
-  }
-  .ann-skin-wrinkle {
-    position: absolute; left: 12%; top: 18%; width: 45%; height: 2px;
-    border-top: 2px solid #34d399; background: transparent;
-  }
-  .scalp-grid-demo {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: rgba(255,255,255,0.05);
-  }
-  .scalp-cell {
-    background: #121212; aspect-ratio: 1; position: relative; overflow: hidden;
-  }
-  .scalp-cell-label {
-    position: absolute; bottom: 6px; left: 0; right: 0; text-align: center;
-    font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase;
-    color: rgba(255,255,255,0.35); font-weight: 500; z-index: 2;
-  }
-  .scalp-cell-overlay {
-    position: absolute; inset: 0; pointer-events: none;
-  }
-  .scalp-features { display: flex; flex-direction: column; gap: 24px; }
-  .scalp-feat {
-    padding: 24px; border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius-sm); background: rgba(255,255,255,0.03);
-    transition: border-color 0.2s;
-  }
-  .scalp-feat:hover { border-color: rgba(255,255,255,0.2); }
-  .scalp-feat-title { font-size: 14px; font-weight: 500; margin-bottom: 10px; color: rgba(255,255,255,0.9); }
-  .scalp-feat-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.7; font-weight: 300; }
-
-  /* ENTERPRISE & DEVELOPER */
-  #enterprise { background: var(--gray-50); }
-  #developers { background: var(--white); }
-  .ent-hero {
-    display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end;
-    padding-bottom: 56px; margin-bottom: 56px;
-    border-bottom: 0.5px solid var(--border-light);
-  }
-  .ent-hero h2.section-title { margin-bottom: 16px; }
-  .ent-hero-desc {
-    font-size: 17px; color: var(--gray-600); font-weight: 300;
-    line-height: 1.6; max-width: 520px; letter-spacing: -0.01em;
-  }
-  .ent-stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-    background: var(--border-light); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius); overflow: hidden; margin-bottom: 64px;
-  }
-  .ent-stat {
-    background: var(--white); padding: 28px 24px; text-align: center;
-  }
-  .ent-stat-val {
-    font-family: var(--font-display); font-size: clamp(28px, 3vw, 40px);
-    font-weight: 400; letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px;
-  }
-  .ent-stat-label { font-size: 12px; color: var(--gray-600); font-weight: 400; letter-spacing: -0.01em; }
-  .ent-block-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
-  .ent-block-head h3 {
-    font-family: var(--font-display); font-size: clamp(24px, 3vw, 32px);
-    font-weight: 400; letter-spacing: -0.02em; margin-bottom: 10px;
-  }
-  .ent-block-head p { font-size: 15px; color: var(--gray-600); font-weight: 300; line-height: 1.55; }
-  .ent-solutions {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
-    background: var(--border-light); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius); overflow: hidden; margin-bottom: 48px;
-  }
-  .ent-solution {
-    background: var(--white); padding: 28px 28px;
-    text-decoration: none; color: inherit;
-    display: flex; gap: 18px; align-items: flex-start;
-    transition: background 0.2s;
-  }
-  .ent-solution:hover { background: var(--gray-50); }
-  .ent-solution-icon {
-    width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px;
-    background: var(--gray-100); display: flex; align-items: center; justify-content: center;
-    font-size: 20px; border: 0.5px solid var(--border-light);
-  }
-  .ent-solution-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
-  .ent-solution-desc { font-size: 13px; color: var(--gray-600); line-height: 1.55; font-weight: 300; margin-bottom: 10px; }
-  .ent-solution-link { font-size: 12px; color: var(--gray-400); letter-spacing: -0.01em; }
-  .ent-solution:hover .ent-solution-link { color: var(--black); }
-  .ent-whitelabel {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  }
-  .ent-wl-card {
-    background: var(--white); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius); padding: 28px 24px; text-align: center;
-  }
-  .ent-wl-icon { font-size: 28px; margin-bottom: 14px; display: block; }
-  .ent-wl-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
-  .ent-wl-desc { font-size: 13px; color: var(--gray-600); line-height: 1.55; font-weight: 300; }
-
-  .dev-hero {
-    display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end;
-    padding-bottom: 56px; margin-bottom: 48px;
-    border-bottom: 0.5px solid var(--border-light);
-  }
-  .dev-hero-desc {
-    font-size: 17px; color: var(--gray-600); font-weight: 300;
-    line-height: 1.6; max-width: 520px; margin-top: 12px;
-  }
-  .dev-links {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 56px;
-  }
-  .dev-link-card {
-    background: var(--gray-50); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius); padding: 24px 20px;
-    text-decoration: none; color: inherit;
-    transition: border-color 0.2s, background 0.2s;
-    display: block;
-  }
-  .dev-link-card:hover { background: var(--white); border-color: var(--border); }
-  .dev-link-icon { font-size: 22px; margin-bottom: 14px; display: block; }
-  .dev-link-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
-  .dev-link-desc { font-size: 12px; color: var(--gray-600); line-height: 1.5; font-weight: 300; margin-bottom: 12px; }
-  .dev-link-url { font-size: 11px; color: var(--gray-400); word-break: break-all; }
-  .dev-datasets-head {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 24px; flex-wrap: wrap; margin-bottom: 20px;
-  }
-  .dev-datasets-head h3 {
-    font-family: var(--font-display); font-size: clamp(22px, 2.5vw, 28px);
-    font-weight: 400; letter-spacing: -0.02em;
-  }
-  .dev-datasets-badge {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; color: var(--gray-600);
-    padding: 5px 12px; border-radius: 100px;
-    border: 0.5px solid var(--border); background: var(--gray-50);
-  }
-  .dev-table-wrap {
-    border: 0.5px solid var(--border-light); border-radius: var(--radius);
-    overflow: hidden; background: var(--white);
-  }
-  .dev-table {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .dev-table th {
-    text-align: left; padding: 14px 18px; font-size: 11px; font-weight: 500;
-    letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400);
-    background: var(--gray-50); border-bottom: 0.5px solid var(--border-light);
-  }
-  .dev-table td {
-    padding: 16px 18px; border-bottom: 0.5px solid var(--border-light);
-    vertical-align: middle; font-weight: 300;
-  }
-  .dev-table tr:last-child td { border-bottom: none; }
-  .dev-table tr:hover td { background: var(--gray-50); }
-  .dev-dataset-name { font-weight: 500; color: var(--black); letter-spacing: -0.01em; }
-  .dev-verified {
-    font-size: 10px; font-weight: 600; color: #27500A;
-    background: #EAF3DE; padding: 2px 7px; border-radius: 100px; margin-left: 8px;
-    vertical-align: middle;
-  }
-  .dev-soon {
-    font-size: 11px; color: var(--gray-400); white-space: nowrap;
-  }
-  .btn-secondary {
-    padding: 11px 22px; background: var(--white); color: var(--black);
-    border: 0.5px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 13px; font-family: var(--font-body); cursor: pointer;
-    font-weight: 500; transition: background 0.2s, border-color 0.2s;
-    letter-spacing: -0.01em; white-space: nowrap;
-  }
-  .btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
-
-  /* CHAT WIDGET */
-  .chat-widget {
-    margin-top: 52px; padding: 40px 36px; background: #0a0a0f;
-    border-radius: var(--radius); border: 0.5px solid rgba(255,255,255,0.08);
-    position: relative; overflow: hidden;
-  }
-  .chat-widget::before {
-    content: ''; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%);
-    width: 480px; height: 320px; border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(80,60,160,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .chat-widget-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
-  .chat-categories { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
-  .chat-cat-btn {
-    padding: 9px 18px; border: 0.5px solid rgba(255,255,255,0.15); border-radius: 100px;
-    font-size: 13px; color: rgba(255,255,255,0.65); cursor: pointer;
-    background: rgba(255,255,255,0.05); font-family: var(--font-body); transition: all 0.2s;
-  }
-  .chat-cat-btn.active {
-    background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.95);
-  }
-  .chat-box {
-    background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
-    border-radius: 16px; overflow: hidden;
-  }
-  .chat-disclaimer {
-    text-align: center; font-size: 11px; color: rgba(255,255,255,0.25);
-    margin-top: 16px; line-height: 1.5;
-  }
-  #chat-messages::-webkit-scrollbar { width: 4px; }
-  #chat-messages::-webkit-scrollbar-track { background: transparent; }
-  #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-  #gp-chat-input::placeholder { color: rgba(255,255,255,0.25); }
-  #gp-chat-input:focus { border-color: rgba(255,255,255,0.25) !important; }
-  .typing-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.5); animation: typingBounce 1.2s infinite; }
-  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 52px; border-top: 0.5px solid var(--border-light);
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--white);
-  }
-  .footer-logo { display: flex; align-items: center; gap: 8px; }
-  .footer-copy { font-size: 12px; color: var(--gray-400); margin-top: 5px; }
-  .footer-links { display: flex; gap: 24px; }
-  .footer-links a { font-size: 13px; color: var(--gray-400); text-decoration: none; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--black); }
-
-  /* ANIMATIONS */
-  .fade-in {
-    opacity: 0; transform: translateY(24px);
-    animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
-  }
-  @keyframes fadeInUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .fade-in:nth-child(1) { animation-delay: 0.1s; }
-  .fade-in:nth-child(2) { animation-delay: 0.2s; }
-  .fade-in:nth-child(3) { animation-delay: 0.3s; }
-  .fade-in:nth-child(4) { animation-delay: 0.4s; }
-
-  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1); }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* PRODUCT LINEUP — hover hotspots */
-  .product-lineup {
-    margin-bottom: 48px;
-    background: var(--white);
-    border-radius: 20px;
-    border: 0.5px solid var(--border-light);
-    overflow: hidden;
-    box-shadow: 0 2px 24px rgba(0,0,0,0.04);
-  }
-  .product-lineup-figure {
-    position: relative;
-    margin: 0;
-    line-height: 0;
-    background: #f5f5f7;
-  }
-  .product-lineup-figure img {
-    width: 100%;
-    height: auto;
-    display: block;
-    pointer-events: none;
-    user-select: none;
-  }
-  .product-lineup-hotspots {
-    position: absolute;
-    inset: 0;
-    display: flex;
-  }
-  .lineup-hotspot {
-    flex: 1;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    position: relative;
-    padding: 0;
-    margin: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .lineup-hotspot::after {
-    content: '';
-    position: absolute;
-    inset: 8% 6%;
-    border-radius: 16px;
-    background: rgba(255,255,255,0);
-    border: 2px solid transparent;
-    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-    pointer-events: none;
-  }
-  .lineup-hotspot:hover::after,
-  .lineup-hotspot:focus-visible::after,
-  .lineup-hotspot.is-active::after {
-    background: rgba(255,255,255,0.35);
-    border-color: rgba(255,255,255,0.7);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-  }
-  .lineup-hotspot:focus-visible { outline: none; }
-  .product-lineup-detail {
-    padding: 28px 32px 32px;
-    text-align: center;
-    min-height: 132px;
-    border-top: 0.5px solid var(--border-light);
-    background: #fbfbfd;
-    transition: opacity 0.25s ease;
-  }
-  .product-lineup-detail.is-default .product-lineup-name {
-    font-family: var(--font-display);
-    font-size: clamp(22px, 3vw, 28px);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    color: var(--gray-600);
-  }
-  .product-lineup-badge {
-    display: inline-block;
     font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; margin-bottom: 10px;
-    padding: 4px 12px; border-radius: 100px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 999px;
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
   }
-  .product-lineup-name {
+  .nav-cta:hover {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .nav-toggle {
+    display: none; width: 40px; height: 40px;
+    align-items: center; justify-content: center;
+  }
+  .nav-toggle span {
+    display: block; width: 18px; height: 1px; background: var(--fg);
+    position: relative;
+  }
+  .nav-toggle span::before, .nav-toggle span::after {
+    content: ''; position: absolute; left: 0; width: 18px; height: 1px; background: var(--fg);
+  }
+  .nav-toggle span::before { top: -6px; }
+  .nav-toggle span::after { top: 6px; }
+
+  /* ——— Shared ——— */
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+  }
+  .display {
     font-family: var(--font-display);
-    font-size: clamp(26px, 3.5vw, 36px);
     font-weight: 400;
     letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-    color: var(--black);
+    line-height: 0.98;
   }
-  .product-lineup-desc {
-    font-size: 16px;
-    color: var(--gray-600);
-    font-weight: 300;
-    line-height: 1.55;
-    letter-spacing: -0.01em;
-    max-width: 560px;
+  .display em { font-style: italic; color: var(--purple); }
+  .lede {
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 300; line-height: 1.7; color: var(--muted);
+    max-width: 34em;
+  }
+  .section {
+    position: relative;
+    min-height: 100vh;
+    padding: calc(var(--nav-h) + 40px) clamp(20px, 5vw, 80px) 80px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .section-tight { min-height: 70vh; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.85s cubic-bezier(0.22,1,0.36,1),
+      transform 0.85s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+
+  /* Boot / page load */
+  .boot {
+    position: fixed; inset: 0; z-index: 200;
+    background: #000;
+    display: grid; place-items: center;
+    transition: opacity 0.7s ease, visibility 0.7s;
+  }
+  .boot.is-done {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .boot-mark {
+    text-align: center;
+    opacity: 0;
+    animation: bootIn 0.8s ease forwards;
+  }
+  .boot-mark img {
+    width: 36px; height: 36px; margin: 0 auto 16px;
+    filter: invert(1);
+    opacity: 0.9;
+  }
+  .boot-mark span {
+    display: block;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.28em;
+  }
+  .boot-line {
+    width: 72px; height: 1px; margin: 18px auto 0;
+    background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    transform: scaleX(0);
+    animation: bootLine 0.9s 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  @keyframes bootIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes bootLine { to { transform: scaleX(1); } }
+
+  /* ——— 01 Hero ——— */
+  #hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(var(--nav-h) + 12px) clamp(16px, 4vw, 48px) 40px !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    position: relative;
+  }
+  .hero-inner {
+    width: min(1100px, 100%);
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: clamp(20px, 3vh, 36px);
+    align-items: center;
+  }
+  .hero-viz {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    height: clamp(340px, 52vh, 520px);
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(160px, 260px) minmax(100px, 1fr);
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-canvas-wrap {
+    grid-column: 2;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-body-img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center top;
+    filter: drop-shadow(0 0 28px rgba(255,255,255,0.16)) drop-shadow(0 0 56px rgba(139,124,246,0.18));
+    user-select: none;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.94) translateY(20px);
+    transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1), transform 1.2s cubic-bezier(0.22,1,0.36,1), filter 1.2s;
+  }
+  body.is-ready .hero-body-img {
+    opacity: 1;
+    transform: none;
+    animation: bodyBreath 5.5s ease-in-out 1.1s infinite;
+  }
+  @keyframes bodyBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.012); }
+  }
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    min-height: 0;
+    pointer-events: none;
+  }
+  .hero-side--left { align-items: flex-end; text-align: right; padding-right: 4px; }
+  .hero-side--right { align-items: flex-start; text-align: left; padding-left: 4px; }
+
+  .callout-chip {
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.65s ease, transform 0.65s ease, border-color 0.45s;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+  }
+  body.is-ready .callout-chip { opacity: 0.35; }
+  body.is-ready .callout-chip.active {
+    opacity: 1;
+    transform: none;
+    border-color: rgba(139,124,246,0.45);
+    box-shadow: 0 0 24px rgba(139,124,246,0.15);
+  }
+  body.is-ready .hero-side--left .callout-chip:nth-child(1) { transition-delay: 0.45s; }
+  body.is-ready .hero-side--left .callout-chip:nth-child(2) { transition-delay: 0.55s; }
+  body.is-ready .hero-side--right .callout-chip:nth-child(1) { transition-delay: 0.5s; }
+  body.is-ready .hero-side--right .callout-chip:nth-child(2) { transition-delay: 0.6s; }
+  .callout-chip strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .callout-chip.active.purple strong { color: var(--purple); }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 8px 12px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s cubic-bezier(0.22,1,0.36,1) 0.35s, transform 1s cubic-bezier(0.22,1,0.36,1) 0.35s;
+  }
+  body.is-ready .hero-copy {
+    opacity: 1;
+    transform: none;
+  }
+  .hero-copy h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6.5vw, 72px);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    margin-bottom: 18px;
+  }
+  .hero-sub {
+    font-size: clamp(14px, 1.5vw, 17px);
+    font-weight: 300; color: var(--muted); line-height: 1.65;
+    max-width: 32em; margin: 0 auto 28px;
+  }
+  .hero-brand {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
+    margin-bottom: 10px; color: rgba(255,255,255,0.75);
+  }
+  .explore {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+    color: var(--muted); transition: color 0.25s;
+  }
+  .explore:hover { color: var(--fg); }
+  .explore-arrow {
+    width: 18px; height: 18px; border: 1px solid var(--faint); border-radius: 50%;
+    display: grid; place-items: center; font-size: 10px;
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+  .hero-grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.05; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-vignette {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(139,124,246,0.08), transparent 50%);
+  }
+
+  /* ——— Story / Shennong ——— */
+  #story {
+    border-top: 1px solid var(--line);
+    padding: clamp(72px, 12vh, 120px) clamp(20px, 5vw, 80px);
+  }
+  .story {
+    max-width: 680px;
     margin: 0 auto;
   }
-  .product-lineup-hint {
-    font-size: 14px;
-    color: var(--gray-400);
+  .story-head {
+    text-align: center;
+    margin-bottom: clamp(48px, 8vh, 72px);
+  }
+  .story-kicker {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--purple);
+    margin-bottom: 18px;
+  }
+  .story-head h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5.5vw, 56px);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  .story-head .deck {
+    font-size: 16px; font-weight: 300; color: var(--muted);
+    line-height: 1.6;
+  }
+  .story-divider {
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    margin: 0 auto 20px;
+  }
+  .story-block {
+    margin-bottom: clamp(40px, 6vh, 56px);
+  }
+  .story-block h3 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.2vw, 32px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .story-block h3 em { font-style: italic; color: rgba(255,255,255,0.7); }
+  .story-block p {
+    font-size: 16px;
     font-weight: 300;
-    margin-top: 6px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+  .story-block p:last-child { margin-bottom: 0; }
+  .story-quote {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 28px);
+    font-style: italic;
+    letter-spacing: -0.02em;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.3;
+    margin: 20px 0 0;
+  }
+  .story-points {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .story-point {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 18px;
+    background: rgba(255,255,255,0.02);
+  }
+  .story-point .n {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    color: var(--purple); margin-bottom: 10px;
+  }
+  .story-point h4 {
+    font-size: 15px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .story-point p {
+    font-size: 13px; line-height: 1.55; margin: 0;
+  }
+  .story-end {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    margin-top: clamp(48px, 8vh, 64px);
+  }
+  .story-end p {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 40px);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  .story-end .soft {
+    margin-top: 16px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 34em;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* INTERACTIVE DEMO (analysis reports) */
-  .demo-tabs { display: none; }
-  .demo-panel { display: none; }
-  .demo-panel.active { display: block; }
+  @media (max-width: 900px) {
+    .story-points { grid-template-columns: 1fr; }
+  }
 
-  .analysis-card {
-    background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius);
-    overflow: hidden; max-width: none;
+  /* ——— 02 Statements ——— */
+  .statement {
+    min-height: 70vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: clamp(64px, 10vh, 100px) 24px;
   }
-  .analysis-header {
-    padding: 16px 20px; border-bottom: 0.5px solid var(--border-light);
-    display: flex; align-items: center; justify-content: space-between;
-    background: var(--gray-50);
+  .statement h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 7.5vw, 88px);
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    max-width: 14ch;
   }
-  .analysis-header-title { font-size: 13px; font-weight: 500; letter-spacing: -0.01em; }
-  .analysis-status {
-    font-size: 11px; padding: 3px 9px; border-radius: var(--radius-pill);
-    background: #EAF3DE; color: #27500A; font-weight: 500;
+  .statement--soft h2 { color: rgba(255,255,255,0.88); }
+  .statement-follow {
+    margin-top: 36px;
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 300; color: var(--muted); line-height: 1.7;
+    max-width: 34em; margin-left: auto; margin-right: auto;
   }
-  .analysis-body { padding: 20px; }
-  .analysis-metric { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border-light); }
-  .analysis-metric:last-child { border-bottom: none; }
-  .metric-name { font-size: 13px; color: var(--gray-600); font-weight: 300; }
-  .metric-bar-wrap { flex: 1; margin: 0 16px; height: 4px; background: var(--gray-100); border-radius: 2px; overflow: hidden; }
-  .metric-bar { height: 100%; border-radius: 2px; background: var(--black); transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
-  .metric-val { font-size: 13px; font-weight: 500; min-width: 36px; text-align: right; }
 
-  /* MOBILE */
-  @media (max-width: 768px) {
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    section { padding: 64px 24px; }
-    #hero { padding: 100px 24px 60px; }
-    .hero-devices { display: none; }
-    h1.hero-title { font-size: 44px; }
-    .stats-bar { grid-template-columns: 1fr 1fr; }
-    .stat-item { border-right: none; border-bottom: 0.5px solid var(--border-light); }
-    .products-grid { grid-template-columns: 1fr; }
-    .product-lineup { border-radius: 14px; }
-    .product-lineup-detail { padding: 22px 20px 26px; min-height: 120px; }
-    .steps-grid { grid-template-columns: 1fr; }
-    .scalp-layout, .glamskin-layout { grid-template-columns: 1fr; }
-    .ent-hero, .dev-hero { grid-template-columns: 1fr; gap: 24px; }
-    .ent-stats { grid-template-columns: 1fr 1fr; }
-    .ent-solutions { grid-template-columns: 1fr; }
-    .ent-whitelabel { grid-template-columns: 1fr; }
-    .dev-links { grid-template-columns: 1fr 1fr; }
-    .dev-table-wrap { overflow-x: auto; }
-    .dev-table { min-width: 560px; }
-    footer { flex-direction: column; gap: 24px; align-items: flex-start; padding: 32px 24px; }
+  /* ——— 03 Architecture ——— */
+  #architecture { text-align: center; }
+  #architecture.section,
+  #first-agent.section,
+  #agents.section,
+  #data-loop.section,
+  #build.section {
+    min-height: auto;
+    padding-top: clamp(72px, 12vh, 110px);
+    padding-bottom: clamp(72px, 12vh, 110px);
   }
-.beta-bar{display:none;}
-@media (max-width:768px){.beta-bar{display:block;position:fixed;bottom:0;left:0;right:0;z-index:2000;background:var(--black);color:var(--white);text-align:center;padding:15px 16px;font-size:14px;font-weight:500;text-decoration:none;font-family:var(--font-body);}body{padding-bottom:52px;}}
+  #first-agent { background: #050505; }
+  .arch-core {
+    width: 88px; height: 88px; margin: 0 auto 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    display: grid; place-items: center;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.14em;
+    box-shadow: 0 0 60px var(--purple-glow);
+    position: relative;
+  }
+  .arch-core::before {
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%; border: 1px solid var(--line);
+    animation: spinSlow 28s linear infinite;
+  }
+  @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+  .arch-rings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 960px;
+    margin: 0 auto 48px;
+    text-align: left;
+  }
+  .arch-card {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 24px;
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.3s, background 0.3s, transform 0.45s cubic-bezier(0.22,1,0.36,1);
+  }
+  .arch-card:hover {
+    border-color: rgba(139,124,246,0.45);
+    background: rgba(139,124,246,0.06);
+    transform: translateY(-4px);
+  }
+  .arch-num {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+    color: var(--purple); margin-bottom: 14px;
+  }
+  .arch-card h3 {
+    font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 6px;
+  }
+  .arch-card .role {
+    font-size: 12px; color: var(--muted); margin-bottom: 18px; letter-spacing: 0.04em;
+  }
+  .arch-card ul {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .arch-card li {
+    font-size: 11px; letter-spacing: 0.04em;
+    padding: 6px 10px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted);
+  }
+  .loop-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: -0.02em;
+  }
+
+  /* ——— 04 First agent ——— */
+  .agent-layout {
+    display: grid;
+    grid-template-columns: minmax(160px,1fr) minmax(240px,1.15fr) minmax(160px,1fr);
+    gap: clamp(20px, 3vw, 40px);
+    align-items: center;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+  .agent-layout--simple {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    text-align: center;
+  }
+  .agent-layout--simple .agent-mantra {
+    font-size: 14px;
+    font-style: normal;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .agent-side { display: flex; flex-direction: column; gap: 28px; }
+  .agent-step h4 {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    color: var(--purple); margin-bottom: 8px;
+  }
+  .agent-step p {
+    font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.55;
+  }
+  .agent-center { text-align: center; }
+  .agent-device {
+    width: min(340px, 82vw);
+    margin: 0 auto 28px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: #000;
+    box-shadow:
+      0 40px 90px rgba(0,0,0,0.55),
+      0 0 60px rgba(139,124,246,0.12);
+    position: relative;
+    aspect-ratio: 3 / 4;
+    display: block;
+  }
+  .agent-device video,
+  .agent-device img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    background: #000;
+    display: block;
+    transform: scale(1.01);
+    transition: transform 1.2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .agent-device:hover video,
+  .agent-device:hover img { transform: scale(1.04); }
+  .agent-center h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+  .agent-center .tag {
+    font-size: 14px; font-weight: 300; color: var(--muted); margin-bottom: 24px;
+  }
+  .agent-mantra {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-style: italic;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.35;
+  }
+  .agent-cta {
+    display: inline-flex; margin-top: 28px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    padding: 12px 20px; border-radius: 999px;
+    background: var(--fg); color: var(--bg);
+    transition: opacity 0.25s;
+  }
+  .agent-cta:hover { opacity: 0.85; }
+
+  /* ——— 05 Many agents ——— */
+  #many-agents { overflow: hidden; text-align: center; }
+  .figure-wrap {
+    position: relative;
+    width: min(640px, 94vw);
+    min-height: 340px;
+    margin: 48px auto 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-content: center;
+  }
+  .figure-core {
+    display: none;
+  }
+  .agent-orb {
+    padding: 18px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s, transform 0.7s, border-color 0.3s, background 0.3s;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  a.agent-orb:hover {
+    border-color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.05);
+  }
+  .figure-wrap.in .agent-orb { opacity: 1; transform: none; }
+  .figure-wrap.in .agent-orb:nth-child(2) { transition-delay: 0.08s; }
+  .figure-wrap.in .agent-orb:nth-child(3) { transition-delay: 0.16s; }
+  .figure-wrap.in .agent-orb:nth-child(4) { transition-delay: 0.24s; }
+  .figure-wrap.in .agent-orb:nth-child(5) { transition-delay: 0.32s; }
+  .agent-orb strong {
+    display: block; font-size: 11px; letter-spacing: 0.12em; margin-bottom: 6px;
+  }
+  .agent-orb span { font-size: 13px; color: var(--muted); font-weight: 300; }
+  .agent-orb .soon {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px;
+    padding: 4px 8px;
+  }
+  .agent-orb.live {
+    border-color: rgba(139,124,246,0.45);
+    box-shadow: 0 0 28px rgba(139,124,246,0.12);
+  }
+  .agent-orb.soon-card {
+    opacity: 0;
+  }
+  .figure-wrap.in .agent-orb.soon-card { opacity: 0.72; }
+  .many-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 64px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-top: 28px;
+  }
+
+  /* ——— 06 Universe ——— */
+  #universe { min-height: auto; padding-bottom: 40px; }
+  .universe-track-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 40px calc(-1 * clamp(20px, 5vw, 80px)) 0;
+    padding: 0 clamp(20px, 5vw, 80px) 24px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--faint) transparent;
+  }
+  .universe-track {
+    display: flex; gap: 16px; width: max-content;
+  }
+  .uni-card {
+    width: min(260px, 72vw);
+    padding: 28px 24px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.02);
+  }
+  .uni-domain {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    color: var(--muted); margin-bottom: 20px;
+  }
+  .uni-card h3 { font-size: 22px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .uni-card .layer {
+    font-size: 12px; color: var(--muted); font-weight: 300;
+    padding: 10px 0; border-top: 1px solid var(--line);
+  }
+  .uni-card .layer:first-of-type { border-top: none; margin-top: 12px; }
+  .uni-end {
+    text-align: center;
+    margin-top: 56px;
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  /* ——— 07 Data loop ——— */
+  #data-loop { text-align: center; }
+  .loop-flow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 920px;
+    margin: 36px auto 40px;
+  }
+  .loop-pill {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.03);
+    position: relative;
+    animation: nodeGlow 4s ease-in-out infinite;
+  }
+  .loop-pill:nth-child(odd) { animation-delay: 0.4s; }
+  .loop-pill.you {
+    border-color: rgba(139,124,246,0.5);
+    background: rgba(139,124,246,0.1);
+  }
+  .loop-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--faint);
+    font-size: 14px;
+    padding: 0 2px;
+  }
+  @keyframes nodeGlow {
+    0%, 100% { border-color: var(--line); box-shadow: none; }
+    50% { border-color: rgba(139,124,246,0.45); box-shadow: 0 0 18px rgba(139,124,246,0.2); }
+  }
+  .moat-line {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 42px);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    max-width: 16ch;
+    margin: 0 auto;
+  }
+
+  /* ——— 08 Data value ——— */
+  #data-value {
+    min-height: 70vh;
+    border-top: 1px solid var(--line);
+  }
+  #data-value h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    max-width: 14ch;
+    margin-bottom: 24px;
+  }
+
+  /* ——— 09 CTA ——— */
+  #build {
+    text-align: center;
+    min-height: 90vh;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(139,124,246,0.12), transparent 55%),
+      #000;
+  }
+  #build h2 {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 8vw, 88px);
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    margin-bottom: 16px;
+  }
+  .cta-row {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+  }
+  .btn {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    padding: 14px 22px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.28);
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+  .btn-fill { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .btn-fill:hover { opacity: 0.88; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+  .waitlist {
+    width: min(440px, 100%);
+    margin: 28px auto 0;
+    text-align: left;
+  }
+  .waitlist-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 12px; text-align: center;
+  }
+  .waitlist-form {
+    display: flex; gap: 8px;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.03);
+  }
+  .waitlist-form input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px 16px;
+    outline: none;
+  }
+  .waitlist-form input::placeholder { color: rgba(255,255,255,0.35); }
+  .waitlist-form button {
+    flex-shrink: 0;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    padding: 12px 18px; border-radius: 999px;
+    border: none;
+    background: var(--fg); color: var(--bg);
+    cursor: pointer;
+    transition: opacity 0.25s;
+  }
+  .waitlist-form button:hover { opacity: 0.88; }
+  .waitlist-form button:disabled { opacity: 0.5; cursor: default; }
+  .waitlist-msg {
+    margin-top: 12px;
+    font-size: 13px; font-weight: 300; color: var(--muted);
+    text-align: center;
+    min-height: 1.2em;
+  }
+  .waitlist-msg.ok { color: rgba(180,170,255,0.95); }
+  .waitlist-msg.err { color: #f0a8a8; }
+
+  footer {
+    padding: 40px clamp(20px, 5vw, 80px) 56px;
+    border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: space-between;
+    font-size: 12px; color: var(--muted);
+  }
+  footer a:hover { color: var(--fg); }
+
+  /* ——— Mobile ——— */
+  @media (max-width: 900px) {
+    .nav-links, .nav-cta { display: none; }
+    .nav-toggle { display: flex; }
+    .nav.open .nav-links {
+      display: flex; flex-direction: column;
+      position: absolute; top: var(--nav-h); left: 0; right: 0;
+      background: rgba(0,0,0,0.95); padding: 24px;
+      border-bottom: 1px solid var(--line);
+      z-index: 101;
+    }
+    .nav.open .nav-cta {
+      display: inline-flex;
+      position: absolute; top: calc(var(--nav-h) + 200px); right: 24px;
+      z-index: 101;
+    }
+    .hero-viz {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      height: auto;
+      gap: 14px;
+    }
+    .hero-canvas-wrap {
+      grid-column: 1;
+      height: clamp(260px, 42vh, 380px);
+      order: 1;
+    }
+    .hero-side { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .hero-side--left { order: 2; align-items: stretch; text-align: left; padding: 0; }
+    .hero-side--right { order: 3; align-items: stretch; padding: 0; }
+    .callout-chip { flex: 0 0 auto; }
+    .arch-rings { grid-template-columns: 1fr; }
+    .agent-layout { grid-template-columns: 1fr; text-align: center; gap: 28px; }
+    .agent-side { order: 2; }
+    .agent-side:last-child { order: 3; }
+    .agent-center { order: 1; }
+    .loop-arrow { display: none; }
+    .figure-wrap { grid-template-columns: 1fr; min-height: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { transform: none; opacity: 1; }
+    .boot { display: none; }
+    .nav, .hero-copy, .hero-body-img, .callout-chip { opacity: 1 !important; transform: none !important; }
+  }
 </style>
 </head>
-<body class="is-loading">
-
-<div id="page-loader" aria-live="polite" aria-label="Loading">
-  <img src="/logo.png" alt="" class="loader-logo" width="56" height="56" />
+<body>
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot-mark">
+    <img src="/logo.png" alt="" />
+    <span>GENPULSE</span>
+    <div class="boot-line"></div>
+  </div>
 </div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">
-    <img src="/logo.png" alt="" class="nav-logo-img" width="30" height="30" />
-    <span>Genpulse</span>
+<header class="nav" id="nav">
+  <a class="nav-logo" href="#hero">
+    <img src="/logo.png" alt="" />
+    GENPULSE
   </a>
-  <div class="nav-links">
-    <a href="#products">Products</a>
-    <a href="#how">How it works</a>
-    <a href="#enterprise">Enterprise</a>
-    <a href="#developers">Developers</a>
-    
-  </div>
-  <div class="nav-right">
-    <span class="nav-year">2026</span>
-    <a class="nav-cta" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta →</a>
-  </div>
-</nav>
+  <nav class="nav-links" id="navLinks">
+    <a href="#story">Story</a>
+    <a href="#architecture">Technology</a>
+    <a href="#first-agent">Lushair</a>
+    <a href="#agents">Agents</a>
+    <a href="https://calendly.com/fiona-bao-lushair-kgpt/30min" target="_blank" rel="noopener">Book a call</a>
+  </nav>
+  <a class="nav-cta" href="#build">BUILD YOUR AGENT →</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+</header>
 
-<!-- HERO -->
-<section id="hero" class="grid-bg">
-  <div class="hero-content">
-    <div class="hero-eyebrow fade-in">
-      <span class="hero-eyebrow-dot"></span>
-      Your health insight, future science research
+<!-- 01 Hero -->
+<section id="hero" class="section">
+  <div class="hero-vignette"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-inner">
+    <div class="hero-viz" id="heroViz">
+      <aside class="hero-side hero-side--left">
+        <div class="callout-chip active purple" data-zone="scalp"><strong>Scalp</strong></div>
+        <div class="callout-chip" data-zone="hormones"><strong>Hormones</strong></div>
+      </aside>
+      <div class="hero-canvas-wrap" id="heroBodyWrap">
+        <img
+          class="hero-body-img"
+          src="/hero-silhouette-dark.png"
+          alt=""
+          width="1440"
+          height="2560"
+          decoding="async"
+        />
+      </div>
+      <aside class="hero-side hero-side--right">
+        <div class="callout-chip" data-zone="skin"><strong>Skin</strong></div>
+        <div class="callout-chip" data-zone="wellness"><strong>Wellness</strong></div>
+      </aside>
     </div>
-    <h1 class="hero-title fade-in">Health insight.<br><em>Anywhere.</em></h1>
-    <p class="hero-desc fade-in">Genpulse builds AI infrastructure for health research and consumer products — turning signals into data insights, at home and at scale.</p>
-    <div class="hero-btns fade-in">
-      <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta</a><span style="font-size:11px;color:var(--gray-400);align-self:center;margin-left:4px;">iOS · via TestFlight</span>
-      <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it works</button>
-    </div>
-    <div class="hero-domains fade-in">
-      <span class="domain-tag">Hair</span>
-      <span class="domain-tag">Skin</span>
-      <span class="domain-tag">Dental</span>
-      <span class="domain-tag">Eye</span>
-      <span class="domain-tag">Gyn</span>
-    </div>
-  </div>
-
-  <div class="hero-devices">
-    <a class="device-card device-card--live fade-in" href="https://lushair.ai" target="_blank" rel="noopener">
-      <div class="device-icon">🔬</div>
-      <div class="device-name">Lushair</div>
-      <div class="device-desc">Hair &amp; scalp AI</div>
-    </a>
-    <a class="device-card device-card--live fade-in" href="https://glamskin.ai" target="_blank" rel="noopener">
-      <div class="device-icon">✨</div>
-      <div class="device-name">Glamskin</div>
-      <div class="device-desc">Skin health AI</div>
-    </a>
-    <div class="device-card device-card--soon fade-in">
-      <div class="device-icon">🦷</div>
-      <div class="device-name">Dental AI</div>
-      <div class="device-desc">AI dental analysis</div>
-      <div class="device-soon">Coming soon</div>
-    </div>
-    <div class="device-card device-card--soon fade-in">
-      <div class="device-icon">👁️</div>
-      <div class="device-name">Eye AI</div>
-      <div class="device-desc">Eye health analysis</div>
-      <div class="device-soon">Coming soon</div>
-    </div>
-    <div class="device-card device-card--soon fade-in">
-      <div class="device-icon">🌸</div>
-      <div class="device-name">Gyn AI</div>
-      <div class="device-desc">Women's wellness</div>
-      <div class="device-soon">Coming soon</div>
+    <div class="hero-copy">
+      <p class="hero-brand">GENPULSE</p>
+      <h1>What if your body<br>had its own AI?</h1>
+      <p class="hero-sub">The physical AI layer for personalized healthcare.</p>
+      <a class="explore" href="#story">Explore the story <span class="explore-arrow">↓</span></a>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat-item reveal">
-    <div class="stat-val">6+</div>
-    <div class="stat-label">Health domains</div>
-  </div>
-  <div class="stat-item reveal" style="transition-delay:.1s">
-    <div class="stat-val">Research</div>
-    <div class="stat-label">Grade insights</div>
-  </div>
-  <div class="stat-item reveal" style="transition-delay:.2s">
-    <div class="stat-val">B2B</div>
-    <div class="stat-label">Enterprise APIs</div>
-  </div>
-  <div class="stat-item reveal" style="transition-delay:.3s">
-    <div class="stat-val">Global</div>
-    <div class="stat-label">Anywhere on Earth</div>
-  </div>
-</div>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-eyebrow reveal">How it works</div>
-  <h2 class="section-title reveal">Hardware meets AI.</h2>
-  <p class="section-desc reveal">Purpose-built devices capture health data. Our AI models process it in real time — delivering data insights to users and practitioners alike.</p>
-  <div class="steps-grid reveal">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-icon-wrap">📡</div>
-      <div class="step-label">Capture</div>
-      <div class="step-title">Smart hardware devices</div>
-      <div class="step-desc">Purpose-built sensors capture hair, skin, dental, and eye data at research-grade resolution — at home or in clinic.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-icon-wrap">🧠</div>
-      <div class="step-label">Analyze</div>
-      <div class="step-title">AI health analysis engine</div>
-      <div class="step-desc">Genpulse models analyze imaging data in milliseconds, detecting conditions with research-grade accuracy across all domains.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-icon-wrap">📊</div>
-      <div class="step-label">Deliver</div>
-      <div class="step-title">Actionable insights</div>
-      <div class="step-desc">Results surface through consumer apps, practitioner dashboards, or your own product via our SDK and API.</div>
-    </div>
-  </div>
-
-  <div class="chat-widget reveal">
-    <div class="chat-widget-inner">
-      <div class="chat-categories" id="chat-categories">
-        <button onclick="selectCategory(this,'Scalp')" class="chat-cat-btn" data-cat="Scalp">🔬 Lushair</button>
-        <button onclick="selectCategory(this,'Skin')" class="chat-cat-btn" data-cat="Skin">✨ Glamskin</button>
-        <button onclick="selectCategory(this,'Dental')" class="chat-cat-btn" data-cat="Dental">🦷 Dental <span style="opacity:0.5;font-size:10px;">soon</span></button>
-        <button onclick="selectCategory(this,'Eye')" class="chat-cat-btn" data-cat="Eye">👁️ Eye <span style="opacity:0.5;font-size:10px;">soon</span></button>
-        <button onclick="selectCategory(this,'Gyn')" class="chat-cat-btn" data-cat="Gyn">🌸 Gyn <span style="opacity:0.5;font-size:10px;">soon</span></button>
-        <button onclick="selectCategory(this,'Finding')" class="chat-cat-btn" data-cat="Finding">🔍 Finding</button>
-      </div>
-      <div class="chat-box">
-        <div style="padding:14px 18px;border-bottom:0.5px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
-            <div>
-              <div style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);">GENPULSE AI Assistant</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:#27c93f;display:inline-block;"></span> Online · Health AI</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.04em;">Powered by Genpulse</div>
-        </div>
-        <div id="chat-messages" style="padding:20px 18px;min-height:200px;max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;">
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
-            <div style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);border-radius:4px 12px 12px 12px;padding:12px 15px;max-width:88%;">
-              <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">Hello! I'm the Genpulse AI assistant. I can help you explore health analysis across dental, skin, scalp, eye, and gyn wellness domains. How can I help today?</p>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start;">
-            <div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
-            <div style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);border-radius:4px 12px 12px 12px;padding:12px 15px;max-width:88%;">
-              <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">Select a health category above or type your concern below — I'll provide personalized insights powered by Genpulse's research AI models.</p>
-            </div>
-          </div>
-        </div>
-        <div id="quick-suggests" style="padding:0 18px 14px;display:none;flex-wrap:wrap;gap:6px;"></div>
-        <div style="padding:14px 16px;border-top:0.5px solid rgba(255,255,255,0.07);display:flex;gap:8px;align-items:flex-end;background:rgba(0,0,0,0.2);">
-          <textarea id="gp-chat-input" rows="1" placeholder="Describe your health concern..."
-            style="flex:1;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;font-size:13px;font-family:var(--font-body);color:rgba(255,255,255,0.85);outline:none;resize:none;line-height:1.5;max-height:100px;overflow-y:auto;"
-            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"
-            oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';"></textarea>
-          <button onclick="sendChatMsg()" id="gp-send-btn" style="width:36px;height:36px;flex-shrink:0;background:rgba(255,255,255,0.9);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;">↑</button>
-        </div>
-      </div>
-      <p class="chat-disclaimer">Genpulse AI provides general health information only — not professional health advice. Always consult a qualified healthcare professional for personal health decisions.</p>
-    </div>
-  </div>
-</section>
-
-<!-- PRODUCTS -->
-<section id="products">
-  <div class="section-eyebrow reveal">Products</div>
-  <h2 class="section-title reveal">Intelligence for every body.</h2>
-  <p class="section-desc reveal">Purpose-built hardware with AI health analysis — explore each device up close.</p>
-
-  <div class="product-lineup reveal">
-    <figure class="product-lineup-figure">
-      <img src="/devices/lineup.png" alt="Genpulse AI health hardware lineup" width="1024" height="576" loading="lazy" />
-      <div class="product-lineup-hotspots" role="group" aria-label="Explore Genpulse devices">
-        <button type="button" class="lineup-hotspot" data-lineup="hair" style="flex:1.12" aria-label="Lushair"></button>
-        <button type="button" class="lineup-hotspot" data-lineup="skin" style="flex:1" aria-label="Glamskin"></button>
-        <button type="button" class="lineup-hotspot" data-lineup="eye" style="flex:1.05" aria-label="Eye AI"></button>
-        <button type="button" class="lineup-hotspot" data-lineup="dental" style="flex:1.02" aria-label="Dental AI"></button>
-        <button type="button" class="lineup-hotspot" data-lineup="gyn" style="flex:0.82" aria-label="Gyn AI"></button>
-      </div>
-    </figure>
-    <div class="product-lineup-detail is-default" id="lineup-detail" aria-live="polite">
-      <p class="product-lineup-name">Explore our devices</p>
-      <p class="product-lineup-desc">Hover over each instrument to see its name and purpose.</p>
-      <p class="product-lineup-hint">Lushair · Glamskin · Eye AI · Dental AI · Gyn AI</p>
-    </div>
-  </div>
-
-  <div class="products-grid reveal">
-    <div class="product-card product-card--live" onclick="window.open('https://lushair.ai','_blank')">
-      <div class="product-card-header">
-        <span class="product-badge badge-hair">Hair &amp; Scalp</span>
-        <span class="product-arrow">↗</span>
-      </div>
-      <div class="product-title">Lushair</div>
-      <div class="product-desc">High-magnification scalp imaging with AI analysis for hair density, follicle health, and skin sensitivity mapping across 9 zones.</div>
-      <a class="product-card-link" href="https://lushair.ai" target="_blank" rel="noopener" onclick="event.stopPropagation()">lushair.ai →</a>
-      <div class="product-features">
-        <span class="feat-tag">Microscope lens</span>
-        <span class="feat-tag">Density mapping</span>
-        <span class="feat-tag">Sensitivity AI</span>
-      </div>
-    </div>
-    <div class="product-card product-card--live" onclick="window.open('https://glamskin.ai','_blank')">
-      <div class="product-card-header">
-        <span class="product-badge badge-skin">Skin</span>
-        <span class="product-arrow">↗</span>
-      </div>
-      <div class="product-title">Glamskin</div>
-      <div class="product-desc">Skin condition analysis powered by multi-spectrum imaging and skin health AI trained on millions of research data points.</div>
-      <a class="product-card-link" href="https://glamskin.ai" target="_blank" rel="noopener" onclick="event.stopPropagation()">glamskin.ai →</a>
-      <div class="product-features">
-        <span class="feat-tag">Multi-spectrum</span>
-        <span class="feat-tag">Condition signal mapping</span>
-        <span class="feat-tag">Treatment tracking</span>
-      </div>
-    </div>
-    <div class="product-card product-card--soon">
-      <div class="product-card-header">
-        <span class="product-badge badge-dental">Dental</span>
-        <span class="product-soon-badge">Coming soon</span>
-      </div>
-      <div class="product-title">Dental AI</div>
-      <div class="product-desc">AI dental analysis with research-grade precision. Tracks oral health signals, plaque buildup, and gum health changes — at home, in real time.</div>
-      <div class="product-features">
-        <span class="feat-tag">Camera sensor</span>
-        <span class="feat-tag">Real-time AI</span>
-        <span class="feat-tag">Data export</span>
-      </div>
-    </div>
-    <div class="product-card product-card--soon">
-      <div class="product-card-header">
-        <span class="product-badge badge-eye">Eye</span>
-        <span class="product-soon-badge">Coming soon</span>
-      </div>
-      <div class="product-title">Eye AI</div>
-      <div class="product-desc">Optical health analysis imaging for early signal mapping of eye health issues — from everyday dryness to early-stage pressure anomalies.</div>
-      <div class="product-features">
-        <span class="feat-tag">Optical sensor</span>
-        <span class="feat-tag">Early signal mapping</span>
-        <span class="feat-tag">Cloud insights</span>
-      </div>
-    </div>
-    <div class="product-card product-card--soon">
-      <div class="product-card-header">
-        <span class="product-badge badge-intimate">Gyn</span>
-        <span class="product-soon-badge">Coming soon</span>
-      </div>
-      <div class="product-title">Gyn AI</div>
-      <div class="product-desc">Privacy-first women's wellness imaging with AI data insights for hydration, sensitivity, and longitudinal health tracking.</div>
-      <div class="product-features">
-        <span class="feat-tag">Encrypted data</span>
-        <span class="feat-tag">Wellness insights</span>
-        <span class="feat-tag">Longitudinal tracking</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LUSHAIR FEATURE -->
-<section id="lushair">
-  <div style="max-width:1200px; margin:0 auto;">
-    <div class="section-eyebrow reveal">Lushair — Featured</div>
-    <div class="scalp-layout">
-      <div class="reveal">
-        <h2 class="section-title">Clear Scalp,<br>Clear Data.</h2>
-        <p class="section-desc">AI-powered hair and scalp analysis with Genpulse Vision v2.0 — cold-spectrum annotation colors, 25% fill transparency, and stroke styles matched to the clinical pipeline.</p>
-        <a class="featured-cta" href="https://lushair.ai" target="_blank" rel="noopener">Visit lushair.ai →</a>
-        <div class="scalp-features">
-          <div class="scalp-feat">
-            <div class="scalp-feat-title">9-zone scalp mapping</div>
-            <div class="scalp-feat-desc">Every zone analyzed independently for density, oiliness, follicle count, and sensitivity — giving practitioners a complete scalp profile.</div>
-          </div>
-          <div class="scalp-feat">
-            <div class="scalp-feat-title">Spec-accurate overlays</div>
-            <div class="scalp-feat-desc">Polygon boxes for hair types, circle strokes for follicles, and fill+1px stroke regions for pathology — aligned with hair_spectrum_analysis.py.</div>
-          </div>
-          <div class="scalp-feat">
-            <div class="scalp-feat-title">Longitudinal tracking</div>
-            <div class="scalp-feat-desc">Compare scans over time to track treatment progress, hair regrowth, and scalp health improvements with precision.</div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal" style="transition-delay:.2s;">
-        <div class="scalp-screen">
-          <div class="scalp-screen-header">
-            <div class="screen-dot" style="background:#ff5f56;"></div>
-            <div class="screen-dot" style="background:#ffbd2e;"></div>
-            <div class="screen-dot" style="background:#27c93f;"></div>
-            <span style="font-size:11px; color:rgba(255,255,255,0.4); margin-left:8px; font-weight:500;">Lushair AI Analysis</span>
-          </div>
-          <div class="scalp-grid-demo">
-            <div class="scalp-cell"><span class="scalp-cell-label">Z1</span><div class="scalp-cell-overlay" style="border:2px solid rgba(34,197,34,0.5); margin:12px; border-radius:2px;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z2</span><div class="scalp-cell-overlay" style="border:1px solid rgba(96,165,250,0.6); margin:14px; border-radius:2px;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z3</span><div class="scalp-cell-overlay" style="border:1px dashed rgba(167,139,250,0.7); margin:14px; border-radius:2px;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z4</span><div class="scalp-cell-overlay" style="box-sizing:border-box;border:2px solid #f59e0b;border-radius:50%;width:32px;height:32px;left:50%;top:50%;transform:translate(-50%,-50%);position:absolute;background:transparent;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z5</span><div class="scalp-cell-overlay" style="background:rgba(253,230,138,0.25); border:1px solid #fde68a; margin:10px; border-radius:4px;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z6</span><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(255,255,255,0.5);">78%</div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z7</span><div class="scalp-cell-overlay" style="background:rgba(244,63,94,0.25); border:1px solid #f43f5e; margin:10px; border-radius:4px;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z8</span><div class="scalp-cell-overlay" style="background:rgba(251,146,60,0.25); border:1px solid #fb923c; margin:10px; border-radius:4px;"></div></div>
-            <div class="scalp-cell"><span class="scalp-cell-label">Z9</span><div class="scalp-cell-overlay" style="background:rgba(110,231,183,0.25); border:1px solid #6ee7b7; margin:10px; border-radius:4px;"></div></div>
-          </div>
-        </div>
-        <div class="ann-legend">
-          <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Hair types · polygon</div>
-            <div class="ann-legend-items">
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--poly-thick" style="--ann-color:#22c522"></span>Terminal hair</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--poly-thin" style="--ann-color:#60a5fa"></span>Intermediate hair</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--poly-dash" style="--ann-color:#a78bfa"></span>Lanugo</div>
-            </div>
-          </div>
-          <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Structure · stroke only</div>
-            <div class="ann-legend-items">
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--circle" style="--ann-color:#f59e0b"></span>Follicle</div>
-            </div>
-          </div>
-          <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Pathology · fill 25% + 1px stroke</div>
-            <div class="ann-legend-items">
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#fb923c"></span>Eczema</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#f43f5e"></span>Scalp redness</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#fde68a"></span>Scalp oil</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#e5e7eb"></span>Scurf</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#92400e"></span>Follicle keratin</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#6ee7b7"></span>Scalp wrinkles</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- GLAMSKIN FEATURE -->
-<section id="glamskin">
-  <div style="max-width:1200px; margin:0 auto;">
-    <div class="section-eyebrow reveal">Glamskin — Featured</div>
-    <div class="glamskin-layout">
-      <div class="reveal">
-        <div class="glamskin-screen">
-          <div class="glamskin-screen-header">
-            <div class="screen-dot" style="background:#ff5f57;"></div>
-            <div class="screen-dot" style="background:#febc2e;"></div>
-            <div class="screen-dot" style="background:#28c840;"></div>
-            <span style="font-size:11px; color:var(--gray-400); margin-left:8px; font-weight:500;">Glamskin AI Analysis</span>
-          </div>
-          <div class="glamskin-viewport-wrap">
-            <div class="ann-viewport ann-viewport--skin">
-              <div class="ann-demo-layer">
-                <div class="ann-skin-wrinkle" title="Wrinkles · stroke"></div>
-                <div class="ann-skin-pore" title="Pores · thin stroke"></div>
-                <div class="ann-skin-blackhead" title="Blackhead"></div>
-                <div class="ann-skin-acne" title="Acne · stroke only"></div>
-                <div class="ann-skin-pigment" title="Pigment · fill"></div>
-                <div class="ann-skin-sensitive" title="Sensitive skin"></div>
-                <div class="ann-skin-oil" title="Oil blockage"></div>
-              </div>
-            </div>
-            <p class="glamskin-spec-note">Skin mirror palette · fill α=25% + 1px stroke · per skin_analysis.py v2.0</p>
-          </div>
-        </div>
-        <div class="ann-legend">
-          <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Pathology · stroke only</div>
-            <div class="ann-legend-items">
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--stroke" style="--ann-color:#ef4444"></span>Acne</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--stroke" style="--ann-color:#1e293b"></span>Blackhead</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--stroke-thin" style="--ann-color:#38bdf8"></span>Pore</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--stroke" style="--ann-color:#34d399; height:3px; width:22px; border-radius:0;"></span>Wrinkles</div>
-            </div>
-          </div>
-          <div class="ann-legend-group">
-            <div class="ann-legend-group-title">Regions · fill 25% + 1px stroke</div>
-            <div class="ann-legend-items">
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#c084fc"></span>Pigment</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#fda4af"></span>Sensitive skin</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#fcd34d"></span>Oil blockage</div>
-              <div class="ann-legend-item"><span class="ann-swatch ann-swatch--fill" style="--ann-color:#818cf8"></span>Uneven skin tone</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal" style="transition-delay:.12s;">
-        <h2 class="section-title">Radiant Skin,<br>Real Data.</h2>
-        <p class="section-desc">Multi-spectrum skin analysis with warm/cool skin-mirror colors — pathology in high-saturation strokes, pores and wrinkles as outline-only, regions at 25% fill per Genpulse Annotation Color Spec v2.</p>
-        <a class="featured-cta" href="https://glamskin.ai" target="_blank" rel="noopener">Visit glamskin.ai →</a>
-        <div class="glamskin-features" style="margin-top:28px;">
-          <div class="glamskin-feat">
-            <div class="glamskin-feat-title">Skin mirror palette</div>
-            <div class="glamskin-feat-desc">Acne and blackheads use stroke-only overlays; pigment, sensitivity, and oil use semi-transparent fill so underlying texture stays visible.</div>
-          </div>
-          <div class="glamskin-feat">
-            <div class="glamskin-feat-title">3-second skin read</div>
-            <div class="glamskin-feat-desc">Pocket-ready form factor delivers a full surface profile in one pass, trained on millions of research data points.</div>
-          </div>
-          <div class="glamskin-feat">
-            <div class="glamskin-feat-title">Treatment tracking</div>
-            <div class="glamskin-feat-desc">Longitudinal scans show how routines affect clarity, tone, and sensitivity over weeks and months.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ENTERPRISE -->
-<section id="enterprise">
-  <div class="ent-hero reveal">
-    <div>
-      <div class="section-eyebrow">Enterprise Solutions</div>
-      <h2 class="section-title">White-Label Solutions</h2>
-      <p class="ent-hero-desc">Deploy medical-grade AI diagnostics under your brand. Powered by Genpulse infrastructure.</p>
-    </div>
-    <button class="btn-primary" onclick="window.open('https://calendly.com/wendyhair/30min','_blank')">Book a call</button>
-  </div>
-
-  <div class="ent-stats reveal">
-    <div class="ent-stat">
-      <div class="ent-stat-val">5</div>
-      <div class="ent-stat-label">Product lines</div>
-    </div>
-    <div class="ent-stat">
-      <div class="ent-stat-val">99.9%</div>
-      <div class="ent-stat-label">Uptime SLA</div>
-    </div>
-    <div class="ent-stat">
-      <div class="ent-stat-val">&lt;100ms</div>
-      <div class="ent-stat-label">Response time per image</div>
-    </div>
-    <div class="ent-stat">
-      <div class="ent-stat-val">50M+</div>
-      <div class="ent-stat-label">Diagnostics run</div>
-    </div>
-  </div>
-
-  <div class="ent-block-head reveal">
-    <h3>Enterprise-grade AI platform</h3>
-    <p>Secure, compliant infrastructure for clinical-scale workloads</p>
-  </div>
-
-  <div class="ent-solutions reveal">
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/dermatology" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">🔬</span>
-      <div>
-        <div class="ent-solution-title">Dermatology</div>
-        <div class="ent-solution-desc">Clinical skin diagnostics &amp; care</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/dermatology</div>
-      </div>
-    </a>
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/dental" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">🦷</span>
-      <div>
-        <div class="ent-solution-title">Dental</div>
-        <div class="ent-solution-desc">Oral health &amp; imaging workflows</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/dental</div>
-      </div>
-    </a>
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/ophthalmology" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">👁</span>
-      <div>
-        <div class="ent-solution-title">Ophthalmology</div>
-        <div class="ent-solution-desc">Eye screening &amp; retinal AI</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/ophthalmology</div>
-      </div>
-    </a>
-    <a class="ent-solution" href="https://gen-pulse.com/solutions/womens-health" target="_blank" rel="noopener">
-      <span class="ent-solution-icon">🌸</span>
-      <div>
-        <div class="ent-solution-title">Women's Health</div>
-        <div class="ent-solution-desc">Confidential specialty workflows</div>
-        <div class="ent-solution-link">gen-pulse.com/solutions/womens-health</div>
-      </div>
-    </a>
-  </div>
-
-  <div class="ent-block-head reveal" style="margin-top:16px;">
-    <h3>White-Label Solution</h3>
-  </div>
-  <div class="ent-whitelabel reveal">
-    <div class="ent-wl-card">
-      <span class="ent-wl-icon">🏥</span>
-      <div class="ent-wl-title">Your Brand</div>
-      <div class="ent-wl-desc">Full customization for clinics and hospitals</div>
-    </div>
-    <div class="ent-wl-card">
-      <span class="ent-wl-icon">🔐</span>
-      <div class="ent-wl-title">HIPAA Compliant</div>
-      <div class="ent-wl-desc">Enterprise-grade security &amp; privacy</div>
-    </div>
-    <div class="ent-wl-card">
-      <span class="ent-wl-icon">⚡</span>
-      <div class="ent-wl-title">Powered by Genpulse</div>
-      <div class="ent-wl-desc">Medical AI infrastructure at scale</div>
-    </div>
-  </div>
-</section>
-
-<!-- DEVELOPER PORTAL -->
-<section id="developers">
-  <div class="dev-hero reveal">
-    <div>
-      <div class="section-eyebrow">Developer Portal</div>
-      <h2 class="section-title">Build with Genpulse</h2>
-      <p class="dev-hero-desc">Access our APIs, SDKs, and medical AI datasets to build the next generation of healthcare applications.</p>
-    </div>
-    <button class="btn-secondary" onclick="window.open('https://discord.gg/2bdAssK3J','_blank')">Join our Discord</button>
-  </div>
-
-  <div class="dev-links reveal">
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/docs" target="_blank" rel="noopener">
-      <span class="dev-link-icon">📄</span>
-      <div class="dev-link-title">API Docs</div>
-      <div class="dev-link-desc">RESTful APIs for all products</div>
-      <div class="dev-link-url">developers.gen-pulse.com/docs</div>
-    </a>
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/sdk" target="_blank" rel="noopener">
-      <span class="dev-link-icon">📦</span>
-      <div class="dev-link-title">SDK Downloads</div>
-      <div class="dev-link-desc">Python, Node.js, Swift, Kotlin</div>
-      <div class="dev-link-url">developers.gen-pulse.com/sdk</div>
-    </a>
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/cases" target="_blank" rel="noopener">
-      <span class="dev-link-icon">📊</span>
-      <div class="dev-link-title">Case Studies</div>
-      <div class="dev-link-desc">Real-world implementations</div>
-      <div class="dev-link-url">developers.gen-pulse.com/cases</div>
-    </a>
-    <a class="dev-link-card" href="https://developers.gen-pulse.com/partners" target="_blank" rel="noopener">
-      <span class="dev-link-icon">🤝</span>
-      <div class="dev-link-title">Partner Program</div>
-      <div class="dev-link-desc">Revenue share &amp; support</div>
-      <div class="dev-link-url">developers.gen-pulse.com/partners</div>
-    </a>
-  </div>
-
-  <div class="dev-datasets-head reveal">
-    <h3>🗂 Medical AI Datasets</h3>
-    <span class="dev-datasets-badge">Open Access</span>
-  </div>
-  <div class="dev-table-wrap reveal">
-    <table class="dev-table">
-      <thead>
-        <tr>
-          <th>Dataset</th>
-          <th>Type</th>
-          <th>Size</th>
-          <th>Downloads</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/hair-scalp-10k</span><span class="dev-verified">✓ Verified</span></td>
-          <td>Image</td>
-          <td>2.3GB</td>
-          <td>↓ 12.4k</td>
-          <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
-        </tr>
-        <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/skin-lesion-classification</span><span class="dev-verified">✓ Verified</span></td>
-          <td>Image</td>
-          <td>4.1GB</td>
-          <td>↓ 8.7k</td>
-          <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
-        </tr>
-        <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/dental-xray-annotated</span><span class="dev-verified">✓ Verified</span></td>
-          <td>Image</td>
-          <td>1.8GB</td>
-          <td>↓ 5.2k</td>
-          <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
-        </tr>
-        <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/retinal-fundus-v2</span><span class="dev-verified">✓ Verified</span></td>
-          <td>Image</td>
-          <td>6.2GB</td>
-          <td>↓ 15.1k</td>
-          <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
-        </tr>
-        <tr>
-          <td><span class="dev-dataset-name">📊 genpulse/womens-health-markers</span><span class="dev-verified">✓ Verified</span></td>
-          <td>Tabular</td>
-          <td>890MB</td>
-          <td>↓ 3.8k</td>
-          <td><a class="dev-soon" href="mailto:support@genpulse.io?subject=Dataset%20access%20request" style="color:var(--black);text-decoration:underline;">Request access</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
+<!-- Statement -->
+<section id="statement" class="statement">
   <div>
-    <div class="footer-logo">
-      <img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--sm" width="24" height="24" />
-      <span style="font-size:14px;font-weight:500;">Genpulse</span>
+    <h2 class="reveal">AI should not live<br>only on your screen.<br><em style="font-style:italic;color:rgba(255,255,255,0.55)">It should live with you.</em></h2>
+  </div>
+</section>
+
+<!-- Story -->
+<section id="story">
+  <article class="story">
+    <header class="story-head">
+      <p class="story-kicker reveal">Story</p>
+      <div class="story-divider reveal"></div>
+      <h2 class="reveal">The New Shennong</h2>
+      <p class="deck reveal reveal-delay-1">Physical AI and the original biohacking story.</p>
+    </header>
+
+    <div class="story-block reveal">
+      <p>
+        Long before clinical trials and wearables, Shennong tasted hundreds of plants himself —
+        healing, poisonous, bitter. His body was the first instrument. Every reaction was a data point.
+      </p>
+      <p>That is the original biohacking story. We just gave it an upgrade.</p>
     </div>
-    <div class="footer-copy">© 2026 Genpulse · Your health insight, future science research</div>
+
+    <div class="story-block reveal">
+      <h3>The body is still<br>the best sensor.</h3>
+      <p>
+        Modern care waits for symptoms, then a clinic snapshot every six months.
+        The gap between visits is where chronic conditions quietly grow.
+      </p>
+      <p class="story-quote">Physical AI closes that gap.</p>
+    </div>
+
+    <div class="story-block reveal">
+      <h3>Sense. Understand. Act.</h3>
+      <p>
+        Genpulse lets AI continuously observe the body — the way Shennong did,
+        at a scale no human could achieve alone.
+      </p>
+      <div class="story-points">
+        <article class="story-point">
+          <div class="n">01</div>
+          <h4>Sense</h4>
+          <p>Clinical-grade hardware at home. Lushair scans scalp &amp; hair — no waiting room.</p>
+        </article>
+        <article class="story-point">
+          <div class="n">02</div>
+          <h4>Understand</h4>
+          <p>Models track change against 420k+ biological contributions — your baseline, over time.</p>
+        </article>
+        <article class="story-point">
+          <div class="n">03</div>
+          <h4>Act</h4>
+          <p>Recommend, nudge, remember. A personal health model that compounds with every scan.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="story-block reveal">
+      <h3>From hair to the whole body.</h3>
+      <p>
+        Lushair is the first agent. The stack expands to skin, women’s health, and beyond —
+        not a beauty gadget, but infrastructure for continuous biology.
+      </p>
+      <p>
+        Shennong had his mouth. You have Lushair. Both turn the body into a source of truth —
+        yours just lives in a model that gets smarter every day.
+      </p>
+    </div>
+
+    <div class="story-end reveal">
+      <p>The body was always<br>the first instrument.<br>Now it has a memory.</p>
+      <p class="soft">Continuous, personal, on your terms.</p>
+    </div>
+  </article>
+</section>
+
+<!-- Architecture -->
+<section id="architecture" class="section">
+  <p class="eyebrow reveal">How it works</p>
+  <div class="arch-core reveal">YOU</div>
+  <div class="arch-rings">
+    <article class="arch-card reveal">
+      <div class="arch-num">01 — SENSE</div>
+      <h3>Hardware</h3>
+      <p class="role">Capture at home</p>
+      <ul>
+        <li>camera</li>
+        <li>sensors</li>
+        <li>imaging</li>
+      </ul>
+    </article>
+    <article class="arch-card reveal reveal-delay-1">
+      <div class="arch-num">02 — THINK</div>
+      <h3>AI Agents</h3>
+      <p class="role">Health intelligence</p>
+      <ul>
+        <li>context</li>
+        <li>memory</li>
+        <li>reasoning</li>
+      </ul>
+    </article>
+    <article class="arch-card reveal reveal-delay-2">
+      <div class="arch-num">03 — ACT</div>
+      <h3>Self-care</h3>
+      <p class="role">Continuous loop</p>
+      <ul>
+        <li>recommend</li>
+        <li>track</li>
+        <li>adapt</li>
+      </ul>
+    </article>
   </div>
-  <div class="footer-links">
-    <a href="https://www.genpulse.io/" target="_blank">genpulse.io</a>
-    <a href="#products">Products</a>
-    <a href="#enterprise">Enterprise</a>
-    <a href="#developers">Developers</a>
-    <a href="https://twitter.com/GenpulseAI" target="_blank">X / Twitter</a>
-    <a href="mailto:support@genpulse.io">support@genpulse.io</a>
+  <p class="loop-title reveal">Your personal health loop.</p>
+</section>
+
+<!-- Lushair -->
+<section id="first-agent" class="section">
+  <p class="eyebrow reveal" style="text-align:center;">First agent</p>
+  <div class="agent-layout agent-layout--simple">
+    <div class="agent-center reveal" style="grid-column: 1 / -1;">
+      <a class="agent-device" href="https://lushair.ai" target="_blank" rel="noopener" aria-label="Visit lushair.ai">
+        <img src="/devices/hair/lushair-product.png" alt="Lushair Scalp Explorer" width="375" height="485" />
+      </a>
+      <h2><a href="https://lushair.ai" target="_blank" rel="noopener" style="text-decoration:none;">Lushair</a></h2>
+      <p class="tag">AI-powered scalp intelligence.</p>
+      <p class="agent-mantra">See → Understand → Act → Learn</p>
+      <a class="agent-cta" href="https://lushair.ai" target="_blank" rel="noopener">Explore Lushair →</a>
+    </div>
   </div>
+</section>
+
+<!-- Agents -->
+<section id="agents" class="section">
+  <p class="eyebrow reveal" style="text-align:center;">Agent universe</p>
+  <h2 class="display reveal" style="text-align:center;font-size:clamp(32px,5vw,48px);margin:0 auto 36px;max-width:14ch;">
+    One person.<br>Many agents.
+  </h2>
+  <div class="figure-wrap reveal" id="figureWrap" style="margin-top:0;">
+    <a class="agent-orb live" href="https://lushair.ai" target="_blank" rel="noopener">
+      <strong>LUSHAIR</strong>
+      <span>Scalp · live</span>
+    </a>
+    <a class="agent-orb soon-card" href="https://glamskin.ai" target="_blank" rel="noopener">
+      <strong>GLAMSKIN</strong>
+      <span>Skin</span>
+      <em class="soon">Coming soon</em>
+    </a>
+    <div class="agent-orb soon-card">
+      <strong>FINEGYNO</strong>
+      <span>Women’s health</span>
+      <em class="soon">Coming soon</em>
+    </div>
+    <div class="agent-orb soon-card">
+      <strong>DENTAL AI</strong>
+      <span>Oral health</span>
+      <em class="soon">Coming soon</em>
+    </div>
+  </div>
+</section>
+
+<!-- Flywheel -->
+<section id="data-loop" class="section section-tight">
+  <p class="eyebrow reveal" style="text-align:center;">Flywheel</p>
+  <div class="loop-flow reveal">
+    <span class="loop-pill you">YOU</span>
+    <span class="loop-arrow">→</span>
+    <span class="loop-pill">SENSE</span>
+    <span class="loop-arrow">→</span>
+    <span class="loop-pill">UNDERSTAND</span>
+    <span class="loop-arrow">→</span>
+    <span class="loop-pill">ACT</span>
+    <span class="loop-arrow">→</span>
+    <span class="loop-pill">LEARN</span>
+  </div>
+  <p class="moat-line reveal">The more your agent knows you,<br>the more personal it becomes.</p>
+</section>
+
+<!-- CTA -->
+<section id="build" class="section">
+  <p class="eyebrow reveal">Join the ecosystem</p>
+  <h2 class="reveal">Build your agent.</h2>
+  <p class="lede reveal reveal-delay-1" style="margin:0 auto;">
+    Start with Lushair, book a call, or join the waitlist for what’s next.
+  </p>
+  <div class="cta-row reveal reveal-delay-2">
+    <a class="btn btn-fill" href="https://lushair.ai" target="_blank" rel="noopener">Explore Lushair</a>
+    <a class="btn btn-ghost" href="https://calendly.com/fiona-bao-lushair-kgpt/30min" target="_blank" rel="noopener">Book a call</a>
+  </div>
+  <div class="waitlist reveal reveal-delay-3">
+    <p class="waitlist-label">Join the waitlist</p>
+    <form class="waitlist-form" id="waitlistForm" novalidate>
+      <input type="email" id="waitlistEmail" name="email" placeholder="Enter your email" required autocomplete="email" />
+      <button type="submit" id="waitlistBtn">Join</button>
+    </form>
+    <p class="waitlist-msg" id="waitlistMsg" aria-live="polite"></p>
+  </div>
+</section>
+
+<footer>
+  <span>© Genpulse · The physical AI layer for personalized healthcare</span>
+  <span>
+    <a href="https://lushair.ai" target="_blank" rel="noopener">lushair.ai</a>
+    ·
+    <a href="https://glamskin.ai" target="_blank" rel="noopener">glamskin.ai</a>
+    ·
+    <a href="/b2b-pitch-deck.html">B2B deck</a>
+  </span>
 </footer>
 
 <script>
-
-  // Page loader
-  window.addEventListener('load', () => {
-    const loader = document.getElementById('page-loader');
-    setTimeout(() => {
-      loader.classList.add('is-hidden');
-      document.body.classList.remove('is-loading');
-    }, 1100);
+  const nav = document.getElementById('nav');
+  const navToggle = document.getElementById('navToggle');
+  const boot = document.getElementById('boot');
+  navToggle?.addEventListener('click', () => nav.classList.toggle('open'));
+  document.querySelectorAll('#navLinks a').forEach(a => {
+    a.addEventListener('click', () => nav.classList.remove('open'));
   });
 
-  // Nav scroll
-  const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
-  });
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
 
-  // Reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(el => observer.observe(el));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Product lineup hover
-  const LINEUP_PRODUCTS = {
-    hair: {
-      badge: 'Hair & Scalp', badgeClass: 'badge-hair',
-      name: 'Lushair',
-      desc: 'High-magnification scalp imaging with AI analysis for hair density, follicle health, and skin sensitivity mapping across 9 zones.',
-      url: 'https://lushair.ai',
-      comingSoon: false
-    },
-    skin: {
-      badge: 'Skin', badgeClass: 'badge-skin',
-      name: 'Glamskin',
-      desc: 'Skin condition analysis powered by multi-spectrum imaging and skin health AI trained on millions of research data points.',
-      url: 'https://glamskin.ai',
-      comingSoon: false
-    },
-    dental: {
-      badge: 'Dental', badgeClass: 'badge-dental',
-      name: 'Dental AI',
-      desc: 'AI dental analysis with research-grade precision. Tracks oral health signals, plaque buildup, and gum health changes — at home, in real time.',
-      comingSoon: true
-    },
-    eye: {
-      badge: 'Eye', badgeClass: 'badge-eye',
-      name: 'Eye AI',
-      desc: 'Optical health analysis imaging for early signal mapping of eye health issues — from everyday dryness to early-stage pressure anomalies.',
-      comingSoon: true
-    },
-    gyn: {
-      badge: 'Gyn', badgeClass: 'badge-intimate',
-      name: 'Gyn AI',
-      desc: 'Privacy-first women\'s wellness imaging with AI data insights for hydration, sensitivity, and longitudinal health tracking.',
-      comingSoon: true
-    }
-  };
-
-  const COMING_SOON_CATS = ['Dental', 'Eye', 'Gyn'];
-
-  function setLineupProduct(id) {
-    const detail = document.getElementById('lineup-detail');
-    const p = LINEUP_PRODUCTS[id];
-    if (!detail || !p) return;
-    detail.classList.remove('is-default');
-    var action = p.comingSoon
-      ? '<span class="product-lineup-soon">Coming soon</span>'
-      : '<a class="product-lineup-cta" href="' + p.url + '" target="_blank" rel="noopener">Visit ' + p.name + ' →</a>';
-    detail.innerHTML =
-      '<span class="product-lineup-badge product-badge ' + p.badgeClass + '">' + p.badge + '</span>' +
-      '<h3 class="product-lineup-name">' + p.name + '</h3>' +
-      '<p class="product-lineup-desc">' + p.desc + '</p>' + action;
-    document.querySelectorAll('.lineup-hotspot').forEach(function(el) {
-      el.classList.toggle('is-active', el.dataset.lineup === id);
-    });
+  let booted = false;
+  function ready() {
+    if (booted) return;
+    booted = true;
+    document.body.classList.add('is-ready');
+    boot?.classList.add('is-done');
   }
 
-  function resetLineupDetail() {
-    const detail = document.getElementById('lineup-detail');
-    if (!detail) return;
-    detail.classList.add('is-default');
-    detail.innerHTML =
-      '<p class="product-lineup-name">Explore our devices</p>' +
-      '<p class="product-lineup-desc">Hover over each instrument to see its name and purpose.</p>' +
-      '<p class="product-lineup-hint">Lushair · Glamskin · Eye AI · Dental AI · Gyn AI</p>';
-    document.querySelectorAll('.lineup-hotspot').forEach(function(el) {
-      el.classList.remove('is-active');
-    });
+  if (reduceMotion) {
+    ready();
+  } else if (document.readyState === 'complete') {
+    setTimeout(ready, 700);
+  } else {
+    window.addEventListener('load', () => setTimeout(ready, 700));
   }
 
-  document.querySelectorAll('.lineup-hotspot').forEach(function(btn) {
-    btn.addEventListener('mouseenter', function() { setLineupProduct(btn.dataset.lineup); });
-    btn.addEventListener('focus', function() { setLineupProduct(btn.dataset.lineup); });
-    btn.addEventListener('click', function() { setLineupProduct(btn.dataset.lineup); });
-  });
-  var lineupEl = document.querySelector('.product-lineup');
-  if (lineupEl) {
-    lineupEl.addEventListener('mouseleave', function(e) {
-      if (!lineupEl.contains(e.relatedTarget)) resetLineupDetail();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('in');
     });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal, .figure-wrap').forEach(el => io.observe(el));
+
+  const chips = [...document.querySelectorAll('.callout-chip')];
+  let ci = 0;
+  if (chips.length && !reduceMotion) {
+    setInterval(() => {
+      chips.forEach(c => c.classList.remove('active', 'purple'));
+      ci = (ci + 1) % chips.length;
+      chips[ci].classList.add('active');
+      if (chips[ci].dataset.zone === 'scalp') chips[ci].classList.add('purple');
+    }, 2400);
   }
 
-  // ── CHAT SYSTEM ──
-  let chatHistory = [];
-  let currentCategory = '';
-  let isStreaming = false;
-
-  const QUICK_SUGGESTS = {
-    'Dental': ['My gums are bleeding', 'Tooth sensitivity', 'Whitening advice', 'Bad breath'],
-    'Skin': ['Dry patches on face', 'Acne breakouts', 'Skin redness', 'Anti-aging tips'],
-    'Scalp': ['Hair thinning', 'Itchy scalp', 'Dandruff concerns', 'Hair loss rate'],
-    'Eye': ['Dry eyes', 'Eye strain from screens', 'Blurry vision', 'Eye redness'],
-    'Gyn': ['Skin sensitivity', 'Dryness concerns', 'Redness or irritation', 'General wellness'],
-    'Finding': ['Best product for me', 'How does Genpulse work?', 'Compare all products', 'Book a consultation'],
-  };
-
-  function switchChatTab(tab) {
-    ['consult','analyze','connect'].forEach(t => {
-      const btn = document.getElementById('tab-'+t);
-      if (!btn) return;
-      btn.style.background = t === tab ? 'rgba(255,255,255,0.12)' : 'transparent';
-      btn.style.borderColor = t === tab ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)';
-      btn.style.color = t === tab ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.45)';
-    });
-  }
-
-  function selectCategory(btn, cat) {
-    document.querySelectorAll('.chat-cat-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentCategory = cat;
-    const qs = document.getElementById('quick-suggests');
-    if (COMING_SOON_CATS.includes(cat)) {
-      qs.style.display = 'none';
-      document.getElementById('gp-chat-input').placeholder = cat + ' AI is coming soon — try Lushair or Glamskin';
+  const waitlistForm = document.getElementById('waitlistForm');
+  const waitlistEmail = document.getElementById('waitlistEmail');
+  const waitlistMsg = document.getElementById('waitlistMsg');
+  const waitlistBtn = document.getElementById('waitlistBtn');
+  waitlistForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = (waitlistEmail?.value || '').trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!ok) {
+      waitlistMsg.textContent = 'Please enter a valid email.';
+      waitlistMsg.className = 'waitlist-msg err';
       return;
     }
-    qs.style.display = 'flex';
-    qs.innerHTML = (QUICK_SUGGESTS[cat] || []).map(q =>
-      `<button onclick="sendQuick('${q.replace(/'/g,"\\'")}')}" style="padding:6px 13px;border:0.5px solid rgba(255,255,255,0.12);border-radius:100px;font-size:11px;color:rgba(255,255,255,0.55);cursor:pointer;background:rgba(255,255,255,0.04);font-family:var(--font-body);transition:all 0.2s;"
-        onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.85)';"
-        onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.55)';"
-      >${q}</button>`
-    ).join('');
-    document.getElementById('gp-chat-input').placeholder = `Ask about ${cat.toLowerCase()} health...`;
-  }
-
-  function sendQuick(text) {
-    document.getElementById('gp-chat-input').value = text;
-    sendChatMsg();
-  }
-
-  function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  }
-
-  function addMessage(role, content, streaming) {
-    const msgs = document.getElementById('chat-messages');
-    const isUser = role === 'user';
-    const id = 'msg-' + Date.now() + Math.random().toString(36).slice(2);
-    const el = document.createElement('div');
-    el.style.cssText = 'display:flex;gap:10px;align-items:flex-start;' + (isUser ? 'flex-direction:row-reverse;' : '');
-    if (isUser) {
-      el.innerHTML = `<div style="background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px 4px 12px 12px;padding:10px 14px;max-width:80%;margin-left:auto;"><p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;font-weight:300;">${escHtml(content)}</p></div>`;
-    } else {
-      el.innerHTML = `<div style="width:28px;height:28px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-top:2px;"><img src="/logo.png" alt="" class="nav-logo-img nav-logo-img--chat nav-logo-img--light" width="18" height="18" /></div>
-        <div id="${id}" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);border-radius:4px 12px 12px 12px;padding:12px 15px;max-width:88%;"><p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;font-weight:300;">${streaming ? '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>' : escHtml(content)}</p></div>`;
+    try {
+      const list = JSON.parse(localStorage.getItem('genpulse_waitlist') || '[]');
+      if (!list.includes(email)) list.push(email);
+      localStorage.setItem('genpulse_waitlist', JSON.stringify(list));
+    } catch (_) {}
+    waitlistMsg.textContent = "You're on the list. We'll be in touch.";
+    waitlistMsg.className = 'waitlist-msg ok';
+    waitlistForm.reset();
+    if (waitlistBtn) {
+      waitlistBtn.textContent = 'Joined';
+      waitlistBtn.disabled = true;
+      setTimeout(() => {
+        waitlistBtn.textContent = 'Join';
+        waitlistBtn.disabled = false;
+      }, 2400);
     }
-    msgs.appendChild(el);
-    msgs.scrollTop = msgs.scrollHeight;
-    return id;
-  }
-
-  function getMockReply(userMsg) {
-    const lower = userMsg.toLowerCase();
-    const cat = currentCategory || 'General';
-    const productMap = {
-      Dental: 'Dental AI',
-      Skin: 'Glamskin',
-      Scalp: 'Lushair',
-      Eye: 'Eye AI',
-      Gyn: 'Gyn AI',
-      Finding: 'Genpulse',
-    };
-    const product = productMap[cat] || 'Genpulse';
-
-    if (COMING_SOON_CATS.includes(cat)) {
-      return `${product} is coming soon on Genpulse. Our live products today are Lushair (lushair.ai) for hair & scalp, and Glamskin (glamskin.ai) for multi-spectrum skin analysis.\n\nJoin the waitlist at genpulse.io or contact enterprise sales for early access.`;
-    }
-    if (cat === 'Finding' || lower.includes('product') || lower.includes('compare')) {
-      return `Genpulse's live products are Lushair (lushair.ai) for hair & scalp, and Glamskin (glamskin.ai) for skin analysis. Coming soon: Dental AI, Eye AI, and Gyn AI.\n\nEach line includes hardware, research-grade AI models, and SDK/API access for enterprise partners. Visit lushair.ai or glamskin.ai to explore today.`;
-    }
-    if (cat === 'Scalp' || lower.includes('hair') || lower.includes('scalp') || lower.includes('thinning') || lower.includes('dandruff')) {
-      return `Based on your concern, Lushair at lushair.ai can analyze hair density, follicle health, and scalp oiliness using high-magnification imaging across 9 zones.\n\nCommon recommendations include balancing shampoo for moderate oiliness and avoiding high-heat styling on sensitivity zones. This is general information only — please consult a dermatologist or trichologist for health insight.`;
-    }
-    if (cat === 'Skin' || lower.includes('skin') || lower.includes('acne') || lower.includes('dry') || lower.includes('redness')) {
-      return `Glamskin at glamskin.ai analyzes hydration, pore clarity, UV damage, and sensitivity using multi-spectrum imaging trained on research datasets.\n\nFor mild dryness, increase daily hydration and use SPF 30+. Persistent or worsening symptoms warrant a dermatology visit. I'm here to guide — not to provide definitive health insights.`;
-    }
-    if (lower.includes('tooth') || lower.includes('gum') || lower.includes('dental') || lower.includes('whiten')) {
-      return `Dental AI is coming soon. For live Genpulse products today, try Lushair (lushair.ai) or Glamskin (glamskin.ai).\n\nWhen available, Dental AI will assess plaque buildup, gum health, and enamel signals in real time.`;
-    }
-    if (lower.includes('eye') || lower.includes('vision') || lower.includes('dry eye') || lower.includes('strain')) {
-      return `Eye AI is coming soon. For live products, visit lushair.ai or glamskin.ai.\n\nWhen launched, Eye AI will monitor visual acuity, dryness, redness, and early strain indicators.`;
-    }
-    if (lower.includes('gyn') || lower.includes('intimate')) {
-      return `Gyn AI is coming soon. Explore Lushair (lushair.ai) and Glamskin (glamskin.ai) for available Genpulse health analysis today.`;
-    }
-
-    return `Thank you for your question. ${product} — visit lushair.ai or glamskin.ai for our live platforms, or genpulse.io for the full Genpulse experience.\n\nThis assistant provides general information only — always consult a qualified healthcare professional for personal health decisions.`;
-  }
-
-  async function sendChatMsg() {
-    if (isStreaming) return;
-    const input = document.getElementById('gp-chat-input');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    input.style.height = 'auto';
-    isStreaming = true;
-
-    const userMsg = currentCategory ? '[' + currentCategory + '] ' + text : text;
-    addMessage('user', text, false);
-    chatHistory.push({ role: 'user', content: userMsg });
-
-    const typingId = addMessage('assistant', '', true);
-
-    await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
-    const reply = getMockReply(userMsg);
-    const el = document.getElementById(typingId);
-    if (el) el.querySelector('p').innerHTML = escHtml(reply);
-    chatHistory.push({ role: 'assistant', content: reply });
-
-    isStreaming = false;
-    document.getElementById('chat-messages').scrollTop = 9999;
-  }
+  });
 </script>
-<a class="beta-bar" href="https://testflight.apple.com/join/DGMrAzag" target="_blank" rel="noopener">Join the Beta — iOS · TestFlight</a>
 </body>
 </html>
