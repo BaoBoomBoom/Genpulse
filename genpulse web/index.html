@@ -332,263 +332,201 @@
     background: radial-gradient(ellipse at 50% 30%, rgba(139,124,246,0.08), transparent 50%);
   }
 
-  /* ——— Classical decor (Greek sculpture) ——— */
+  /* ——— Story (B/W UX) ——— */
   #story {
-    border-top: 1px solid var(--line);
-    padding: clamp(72px, 12vh, 120px) clamp(20px, 5vw, 80px);
-    overflow: hidden;
-  }
-  .classic-stage {
     position: relative;
+    padding: clamp(80px, 12vh, 120px) clamp(20px, 5vw, 80px);
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.12);
   }
-  .classic-float {
-    position: absolute;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 1.2s ease;
+  .story {
+    max-width: 720px;
+    margin: 0 auto;
   }
-  .classic-float.reveal.in,
-  .classic-float.in {
-    opacity: 0.22;
-    transform: none;
+  .story-hero {
+    text-align: center;
+    margin-bottom: clamp(48px, 8vh, 72px);
+    padding-bottom: clamp(36px, 6vh, 48px);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
   }
-  .classic-float img,
-  .classic-float svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 0 18px rgba(255,255,255,0.1));
+  .story-kicker {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 20px;
   }
-  .classic-float--olive {
-    width: min(88px, 11vw);
-    left: max(16px, 4vw);
-    top: 10%;
-    animation: classicDrift 9s ease-in-out infinite;
+  .story-kicker::before,
+  .story-kicker::after { content: none; }
+  .story-hero h2 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    margin-bottom: 16px;
+    color: #fff;
   }
-  .classic-float--olive.reveal.in,
-  .classic-float--olive.in { opacity: 0.32; }
-  .classic-float--serpent {
-    width: min(64px, 9vw);
-    right: max(20px, 5vw);
-    top: 18%;
-    animation: classicDrift 10s ease-in-out infinite reverse;
+  .story-hero h2 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
   }
-  .classic-float--serpent.reveal.in,
-  .classic-float--serpent.in { opacity: 0.38; }
-  .classic-float--herbs {
-    width: min(100px, 12vw);
-    left: max(20px, 5vw);
-    bottom: 18%;
-    animation: classicDrift 11s ease-in-out infinite;
-    animation-delay: -4s;
+  .story-hero .deck {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.55;
   }
-  .classic-float--herbs.reveal.in,
-  .classic-float--herbs.in { opacity: 0.28; }
-  .classic-float--rod {
-    width: 40px;
-    right: max(28px, 6vw);
-    bottom: 14%;
-    animation: classicDrift 12s ease-in-out infinite reverse;
-  }
-  .classic-float--rod.reveal.in,
-  .classic-float--rod.in { opacity: 0.32; }
 
-  .meander {
+  .story-flow {
     display: flex;
-    justify-content: center;
-    margin: 0 auto 22px;
-    width: min(220px, 70%);
-    overflow: hidden;
+    flex-direction: column;
+    gap: 0;
   }
-  .meander.reveal.in {
-    opacity: 0.45;
-    transform: none;
+  .story-panel {
+    padding: clamp(36px, 5vh, 52px) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
-  .meander svg {
-    width: 100%;
-    height: 18px;
-  }
-  .meander path {
-    stroke: rgba(255,255,255,0.55);
-    fill: none;
-    stroke-width: 1.2;
-    stroke-dasharray: 240;
-    stroke-dashoffset: 240;
-  }
-  .meander.reveal.in path {
-    animation: meanderDraw 2.8s ease forwards, meanderPulse 4s ease-in-out 2.8s infinite;
+  .story-panel::after { content: none; }
+  .story-panel--a,
+  .story-panel--b,
+  .story-panel--c,
+  .story-panel--d { border-radius: 0; }
+  .story-panel--finale {
+    border-bottom: none;
+    text-align: center;
+    padding-top: clamp(56px, 8vh, 80px);
+    padding-bottom: 0;
+    margin-top: 0;
+    background: transparent;
+    border-radius: 0;
   }
 
-  .asclepius-mark {
-    width: 56px;
-    height: 140px;
-    margin: 0 auto 20px;
-    opacity: 0.55;
+  .story-panel h3 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.5vw, 36px);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: #fff;
   }
-  .asclepius-mark .staff {
-    stroke: rgba(255,255,255,0.7);
-    stroke-width: 1.4;
-    stroke-linecap: round;
+  .story-panel p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.75;
+    max-width: 38em;
   }
-  .asclepius-mark .serpent {
-    stroke: rgba(255,255,255,0.85);
-    stroke-width: 1.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-dasharray: 220;
-    stroke-dashoffset: 220;
-    transition: stroke-dashoffset 1.6s cubic-bezier(0.22,1,0.36,1);
+  .story-panel p + p { margin-top: 14px; }
+  .story-quote {
+    margin-top: 24px;
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.5vw, 34px);
+    font-style: italic;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: #fff;
   }
-  .reveal.in .asclepius-mark .serpent {
-    stroke-dashoffset: 0;
-    animation: serpentGlow 3.5s ease-in-out 1.6s infinite;
+
+  .story-loop-intro {
+    max-width: 38em;
+    margin-bottom: 28px;
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.75;
   }
-  .asclepius-mark .cap {
-    fill: rgba(255,255,255,0.85);
+  .story-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+  .story-step {
+    min-height: 0;
+    padding: 24px 20px 28px;
+    border: none;
+    border-right: 1px solid rgba(255,255,255,0.18);
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-radius: 0;
+    transform: none;
+    transition: background 0.2s ease;
+  }
+  .story-step:last-child { border-right: none; }
+  .story-step:nth-child(1),
+  .story-step:nth-child(2),
+  .story-step:nth-child(3) {
+    border-radius: 0;
+    transform: none;
+  }
+  .story-step:hover,
+  .story-step:nth-child(2):hover,
+  .story-step:nth-child(3):hover {
+    transform: none;
+    box-shadow: none;
+    background: rgba(255,255,255,0.04);
+  }
+  .story-step .n {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 14px;
+  }
+  .story-step h4 {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .story-step p {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .story-finale-line {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4.5vw, 44px);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  .story-finale-soft {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
   }
 
   .statement { position: relative; overflow: hidden; }
   .statement > div { position: relative; z-index: 1; }
 
-  .story-end-ornament {
-    width: min(160px, 42vw);
-    margin: 0 auto 28px;
-    opacity: 0.4;
-    animation: classicDrift 8s ease-in-out infinite;
-  }
-
-  @keyframes classicDrift {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  @keyframes meanderDraw {
-    to { stroke-dashoffset: 0; }
-  }
-  @keyframes meanderPulse {
-    0%, 100% { opacity: 0.55; }
-    50% { opacity: 1; }
-  }
-  @keyframes serpentGlow {
-    0%, 100% { opacity: 0.75; }
-    50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(255,255,255,0.35)); }
-  }
-
   @media (max-width: 900px) {
-    .classic-float--olive,
-    .classic-float--serpent,
-    .classic-float--herbs,
-    .classic-float--rod { display: none; }
-  }
-  .story {
-    position: relative;
-    z-index: 1;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .story-head {
-    text-align: center;
-    margin-bottom: clamp(48px, 8vh, 72px);
-  }
-  .story-kicker {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--purple);
-    margin-bottom: 18px;
-  }
-  .story-head h2 {
-    font-family: var(--font-display);
-    font-size: clamp(36px, 5.5vw, 56px);
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    margin-bottom: 14px;
-  }
-  .story-head .deck {
-    font-size: 16px; font-weight: 300; color: var(--muted);
-    line-height: 1.6;
-  }
-  .story-divider {
-    width: 40px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--purple), transparent);
-    margin: 0 auto 20px;
-  }
-  .story-block {
-    margin-bottom: clamp(40px, 6vh, 56px);
-  }
-  .story-block h3 {
-    font-family: var(--font-display);
-    font-size: clamp(24px, 3.2vw, 32px);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin-bottom: 14px;
-  }
-  .story-block h3 em { font-style: italic; color: rgba(255,255,255,0.7); }
-  .story-block p {
-    font-size: 16px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.75;
-    margin-bottom: 12px;
-  }
-  .story-block p:last-child { margin-bottom: 0; }
-  .story-quote {
-    font-family: var(--font-display);
-    font-size: clamp(22px, 3vw, 28px);
-    font-style: italic;
-    letter-spacing: -0.02em;
-    color: rgba(255,255,255,0.88);
-    line-height: 1.3;
-    margin: 20px 0 0;
-  }
-  .story-points {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 28px;
-  }
-  .story-point {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 20px 18px;
-    background: rgba(255,255,255,0.02);
-  }
-  .story-point .n {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
-    color: var(--purple); margin-bottom: 10px;
-  }
-  .story-point h4 {
-    font-size: 15px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px;
-  }
-  .story-point p {
-    font-size: 13px; line-height: 1.55; margin: 0;
-  }
-  .story-end {
-    text-align: center;
-    padding-top: 16px;
-    border-top: 1px solid var(--line);
-    margin-top: clamp(48px, 8vh, 64px);
-  }
-  .story-end p {
-    font-family: var(--font-display);
-    font-size: clamp(26px, 4vw, 40px);
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-  }
-  .story-end .soft {
-    margin-top: 16px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.65;
-    max-width: 34em;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  @media (max-width: 900px) {
-    .story-points { grid-template-columns: 1fr; }
+    .story-steps {
+      grid-template-columns: 1fr;
+    }
+    .story-step {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+    .story-step:last-child { border-bottom: none; }
   }
 
   /* ——— 02 Statements ——— */
@@ -1071,11 +1009,6 @@
       transition-duration: 0.01ms !important;
     }
     .reveal { transform: none; opacity: 1; }
-    .classic-float,
-    .classic-float.reveal { opacity: 0.28; }
-    .meander.reveal { opacity: 0.45; }
-    .meander path,
-    .asclepius-mark .serpent { stroke-dashoffset: 0; animation: none !important; }
     .boot { display: none; }
     .nav, .hero-copy, .hero-body-img, .callout-chip { opacity: 1 !important; transform: none !important; }
   }
@@ -1148,111 +1081,88 @@
 </section>
 
 <!-- Story -->
-<section id="story" class="classic-stage">
-  <div class="classic-float classic-float--olive reveal" aria-hidden="true">
-    <img src="/decor/olive.svg" alt="" />
-  </div>
-  <div class="classic-float classic-float--serpent reveal" aria-hidden="true">
-    <img src="/decor/serpent.svg" alt="" />
-  </div>
-  <div class="classic-float classic-float--herbs reveal" aria-hidden="true">
-    <img src="/decor/herbs.svg" alt="" />
-  </div>
-  <div class="classic-float classic-float--rod reveal" aria-hidden="true">
-    <img src="/decor/rod.svg" alt="" />
-  </div>
-
+<section id="story">
   <article class="story">
-    <header class="story-head">
-      <p class="story-kicker reveal">Story</p>
-      <div class="meander reveal" aria-hidden="true">
-        <svg viewBox="0 0 240 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 18 H12 V6 H24 V18 H36 V6 H48 V18 H60 V6 H72 V18 H84 V6 H96 V18 H108 V6 H120 V18 H132 V6 H144 V18 H156 V6 H168 V18 H180 V6 H192 V18 H204 V6 H216 V18 H228 V6 H240"/>
-        </svg>
-      </div>
-      <h2 class="reveal">The New Asclepius</h2>
-      <p class="deck reveal reveal-delay-1">A story of Physical AI and biohacking.</p>
+    <header class="story-hero reveal">
+      <p class="story-kicker">Story</p>
+      <h2>The New <em>Asclepius</em></h2>
+      <p class="deck">A story of Physical AI and biohacking.</p>
     </header>
 
-    <div class="story-block reveal">
-      <p>
-        Long before clinical trials and wearables, Asclepius learned medicine by watching the natural world —
-        animals seeking herbs, snakes shedding skin and emerging renewed. He used observation —
-        and his own body — as the first instrument. Every reaction was a data point.
-      </p>
-      <p>That is the original biohacking story. We just gave it an upgrade.</p>
-    </div>
-
-    <div class="story-block reveal">
-      <h3>The body is still<br>the best sensor.</h3>
-      <p>
-        Asclepius’s genius wasn’t knowing everything. It was paying attention —
-        to what worked, what didn’t, one observation at a time.
-        Modern care waits for symptoms, then a clinic snapshot every six months.
-        The gap between visits is where chronic conditions quietly grow.
-      </p>
-      <p class="story-quote">Physical AI closes that gap.</p>
-    </div>
-
-    <div class="story-block reveal">
-      <h3>Sense. Understand. Act.</h3>
-      <p>
-        Genpulse lets AI continuously observe the body — the way Asclepius did,
-        at a scale and precision no human could achieve alone.
-      </p>
-      <div class="story-points">
-        <article class="story-point">
-          <div class="n">01</div>
-          <h4>Sense</h4>
-          <p>Clinical-grade hardware at home. Lushair scans scalp &amp; hair — no waiting room.</p>
-        </article>
-        <article class="story-point">
-          <div class="n">02</div>
-          <h4>Understand</h4>
-          <p>Models track change against 420k+ biological contributions — your baseline, over time.</p>
-        </article>
-        <article class="story-point">
-          <div class="n">03</div>
-          <h4>Act</h4>
-          <p>Recommend, nudge, remember. A personal health model that compounds with every scan.</p>
-        </article>
+    <div class="story-flow">
+      <div class="story-panel story-panel--a reveal">
+        <p>
+          Long before clinical trials and wearables, Asclepius learned medicine by watching the natural world —
+          animals seeking herbs, snakes shedding skin and emerging renewed. He used observation —
+          and his own body — as the first instrument. Every reaction was a data point.
+        </p>
+        <p>That is the original biohacking story. We just gave it an upgrade.</p>
       </div>
-    </div>
 
-    <div class="story-block reveal">
-      <h3>From hair to the whole body.</h3>
-      <p>
-        Asclepius didn’t stop at one remedy. Lushair is our first agent —
-        the stack expands to skin, women’s health, and beyond.
-        Not a beauty gadget: infrastructure for continuous biology.
-      </p>
-    </div>
+      <div class="story-panel story-panel--b reveal">
+        <h3>The body is still<br>the best sensor.</h3>
+        <p>
+          Asclepius’s genius wasn’t knowing everything. It was paying attention —
+          to what worked, what didn’t, one observation at a time.
+          Modern care waits for symptoms, then a clinic snapshot every six months.
+          The gap between visits is where chronic conditions quietly grow.
+        </p>
+        <p class="story-quote">Physical AI closes that gap.</p>
+      </div>
 
-    <div class="story-block reveal">
-      <svg class="asclepius-mark" viewBox="0 0 80 220" aria-hidden="true">
-        <line class="staff" x1="40" y1="8" x2="40" y2="210"/>
-        <circle class="cap" cx="40" cy="10" r="3"/>
-        <path class="serpent" d="M40 40 C58 52, 58 78, 40 90 C22 102, 22 128, 40 140 C58 152, 58 178, 40 190"/>
-        <circle class="cap" cx="48" cy="48" r="2.2"/>
-      </svg>
-      <h3>The rod and the serpent.</h3>
-      <p>
-        Asclepius carried a staff with a serpent coiled around it —
-        shedding, renewing, a cycle of observation and adaptation.
-        We carry a different staff: a sensor that coils around your biology,
-        shedding old data and emerging with new insight every scan.
-      </p>
-      <p>
-        Asclepius had his eyes and his serpent. You have Lushair.
-        Both turn the body into a source of truth —
-        yours lives in a model that gets smarter every day.
-      </p>
-    </div>
+      <div class="story-panel story-panel--c reveal">
+        <h3>Sense. Understand. Act.</h3>
+        <p class="story-loop-intro">
+          Genpulse lets AI continuously observe the body — the way Asclepius did,
+          at a scale and precision no human could achieve alone.
+        </p>
+        <div class="story-steps">
+          <article class="story-step">
+            <div class="n">01</div>
+            <h4>Sense</h4>
+            <p>Clinical-grade hardware at home. Lushair scans scalp &amp; hair — no waiting room.</p>
+          </article>
+          <article class="story-step">
+            <div class="n">02</div>
+            <h4>Understand</h4>
+            <p>Models track change against 420k+ biological contributions — your baseline, over time.</p>
+          </article>
+          <article class="story-step">
+            <div class="n">03</div>
+            <h4>Act</h4>
+            <p>Recommend, nudge, remember. A personal health model that compounds with every scan.</p>
+          </article>
+        </div>
+      </div>
 
-    <div class="story-end reveal">
-      <img class="story-end-ornament" src="/decor/laurel.svg" alt="" aria-hidden="true" />
-      <p>The body was always<br>the first instrument.<br>Now it has a memory.</p>
-      <p class="soft">Continuous, personal, on your terms.</p>
+      <div class="story-panel story-panel--d reveal">
+        <h3>From hair to the whole body.</h3>
+        <p>
+          Asclepius didn’t stop at one remedy. Lushair is our first agent —
+          the stack expands to skin, women’s health, and beyond.
+          Not a beauty gadget: infrastructure for continuous biology.
+        </p>
+      </div>
+
+      <div class="story-panel story-panel--a reveal">
+        <h3>The rod and the serpent.</h3>
+        <p>
+          Asclepius carried a staff with a serpent coiled around it —
+          shedding, renewing, a cycle of observation and adaptation.
+          We carry a different staff: a sensor that coils around your biology,
+          shedding old data and emerging with new insight every scan.
+        </p>
+        <p>
+          Asclepius had his eyes and his serpent. You have Lushair.
+          Both turn the body into a source of truth —
+          yours lives in a model that gets smarter every day.
+        </p>
+      </div>
+
+      <div class="story-panel story-panel--finale reveal">
+        <p class="story-finale-line">The body was always<br>the first instrument.<br>Now it has a memory.</p>
+        <p class="story-finale-soft">Continuous, personal, on your terms.</p>
+      </div>
     </div>
   </article>
 </section>
