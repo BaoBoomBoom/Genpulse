@@ -17,13 +17,22 @@
     --fg: #ffffff;
     --muted: rgba(255,255,255,0.55);
     --faint: rgba(255,255,255,0.22);
-    --line: rgba(255,255,255,0.1);
+    --line: rgba(255,255,255,0.12);
     --purple: #8b7cf6;
     --purple-soft: rgba(139,124,246,0.35);
     --purple-glow: rgba(139,124,246,0.18);
     --font-display: 'Instrument Serif', serif;
     --font-body: 'DM Sans', sans-serif;
     --nav-h: 72px;
+    /* Type scale */
+    --text-eyebrow: 11px;
+    --text-caption: 13px;
+    --text-body: 15px;
+    --text-lede: 17px;
+    --display-sm: clamp(24px, 3.2vw, 32px);
+    --display-md: clamp(32px, 4.8vw, 48px);
+    --display-lg: clamp(40px, 6.5vw, 64px);
+    --display-xl: clamp(44px, 7.5vw, 72px);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,17 +71,17 @@
   }
   .nav-logo {
     display: flex; align-items: center; gap: 10px;
-    font-size: 13px; font-weight: 600; letter-spacing: 0.14em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.16em;
   }
   .nav-logo img { width: 22px; height: 22px; filter: invert(1); }
   .nav-links {
     display: flex; gap: clamp(18px, 2.5vw, 36px);
-    font-size: 12px; font-weight: 400; letter-spacing: 0.04em;
+    font-size: var(--text-caption); font-weight: 400; letter-spacing: 0.04em;
     color: var(--muted);
   }
   .nav-links a:hover { color: var(--fg); }
   .nav-cta {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.1em;
     padding: 10px 16px;
     border: 1px solid rgba(255,255,255,0.28);
     border-radius: 999px;
@@ -97,19 +106,20 @@
 
   /* ——— Shared ——— */
   .eyebrow {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
   }
   .display {
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: -0.03em;
-    line-height: 0.98;
+    line-height: 1.02;
+    font-size: var(--display-md);
   }
   .display em { font-style: italic; color: var(--purple); }
   .lede {
-    font-size: clamp(15px, 1.6vw, 18px);
-    font-weight: 300; line-height: 1.7; color: var(--muted);
+    font-size: var(--text-lede);
+    font-weight: 300; line-height: 1.65; color: var(--muted);
     max-width: 34em;
   }
   .section {
@@ -139,38 +149,128 @@
     position: fixed; inset: 0; z-index: 200;
     background: #000;
     display: grid; place-items: center;
-    transition: opacity 0.7s ease, visibility 0.7s;
+    transition: opacity 0.85s ease, visibility 0.85s;
   }
   .boot.is-done {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
   }
-  .boot-mark {
-    text-align: center;
-    opacity: 0;
-    animation: bootIn 0.8s ease forwards;
+  .boot-stage {
+    position: relative;
+    width: min(220px, 70vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
   }
-  .boot-mark img {
-    width: 36px; height: 36px; margin: 0 auto 16px;
+  .boot-orbit {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: grid;
+    place-items: center;
+  }
+  .boot-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+    animation: bootPulse 1.8s ease-out infinite;
+  }
+  .boot-ring:nth-child(2) {
+    inset: 12px;
+    border-color: rgba(255,255,255,0.22);
+    animation-delay: 0.2s;
+  }
+  .boot-ring:nth-child(3) {
+    inset: 24px;
+    border-color: rgba(255,255,255,0.35);
+    animation-delay: 0.4s;
+  }
+  .boot-scan {
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    border-top-color: #fff;
+    border-right-color: rgba(255,255,255,0.25);
+    animation: bootSpin 1.4s linear infinite;
+  }
+  .boot-core {
+    position: relative;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.28);
+    animation: bootCore 1.2s ease forwards;
+  }
+  .boot-core img {
+    width: 22px;
+    height: 22px;
     filter: invert(1);
-    opacity: 0.9;
+    opacity: 0.95;
   }
-  .boot-mark span {
+  .boot-word {
+    display: flex;
+    gap: 0.08em;
+    font-size: var(--text-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-indent: 0.32em;
+  }
+  .boot-word span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: bootLetter 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .boot-word span:nth-child(1) { animation-delay: 0.15s; }
+  .boot-word span:nth-child(2) { animation-delay: 0.22s; }
+  .boot-word span:nth-child(3) { animation-delay: 0.29s; }
+  .boot-word span:nth-child(4) { animation-delay: 0.36s; }
+  .boot-word span:nth-child(5) { animation-delay: 0.43s; }
+  .boot-word span:nth-child(6) { animation-delay: 0.5s; }
+  .boot-word span:nth-child(7) { animation-delay: 0.57s; }
+  .boot-word span:nth-child(8) { animation-delay: 0.64s; }
+  .boot-bar {
+    width: 88px;
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+    overflow: hidden;
+    border-radius: 1px;
+  }
+  .boot-bar i {
     display: block;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.28em;
-  }
-  .boot-line {
-    width: 72px; height: 1px; margin: 18px auto 0;
-    background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    width: 100%;
+    height: 100%;
+    background: #fff;
     transform: scaleX(0);
-    animation: bootLine 0.9s 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+    transform-origin: left center;
+    animation: bootBar 1.6s 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
   }
-  @keyframes bootIn {
-    from { opacity: 0; transform: translateY(8px); }
+  @keyframes bootPulse {
+    0% { transform: scale(0.86); opacity: 0.8; }
+    70% { opacity: 0.2; }
+    100% { transform: scale(1.18); opacity: 0; }
+  }
+  @keyframes bootSpin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes bootCore {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes bootLetter {
     to { opacity: 1; transform: none; }
   }
-  @keyframes bootLine { to { transform: scaleX(1); } }
+  @keyframes bootBar {
+    to { transform: scaleX(1); }
+  }
 
   /* ——— 01 Hero ——— */
   #hero {
@@ -270,7 +370,7 @@
   body.is-ready .hero-side--right .callout-chip:nth-child(2) { transition-delay: 0.6s; }
   .callout-chip strong {
     display: block;
-    font-size: 11px;
+    font-size: var(--text-eyebrow);
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -293,24 +393,24 @@
   }
   .hero-copy h1 {
     font-family: var(--font-display);
-    font-size: clamp(36px, 6.5vw, 72px);
+    font-size: var(--display-xl);
     font-weight: 400;
     letter-spacing: -0.035em;
-    line-height: 0.96;
-    margin-bottom: 18px;
+    line-height: 0.98;
+    margin-bottom: 16px;
   }
   .hero-sub {
-    font-size: clamp(14px, 1.5vw, 17px);
+    font-size: var(--text-lede);
     font-weight: 300; color: var(--muted); line-height: 1.65;
     max-width: 32em; margin: 0 auto 28px;
   }
   .hero-brand {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
-    margin-bottom: 10px; color: rgba(255,255,255,0.75);
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.2em;
+    margin-bottom: 12px; color: rgba(255,255,255,0.7);
   }
   .explore {
     display: inline-flex; align-items: center; gap: 10px;
-    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+    font-size: var(--text-caption); font-weight: 500; letter-spacing: 0.08em;
     color: var(--muted); transition: color 0.25s;
   }
   .explore:hover { color: var(--fg); }
@@ -350,22 +450,22 @@
     border-bottom: 1px solid rgba(255,255,255,0.12);
   }
   .story-kicker {
-    font-size: 11px;
+    font-size: var(--text-eyebrow);
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.45);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
   .story-kicker::before,
   .story-kicker::after { content: none; }
   .story-hero h2 {
     font-family: var(--font-display);
-    font-size: clamp(40px, 7vw, 72px);
+    font-size: var(--display-lg);
     font-weight: 400;
     letter-spacing: -0.035em;
-    line-height: 1;
-    margin-bottom: 16px;
+    line-height: 1.02;
+    margin-bottom: 14px;
     color: #fff;
   }
   .story-hero h2 em {
@@ -373,7 +473,7 @@
     color: rgba(255,255,255,0.55);
   }
   .story-hero .deck {
-    font-size: 16px;
+    font-size: var(--text-lede);
     font-weight: 300;
     color: rgba(255,255,255,0.5);
     line-height: 1.55;
@@ -410,25 +510,25 @@
 
   .story-panel h3 {
     font-family: var(--font-display);
-    font-size: clamp(26px, 3.5vw, 36px);
+    font-size: var(--display-sm);
     font-weight: 400;
     letter-spacing: -0.025em;
     line-height: 1.15;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     color: #fff;
   }
   .story-panel p {
-    font-size: 16px;
+    font-size: var(--text-body);
     font-weight: 300;
     color: rgba(255,255,255,0.55);
-    line-height: 1.75;
+    line-height: 1.7;
     max-width: 38em;
   }
-  .story-panel p + p { margin-top: 14px; }
+  .story-panel p + p { margin-top: 12px; }
   .story-quote {
-    margin-top: 24px;
+    margin-top: 22px;
     font-family: var(--font-display);
-    font-size: clamp(24px, 3.5vw, 34px);
+    font-size: var(--display-sm);
     font-style: italic;
     letter-spacing: -0.025em;
     line-height: 1.2;
@@ -437,11 +537,11 @@
 
   .story-loop-intro {
     max-width: 38em;
-    margin-bottom: 28px;
-    font-size: 16px;
+    margin-bottom: 24px;
+    font-size: var(--text-body);
     font-weight: 300;
     color: rgba(255,255,255,0.55);
-    line-height: 1.75;
+    line-height: 1.7;
   }
   .story-steps {
     display: grid;
@@ -478,22 +578,22 @@
   }
   .story-step .n {
     font-family: var(--font-body);
-    font-size: 12px;
+    font-size: var(--text-eyebrow);
     font-weight: 600;
     letter-spacing: 0.12em;
     line-height: 1;
     color: rgba(255,255,255,0.35);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .story-step h4 {
-    font-size: 16px;
+    font-size: var(--text-body);
     font-weight: 500;
     letter-spacing: -0.01em;
     margin-bottom: 8px;
     color: #fff;
   }
   .story-step p {
-    font-size: 13px;
+    font-size: var(--text-caption);
     font-weight: 300;
     color: rgba(255,255,255,0.5);
     line-height: 1.55;
@@ -502,14 +602,14 @@
 
   .story-finale-line {
     font-family: var(--font-display);
-    font-size: clamp(28px, 4.5vw, 44px);
+    font-size: var(--display-md);
     letter-spacing: -0.03em;
-    line-height: 1.15;
-    margin-bottom: 16px;
+    line-height: 1.12;
+    margin-bottom: 14px;
     color: #fff;
   }
   .story-finale-soft {
-    font-size: 15px;
+    font-size: var(--text-body);
     font-weight: 300;
     color: rgba(255,255,255,0.45);
     line-height: 1.65;
@@ -538,7 +638,7 @@
   }
   .statement h2 {
     font-family: var(--font-display);
-    font-size: clamp(34px, 6.5vw, 76px);
+    font-size: var(--display-xl);
     letter-spacing: -0.035em;
     line-height: 1.02;
     max-width: 16ch;
@@ -546,8 +646,8 @@
   .statement--soft h2 { color: rgba(255,255,255,0.88); }
   .statement-follow {
     margin-top: 36px;
-    font-size: clamp(15px, 1.6vw, 18px);
-    font-weight: 300; color: var(--muted); line-height: 1.7;
+    font-size: var(--text-lede);
+    font-weight: 300; color: var(--muted); line-height: 1.65;
     max-width: 34em; margin-left: auto; margin-right: auto;
   }
 
@@ -568,7 +668,7 @@
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.25);
     display: grid; place-items: center;
-    font-size: 13px; font-weight: 600; letter-spacing: 0.14em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.14em;
     box-shadow: 0 0 60px var(--purple-glow);
     position: relative;
   }
@@ -600,26 +700,26 @@
     transform: translateY(-4px);
   }
   .arch-num {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.16em;
     color: var(--purple); margin-bottom: 14px;
   }
   .arch-card h3 {
-    font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 6px;
+    font-size: 20px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 6px;
   }
   .arch-card .role {
-    font-size: 12px; color: var(--muted); margin-bottom: 18px; letter-spacing: 0.04em;
+    font-size: var(--text-caption); color: var(--muted); margin-bottom: 18px; letter-spacing: 0.04em;
   }
   .arch-card ul {
     list-style: none; display: flex; flex-wrap: wrap; gap: 8px;
   }
   .arch-card li {
-    font-size: 11px; letter-spacing: 0.04em;
+    font-size: var(--text-eyebrow); letter-spacing: 0.04em;
     padding: 6px 10px; border-radius: 999px;
     border: 1px solid var(--line); color: var(--muted);
   }
   .loop-title {
     font-family: var(--font-display);
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: var(--display-md);
     letter-spacing: -0.02em;
   }
 
@@ -638,7 +738,7 @@
     text-align: center;
   }
   .agent-layout--simple .agent-mantra {
-    font-size: 14px;
+    font-size: var(--text-caption);
     font-style: normal;
     letter-spacing: 0.06em;
     color: var(--muted);
@@ -646,11 +746,11 @@
   }
   .agent-side { display: flex; flex-direction: column; gap: 28px; }
   .agent-step h4 {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.16em;
     color: var(--purple); margin-bottom: 8px;
   }
   .agent-step p {
-    font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.55;
+    font-size: var(--text-caption); font-weight: 300; color: var(--muted); line-height: 1.55;
   }
   .agent-center { text-align: center; }
   .agent-device {
@@ -682,23 +782,23 @@
   .agent-device:hover img { transform: scale(1.04); }
   .agent-center h2 {
     font-family: var(--font-display);
-    font-size: clamp(36px, 5vw, 56px);
+    font-size: var(--display-md);
     letter-spacing: -0.03em;
     margin-bottom: 8px;
   }
   .agent-center .tag {
-    font-size: 14px; font-weight: 300; color: var(--muted); margin-bottom: 24px;
+    font-size: var(--text-body); font-weight: 300; color: var(--muted); margin-bottom: 24px;
   }
   .agent-mantra {
     font-family: var(--font-display);
-    font-size: clamp(20px, 2.5vw, 28px);
+    font-size: var(--display-sm);
     font-style: italic;
     color: rgba(255,255,255,0.78);
     line-height: 1.35;
   }
   .agent-cta {
     display: inline-flex; margin-top: 28px;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.1em;
     padding: 12px 20px; border-radius: 999px;
     background: var(--fg); color: var(--bg);
     transition: opacity 0.25s;
@@ -743,9 +843,9 @@
   .figure-wrap.in .agent-orb:nth-child(4) { transition-delay: 0.24s; }
   .figure-wrap.in .agent-orb:nth-child(5) { transition-delay: 0.32s; }
   .agent-orb strong {
-    display: block; font-size: 11px; letter-spacing: 0.12em; margin-bottom: 6px;
+    display: block; font-size: var(--text-eyebrow); letter-spacing: 0.12em; margin-bottom: 6px;
   }
-  .agent-orb span { font-size: 13px; color: var(--muted); font-weight: 300; }
+  .agent-orb span { font-size: var(--text-caption); color: var(--muted); font-weight: 300; }
   .agent-orb .soon {
     display: inline-block;
     margin-top: 10px;
@@ -768,9 +868,9 @@
   .figure-wrap.in .agent-orb.soon-card { opacity: 0.72; }
   .many-title {
     font-family: var(--font-display);
-    font-size: clamp(36px, 6vw, 64px);
+    font-size: var(--display-lg);
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 1.02;
     margin-top: 28px;
   }
 
@@ -795,12 +895,12 @@
     background: rgba(255,255,255,0.02);
   }
   .uni-domain {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.16em;
     color: var(--muted); margin-bottom: 20px;
   }
-  .uni-card h3 { font-size: 22px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .uni-card h3 { font-size: 20px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.02em; }
   .uni-card .layer {
-    font-size: 12px; color: var(--muted); font-weight: 300;
+    font-size: var(--text-caption); color: var(--muted); font-weight: 300;
     padding: 10px 0; border-top: 1px solid var(--line);
   }
   .uni-card .layer:first-of-type { border-top: none; margin-top: 12px; }
@@ -808,9 +908,9 @@
     text-align: center;
     margin-top: 56px;
     font-family: var(--font-display);
-    font-size: clamp(32px, 5vw, 56px);
+    font-size: var(--display-md);
     letter-spacing: -0.03em;
-    line-height: 1.05;
+    line-height: 1.08;
   }
 
   /* ——— 07 Data loop ——— */
@@ -824,7 +924,7 @@
     margin: 36px auto 40px;
   }
   .loop-pill {
-    font-size: 11px;
+    font-size: var(--text-eyebrow);
     font-weight: 600;
     letter-spacing: 0.1em;
     padding: 12px 16px;
@@ -852,7 +952,7 @@
   }
   .moat-line {
     font-family: var(--font-display);
-    font-size: clamp(26px, 4vw, 42px);
+    font-size: var(--display-md);
     letter-spacing: -0.02em;
     line-height: 1.15;
     max-width: 16ch;
@@ -866,9 +966,9 @@
   }
   #data-value h2 {
     font-family: var(--font-display);
-    font-size: clamp(32px, 5vw, 56px);
+    font-size: var(--display-md);
     letter-spacing: -0.03em;
-    line-height: 1.05;
+    line-height: 1.08;
     max-width: 14ch;
     margin-bottom: 24px;
   }
@@ -883,9 +983,9 @@
   }
   #build h2 {
     font-family: var(--font-display);
-    font-size: clamp(44px, 8vw, 88px);
+    font-size: var(--display-xl);
     letter-spacing: -0.035em;
-    line-height: 0.95;
+    line-height: 0.98;
     margin-bottom: 16px;
   }
   .cta-row {
@@ -895,7 +995,7 @@
     margin-top: 40px;
   }
   .btn {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.1em;
     padding: 14px 22px; border-radius: 999px;
     border: 1px solid rgba(255,255,255,0.28);
     transition: background 0.25s, color 0.25s, border-color 0.25s;
@@ -910,7 +1010,7 @@
     text-align: left;
   }
   .waitlist-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--muted);
     margin-bottom: 12px; text-align: center;
   }
@@ -928,7 +1028,7 @@
     background: transparent;
     color: var(--fg);
     font: inherit;
-    font-size: 14px;
+    font-size: var(--text-body);
     font-weight: 300;
     padding: 10px 16px;
     outline: none;
@@ -936,7 +1036,7 @@
   .waitlist-form input::placeholder { color: rgba(255,255,255,0.35); }
   .waitlist-form button {
     flex-shrink: 0;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    font-size: var(--text-eyebrow); font-weight: 600; letter-spacing: 0.08em;
     padding: 12px 18px; border-radius: 999px;
     border: none;
     background: var(--fg); color: var(--bg);
@@ -947,7 +1047,7 @@
   .waitlist-form button:disabled { opacity: 0.5; cursor: default; }
   .waitlist-msg {
     margin-top: 12px;
-    font-size: 13px; font-weight: 300; color: var(--muted);
+    font-size: var(--text-caption); font-weight: 300; color: var(--muted);
     text-align: center;
     min-height: 1.2em;
   }
@@ -959,7 +1059,7 @@
     border-top: 1px solid var(--line);
     display: flex; flex-wrap: wrap; gap: 16px;
     justify-content: space-between;
-    font-size: 12px; color: var(--muted);
+    font-size: var(--text-caption); color: var(--muted);
   }
   footer a:hover { color: var(--fg); }
 
@@ -1011,15 +1111,26 @@
     .reveal { transform: none; opacity: 1; }
     .boot { display: none; }
     .nav, .hero-copy, .hero-body-img, .callout-chip { opacity: 1 !important; transform: none !important; }
+    .boot-word span { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 <div class="boot" id="boot" aria-hidden="true">
-  <div class="boot-mark">
-    <img src="/logo.png" alt="" />
-    <span>GENPULSE</span>
-    <div class="boot-line"></div>
+  <div class="boot-stage">
+    <div class="boot-orbit">
+      <span class="boot-ring"></span>
+      <span class="boot-ring"></span>
+      <span class="boot-ring"></span>
+      <span class="boot-scan"></span>
+      <div class="boot-core">
+        <img src="/logo.png" alt="" />
+      </div>
+    </div>
+    <div class="boot-word" aria-label="GENPULSE">
+      <span>G</span><span>E</span><span>N</span><span>P</span><span>U</span><span>L</span><span>S</span><span>E</span>
+    </div>
+    <div class="boot-bar"><i></i></div>
   </div>
 </div>
 
@@ -1326,9 +1437,9 @@
   if (reduceMotion) {
     ready();
   } else if (document.readyState === 'complete') {
-    setTimeout(ready, 700);
+    setTimeout(ready, 1900);
   } else {
-    window.addEventListener('load', () => setTimeout(ready, 700));
+    window.addEventListener('load', () => setTimeout(ready, 1900));
   }
 
   const io = new IntersectionObserver((entries) => {
