@@ -13,15 +13,19 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --porcelain: #f7f7f5;
+    --porcelain: #000000; /* legacy token — site is cinematic black */
+    --bg: #000000;
+    --bg-soft: #0a0a0b;
+    --surface: rgba(255,255,255,0.03);
+    --surface-solid: #111113;
     --white: #ffffff;
     --ink: #0a0a0b;
-    --ink-soft: #1a1a1c;
-    --muted: rgba(10,10,11,0.55);
+    --ink-soft: rgba(255,255,255,0.88);
+    --muted: rgba(255,255,255,0.55);
     --muted-light: rgba(255,255,255,0.55);
-    --faint: rgba(10,10,11,0.18);
+    --faint: rgba(255,255,255,0.18);
     --faint-light: rgba(255,255,255,0.18);
-    --line: rgba(10,10,11,0.1);
+    --line: rgba(255,255,255,0.12);
     --line-light: rgba(255,255,255,0.12);
     --purple: #8b7cf6;
     --purple-soft: rgba(139,124,246,0.22);
@@ -34,11 +38,11 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; color-scheme: dark; }
   body {
     font-family: var(--font-body);
-    background: var(--porcelain);
-    color: var(--ink);
+    background: #000;
+    color: #fff;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -54,7 +58,7 @@
   .boot {
     position: fixed; inset: 0; z-index: 1000;
     display: grid; place-items: center;
-    background: var(--ink);
+    background: #000;
     transition: opacity 0.7s var(--ease), visibility 0.7s;
   }
   .boot.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -125,7 +129,7 @@
     to { width: 100%; }
   }
 
-  /* ——— Nav ——— */
+  /* ——— Nav (always dark) ——— */
   .nav {
     position: fixed; inset: 0 0 auto 0; z-index: 100;
     height: var(--nav-h);
@@ -134,25 +138,25 @@
     background: transparent;
     transition: background 0.3s, border-color 0.3s, color 0.3s, opacity 0.7s, transform 0.7s;
     opacity: 0; transform: translateY(-8px);
-    color: var(--ink);
+    color: #fff;
   }
   body.is-ready .nav { opacity: 1; transform: none; }
   .nav.scrolled {
-    background: rgba(247,247,245,0.88);
+    background: rgba(0,0,0,0.72);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--line);
   }
   .nav.on-dark { color: #fff; }
   .nav.on-dark.scrolled {
-    background: rgba(10,10,11,0.88);
-    border-bottom-color: var(--line-light);
+    background: rgba(0,0,0,0.72);
+    border-bottom-color: var(--line);
   }
   .nav-logo {
     display: flex; align-items: center; gap: 10px;
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
   }
-  .nav-logo img { width: 20px; height: 20px; transition: filter 0.3s; }
-  .nav.on-dark .nav-logo img { filter: invert(1); }
+  .nav-logo img { width: 20px; height: 20px; filter: invert(1); }
   .nav-links {
     display: flex; gap: clamp(16px, 2.2vw, 32px);
     font-size: 13px; letter-spacing: 0.02em;
@@ -162,12 +166,10 @@
   .nav-cta {
     font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
     padding: 10px 16px; border-radius: 999px;
-    border: 1px solid rgba(10,10,11,0.22);
+    border: 1px solid rgba(255,255,255,0.28);
     transition: background 0.25s, color 0.25s, border-color 0.25s;
   }
-  .nav-cta:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .nav.on-dark .nav-cta { border-color: rgba(255,255,255,0.28); }
-  .nav.on-dark .nav-cta:hover { background: #fff; color: var(--ink); border-color: #fff; }
+  .nav-cta:hover { background: #fff; color: #000; border-color: #fff; }
   .nav-toggle { display: none; width: 40px; height: 40px; align-items: center; justify-content: center; }
   .nav-toggle span {
     display: block; width: 18px; height: 1px; background: currentColor; position: relative;
@@ -185,7 +187,7 @@
     position: relative;
   }
   .section-dark {
-    background: var(--ink);
+    background: var(--bg-soft);
     color: #fff;
   }
   .wrap { max-width: var(--max); margin: 0 auto; }
@@ -197,8 +199,8 @@
   .display {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(36px, 6vw, 64px);
-    line-height: 1.05;
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1.02;
     letter-spacing: -0.02em;
   }
   .lede {
@@ -215,14 +217,15 @@
     letter-spacing: 0.04em; transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s;
   }
   .btn:hover { transform: translateY(-1px); }
-  .btn-fill { background: var(--ink); color: #fff; }
-  .btn-fill:hover { background: #222; }
+  .btn-fill { background: #fff; color: #000; }
+  .btn-fill:hover { background: #f0f0ee; }
   .btn-ghost {
-    border: 1px solid rgba(10,10,11,0.18);
+    border: 1px solid rgba(255,255,255,0.28);
     background: transparent;
+    color: #fff;
   }
-  .btn-ghost:hover { border-color: var(--ink); }
-  .section-dark .btn-fill { background: #fff; color: var(--ink); }
+  .btn-ghost:hover { border-color: #fff; }
+  .section-dark .btn-fill { background: #fff; color: #000; }
   .section-dark .btn-fill:hover { background: #f0f0ee; }
   .section-dark .btn-ghost { border-color: rgba(255,255,255,0.28); color: #fff; }
   .section-dark .btn-ghost:hover { border-color: #fff; }
@@ -249,8 +252,9 @@
     padding-top: calc(var(--nav-h) + 24px);
     padding-bottom: 48px;
     background:
-      radial-gradient(ellipse 60% 40% at 70% 30%, var(--purple-glow), transparent 60%),
-      linear-gradient(180deg, var(--white) 0%, var(--porcelain) 100%);
+      radial-gradient(ellipse 55% 42% at 72% 28%, var(--purple-glow), transparent 62%),
+      radial-gradient(ellipse 40% 30% at 15% 70%, rgba(139,124,246,0.06), transparent 55%),
+      #000;
     display: flex; align-items: center;
   }
   .hero-grid {
@@ -274,9 +278,9 @@
   .orbit-item {
     position: absolute; width: clamp(72px, 14vw, 120px);
     border-radius: 14px; overflow: hidden;
-    box-shadow: 0 12px 40px rgba(10,10,11,0.1);
-    border: 1px solid rgba(10,10,11,0.06);
-    background: #fff;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--surface-solid);
     opacity: 0; transform: scale(0.92);
     transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
   }
@@ -307,8 +311,8 @@
     background: #111;
     border: 1px solid rgba(255,255,255,0.12);
     box-shadow:
-      0 40px 80px rgba(10,10,11,0.18),
-      0 0 0 1px rgba(10,10,11,0.04);
+      0 40px 100px rgba(0,0,0,0.65),
+      0 0 0 1px rgba(255,255,255,0.04);
     overflow: hidden;
     opacity: 0; transform: translateY(16px);
     transition: opacity 1s var(--ease) 0.15s, transform 1s var(--ease) 0.15s;
@@ -350,7 +354,11 @@
   .phone-points strong { color: var(--purple); font-weight: 600; }
 
   /* ——— Day timeline ——— */
-  #day-timeline { background: var(--porcelain); }
+  #day-timeline {
+    background:
+      radial-gradient(ellipse 50% 35% at 10% 0%, rgba(139,124,246,0.07), transparent 55%),
+      #000;
+  }
   .timeline {
     margin-top: 48px;
     position: relative;
@@ -369,22 +377,25 @@
   .tl-marker {
     width: 36px; height: 36px; border-radius: 50%;
     display: grid; place-items: center;
-    background: var(--white); border: 1px solid var(--line);
+    background: var(--surface-solid); border: 1px solid var(--line);
     position: relative; z-index: 1;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
   }
   .tl-marker i {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--ink);
+    width: 7px; height: 7px; border-radius: 50%; background: #fff;
   }
   .tl-item.is-points .tl-marker {
-    border-color: var(--purple-soft); background: rgba(139,124,246,0.08);
+    border-color: var(--purple-soft); background: rgba(139,124,246,0.12);
   }
   .tl-item.is-points .tl-marker i { background: var(--purple); }
   .tl-card {
     display: grid; grid-template-columns: 88px 1fr;
     gap: 16px; align-items: center;
     padding: 14px; border-radius: 18px;
-    background: var(--white);
+    background: var(--surface);
     border: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
   }
   .tl-card img {
     width: 88px; height: 88px; object-fit: cover; border-radius: 12px;
@@ -403,7 +414,7 @@
   }
 
   /* ——— Snap ——— */
-  #snap { background: var(--white); }
+  #snap { background: var(--bg-soft); }
   .snap-grid {
     margin-top: 48px;
     display: grid; grid-template-columns: repeat(2, 1fr);
@@ -475,6 +486,7 @@
     border: 1px solid var(--line-light);
     padding: 28px 20px 24px; text-align: center;
     opacity: 0.72;
+    background: var(--surface);
   }
   .coming-card img {
     height: 120px; width: auto; margin: 0 auto 18px; object-fit: contain;
@@ -490,7 +502,11 @@
   }
 
   /* ——— History ——— */
-  #history { background: var(--porcelain); }
+  #history {
+    background:
+      radial-gradient(ellipse 45% 30% at 90% 20%, rgba(139,124,246,0.06), transparent 55%),
+      #000;
+  }
   .history-layout {
     margin-top: 48px;
     display: grid; grid-template-columns: 1.2fr 0.8fr;
@@ -507,16 +523,18 @@
   .long-item::before {
     content: ''; position: absolute; left: -26px; top: 7px;
     width: 7px; height: 7px; border-radius: 50%;
-    background: var(--ink); border: 2px solid var(--porcelain);
+    background: #fff; border: 2px solid #000;
     box-shadow: 0 0 0 1px var(--line);
   }
   .long-item.is-scan::before { background: var(--purple); box-shadow: 0 0 0 1px var(--purple-soft); }
   .long-date { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 4px; }
   .long-label { font-size: 15px; font-weight: 500; }
   .insight-card {
-    background: var(--white); border: 1px solid var(--line);
+    background: var(--surface); border: 1px solid var(--line);
     padding: 28px; border-radius: 4px;
     position: sticky; top: calc(var(--nav-h) + 24px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
   }
   .insight-card .flag {
     font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -540,7 +558,7 @@
   }
 
   /* ——— Points ——— */
-  #points { background: var(--white); }
+  #points { background: var(--bg-soft); }
   .loop {
     margin-top: 48px;
     display: flex; flex-wrap: wrap; align-items: stretch; gap: 0;
@@ -551,6 +569,7 @@
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     border-right: 1px solid var(--line);
+    background: var(--surface);
     position: relative;
   }
   .loop-step:first-child { border-left: 1px solid var(--line); }
@@ -568,18 +587,26 @@
   }
 
   /* ——— Rewards ——— */
-  #rewards { background: var(--porcelain); }
+  #rewards {
+    background:
+      radial-gradient(ellipse 40% 30% at 50% 100%, rgba(139,124,246,0.06), transparent 55%),
+      #000;
+  }
   .rewards-track {
     margin-top: 48px;
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
   .reward-card {
-    background: var(--white); border: 1px solid var(--line);
+    background: var(--surface); border: 1px solid var(--line);
     overflow: hidden; cursor: pointer;
-    transition: border-color 0.25s;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
   }
-  .reward-card:hover { border-color: rgba(139,124,246,0.4); }
+  .reward-card:hover {
+    border-color: rgba(139,124,246,0.4);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+  }
   .reward-card img {
     width: 100%; aspect-ratio: 4/5; object-fit: cover;
   }
@@ -606,7 +633,7 @@
   }
 
   /* ——— Intelligence ——— */
-  #intelligence { background: var(--white); }
+  #intelligence { background: var(--bg-soft); }
   .sources {
     margin-top: 48px; position: relative;
     display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
@@ -614,7 +641,7 @@
   }
   .source-chip {
     padding: 12px 18px; border: 1px solid var(--line);
-    font-size: 13px; letter-spacing: 0.04em; background: var(--porcelain);
+    font-size: 13px; letter-spacing: 0.04em; background: var(--surface);
   }
   .source-center {
     width: 100%; text-align: center; margin-top: 8px;
@@ -655,7 +682,7 @@
     border: 1px solid var(--line-light);
   }
   .tech-cell {
-    background: var(--ink); padding: clamp(28px, 4vw, 40px);
+    background: #050506; padding: clamp(28px, 4vw, 40px);
   }
   .tech-cell .n {
     font-size: 11px; letter-spacing: 0.14em; color: var(--purple);
@@ -678,6 +705,8 @@
     padding: clamp(28px, 4vw, 44px);
     min-height: 280px;
     display: flex; flex-direction: column;
+    background: var(--surface);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
   }
   .path-card h3 {
     font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 36px);
@@ -695,7 +724,7 @@
   #join {
     background:
       radial-gradient(ellipse 50% 40% at 50% 0%, var(--purple-glow), transparent 60%),
-      var(--porcelain);
+      #000;
     text-align: center;
   }
   #join .display { max-width: 14ch; margin: 0 auto 12px; }
@@ -720,6 +749,7 @@
   }
   .join-visual .hw {
     background: #111; border-radius: 16px; padding: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
   }
   .join-visual .hw img { max-height: 180px; margin: 0 auto; object-fit: contain; }
   .waitlist {
@@ -731,26 +761,28 @@
   }
   .waitlist-form {
     display: flex; gap: 8px;
-    border: 1px solid var(--line); background: var(--white);
+    border: 1px solid var(--line); background: var(--surface);
     padding: 6px; border-radius: 999px;
+    backdrop-filter: blur(12px);
   }
   .waitlist-form input[type="email"] {
     flex: 1; min-width: 0; border: none; outline: none; background: transparent;
-    padding: 10px 16px; font: inherit; font-size: 14px;
+    padding: 10px 16px; font: inherit; font-size: 14px; color: #fff;
   }
+  .waitlist-form input[type="email"]::placeholder { color: rgba(255,255,255,0.4); }
   .waitlist-form button {
     padding: 10px 18px; border-radius: 999px;
-    background: var(--ink); color: #fff;
+    background: #fff; color: #000;
     font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
   }
   .waitlist-form button:disabled { opacity: 0.5; cursor: default; }
   .waitlist-msg { font-size: 13px; margin-top: 10px; text-align: center; min-height: 1.2em; }
-  .waitlist-msg.ok { color: #5a4fcf; }
-  .waitlist-msg.err { color: #b54545; }
+  .waitlist-msg.ok { color: #a89cff; }
+  .waitlist-msg.err { color: #f07171; }
 
   /* ——— Footer ——— */
   footer {
-    background: var(--porcelain);
+    background: #000;
     border-top: 1px solid var(--line);
     padding: 36px clamp(20px, 5vw, 48px) 48px;
   }
@@ -766,7 +798,7 @@
     font-size: 13px; color: var(--muted);
   }
   .footer-row a { text-decoration: underline; text-underline-offset: 3px; }
-  .footer-row a:hover { color: var(--ink); }
+  .footer-row a:hover { color: #fff; }
 
   /* ——— Mobile ——— */
   @media (max-width: 900px) {
@@ -774,14 +806,15 @@
     .nav.open .nav-links {
       display: flex; flex-direction: column;
       position: absolute; top: var(--nav-h); left: 0; right: 0;
-      background: rgba(247,247,245,0.96); backdrop-filter: blur(16px);
+      background: rgba(0,0,0,0.96); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 20px 24px 28px; gap: 18px;
       border-bottom: 1px solid var(--line);
-      opacity: 1; color: var(--ink);
+      opacity: 1; color: #fff;
     }
     .nav.on-dark.open .nav-links {
-      background: rgba(10,10,11,0.96); color: #fff;
-      border-bottom-color: var(--line-light);
+      background: rgba(0,0,0,0.96); color: #fff;
+      border-bottom-color: var(--line);
     }
     .nav-toggle { display: flex; }
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -857,7 +890,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
   </div>
 </div>
 
-<nav class="nav" id="nav" aria-label="Primary">
+<nav class="nav on-dark" id="nav" aria-label="Primary">
   <a class="nav-logo" href="#hero">
     <img src="/logo.png" alt="" width="20" height="20" />
     GENPULSE
@@ -873,7 +906,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
 </nav>
 
 <!-- CLAIM-REVIEW: Consumer hero — utility only; no diagnostic/treatment language -->
-<section id="hero" data-nav-theme="light">
+<section id="hero" data-nav-theme="dark">
   <div class="hero-grid">
     <div class="hero-copy">
       <p class="eyebrow reveal">Your everyday health</p>
@@ -922,7 +955,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
 </section>
 
 <!-- CLAIM-REVIEW: Timeline times are illustrative examples only -->
-<section id="day-timeline" class="section" data-nav-theme="light" data-track-view="timeline_section_view">
+<section id="day-timeline" class="section" data-nav-theme="dark" data-track-view="timeline_section_view">
   <div class="wrap">
     <p class="eyebrow reveal">How it works</p>
     <h2 class="display reveal">One day.<br>One timeline.</h2>
@@ -1003,7 +1036,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
   </div>
 </section>
 
-<section id="snap" class="section" data-nav-theme="light">
+<section id="snap" class="section" data-nav-theme="dark">
   <div class="wrap">
     <p class="eyebrow reveal">Snap</p>
     <h2 class="display reveal">You already do it.<br>Just snap it.</h2>
@@ -1100,7 +1133,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
 </section>
 
 <!-- CLAIM-REVIEW: Insight card stats are illustrative UI examples — not real outcomes. No causation. -->
-<section id="history" class="section" data-nav-theme="light">
+<section id="history" class="section" data-nav-theme="dark">
   <div class="wrap">
     <p class="eyebrow reveal">History</p>
     <h2 class="display reveal" style="max-width:16ch;">Your routine changes.<br>Now you can remember what changed with it.</h2>
@@ -1131,7 +1164,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
 </section>
 
 <!-- CLAIM-REVIEW: Points are loyalty participation — no crypto, no invented values -->
-<section id="points" class="section" data-nav-theme="light" data-track-view="points_section_view">
+<section id="points" class="section" data-nav-theme="dark" data-track-view="points_section_view">
   <div class="wrap">
     <p class="eyebrow reveal">Points</p>
     <h2 class="display reveal" style="max-width:14ch;">Your routine can give something back.</h2>
@@ -1170,7 +1203,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
 </section>
 
 <!-- CLAIM-REVIEW: No point prices invented; no therapeutic / hair-regrowth claims -->
-<section id="rewards" class="section" data-nav-theme="light">
+<section id="rewards" class="section" data-nav-theme="dark">
   <div class="wrap">
     <p class="eyebrow reveal">Rewards</p>
     <h2 class="display reveal">What will you try next?</h2>
@@ -1208,7 +1241,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
 </section>
 
 <!-- CLAIM-REVIEW: AI framed as context/history exploration — not diagnosis or proven causation -->
-<section id="intelligence" class="section" data-nav-theme="light" data-track-view="ai_intelligence_section_view">
+<section id="intelligence" class="section" data-nav-theme="dark" data-track-view="ai_intelligence_section_view">
   <div class="wrap">
     <p class="eyebrow reveal">Intelligence</p>
     <h2 class="display reveal" style="max-width:16ch;">The more context you build,<br>the more useful Genpulse becomes.</h2>
@@ -1306,7 +1339,7 @@ Flag: do not reintroduce "clinical-grade" / diagnostic language in consumer sect
   </div>
 </section>
 
-<section id="join" class="section" data-nav-theme="light">
+<section id="join" class="section" data-nav-theme="dark">
   <div class="wrap">
     <p class="eyebrow reveal">Get started</p>
     <h2 class="display reveal">Your routine is already happening.</h2>
